@@ -5,54 +5,43 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.FloatBuffer;
 
+import org.lwjgl.BufferUtils;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL15.*;
 
 public class Block {
 	private BlockType type = BlockType.AIR;
-    private Texture texture = null;
     private int x;
     private int y;
-	
+    
     public Block(BlockType type, int x, int y) {
 		super();
 		this.type = type;
 		this.x = x;
 		this.y = y;
-
-		try {
-			this.texture = TextureLoader.getTexture("PNG", new FileInputStream(new File(type.texture_location)));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
     
     public void draw() {
-    	texture.bind();
-    	glPushMatrix();
-    	glTranslatef(x, y, 0);
+    	this.bind();
     	glBegin(GL_QUADS);
     		glTexCoord2f(0, 0);
-	    	glVertex2f(0, 0);
+	    	glVertex2f(0 + x, 0 + y);
 	    	glTexCoord2f(1, 0);
-	    	glVertex2f(Constants.BLOCK_SIZE, 0);
+	    	glVertex2f(Constants.BLOCK_SIZE + x, 0 + y);
 	    	glTexCoord2f(1, 1);
-	    	glVertex2f(Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
+	    	glVertex2f(Constants.BLOCK_SIZE + x, Constants.BLOCK_SIZE + y);
 	    	glTexCoord2f(0, 1);
-	    	glVertex2f(0, Constants.BLOCK_SIZE);
+	    	glVertex2f(0 + x, Constants.BLOCK_SIZE + y);
 	    glEnd();
-	    glPopMatrix();
     }
     
     public void bind() {
-    	texture.bind();
+    	this.type.texture.bind();
     }
     
 	public BlockType getType() {

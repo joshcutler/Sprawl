@@ -95,6 +95,14 @@ public class Camera {
 		return current_y;
 	}
 	
+	public int translateX(int x) {
+		return x - current_x;
+	}
+	
+	public int translateY(int y) {
+		return y - current_y;
+	}
+	
 	public static float lerp(float a, float b, float t) {
       if (t < 0)
          return a;

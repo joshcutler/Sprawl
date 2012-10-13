@@ -9,11 +9,11 @@ import org.lwjgl.opengl.Display;
 public class InputEngine {
 	public static void handleInput(Camera camera) {
 		int mouse_x = Mouse.getX();
-		int mouse_y = 480 - Mouse.getY() - 1;
+		int mouse_y = Constants.WINDOW_HEIGHT - Mouse.getY() - 1;
 		boolean mouse_clicked = Mouse.isButtonDown(0);
 		
-		GameEngine.selector_x = Math.round(mouse_x / Constants.BLOCK_SIZE);
-		GameEngine.selector_y = Math.round(mouse_y / Constants.BLOCK_SIZE);
+		GameEngine.selector_x = Math.round(camera.translateX(mouse_x) / Constants.BLOCK_SIZE);
+		GameEngine.selector_y = Math.round(camera.translateY(mouse_y) / Constants.BLOCK_SIZE);
 
 		
 		if (mouse_clicked) {			

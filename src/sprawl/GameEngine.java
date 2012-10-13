@@ -1,7 +1,15 @@
 package sprawl;
 
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
+import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.BodyDef;
+import org.jbox2d.dynamics.BodyType;
+import org.jbox2d.dynamics.FixtureDef;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
  
@@ -19,6 +27,11 @@ public class GameEngine {
 	}
 	
 	public static World world;
+	
+	//32 pixels is one meter
+	private static org.jbox2d.dynamics.World physics_world = new org.jbox2d.dynamics.World(new Vec2(0, -9.81f), true);
+	private static Set<Body> bodies = new HashSet<Body>();
+	
 	public static BlockType selection = BlockType.STONE;
 	public static int selector_x = 0;
 	public static int selector_y = 0;
@@ -36,8 +49,9 @@ public class GameEngine {
 		RenderingEngine.initOpenGL();
 		
 		camera = new Camera(0, 0);
-        world = new World(new File("save.xml"));
-        getDelta();
+        //world = new World(new File("save.xml"));
+        world = new World();
+		getDelta();
         lastFPS = getTime();
 	}
 	
@@ -53,7 +67,7 @@ public class GameEngine {
 	}
 	
 	public void updateFPS() {
-		RenderingEngine.font.drawString(10 - camera.currentX(), 10 - camera.currentY(), "FPS: " + last_fps);
+		RenderingEngine.font.drawString(camera.translateX(10), camera.translateY(10), "FPS: " + last_fps);
 		if (getTime() - lastFPS > 1000) {
 			last_fps = fps;
 			fps = 0;
@@ -65,6 +79,7 @@ public class GameEngine {
 	private void gameLoop() {
 		lastFPS = getTime();
 		
+		setupObjects();
 		RenderingEngine.initFonts();
 		RenderingEngine.initGeometry();
 		RenderingEngine.initTextures();
@@ -78,8 +93,9 @@ public class GameEngine {
         	
         	InputEngine.handleInput(camera); 
         	world.draw();
-        	RenderingEngine.drawSelectionBox();
+        	RenderingEngine.drawSelectionBox(camera);
         	updateFPS();
+        	updatePhysics();
         	glPopMatrix();
         	
         	RenderingEngine.updateDisplay();
@@ -87,5 +103,34 @@ public class GameEngine {
  
         Display.destroy();
         System.exit(0);
+	}
+	
+	private void updatePhysics() {
+		physics_world.step(1/60f, 8, 3);
+		
+		for (Body body : bodies) {
+			if (body.getType() == BodyType.DYNAMIC) {
+				glPushMatrix();
+				Vec2 bodyPosition = body.getPosition().mul(32);
+				glTranslatef(bodyPosition.x, -bodyPosition.y, 0);
+				glRectf(-0.75f * 32, -0.75f * 32, 0.75f * 32, 0.75f * 32);
+				glPopMatrix();
+			}
+		}
+	}
+	
+	private void setupObjects() {
+		BodyDef boxDef = new BodyDef();
+		boxDef.position.set(60, 60);
+		boxDef.type = BodyType.DYNAMIC;
+		
+		PolygonShape boxShape = new PolygonShape();
+		boxShape.setAsBox(0.75f, 0.75f);
+		Body box = physics_world.createBody(boxDef);
+		FixtureDef boxFixture = new FixtureDef();
+		boxFixture.density = 0.1f;
+		boxFixture.shape = boxShape;
+		box.createFixture(boxFixture);
+		bodies.add(box);
 	}
 }

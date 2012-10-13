@@ -15,5 +15,8 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="/Users/joshcutler/code/Sprawl/lib/slick.jar"/>
+	<classpathentry kind="lib" path="/Users/joshcutler/code/Sprawl/lib/jbox2d-library-2.1.2.2.jar"/>
+	<classpathentry kind="lib" path="/Users/joshcutler/code/Sprawl/lib/slf4j-api-1.6.6.jar"/>
+	<classpathentry kind="lib" path="/Users/joshcutler/code/Sprawl/lib/slf4j-simple-1.6.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -80,7 +80,7 @@ public class RenderingEngine {
 		//TODO
 	}
 	
-	public static void drawSelectionBox() {
+	public static void drawSelectionBox(Camera camera) {
 		glColor4f(1f, 1f, 1f, 0.5f);
 		new Block(GameEngine.selection, GameEngine.selector_x * Constants.BLOCK_SIZE, GameEngine.selector_y * Constants.BLOCK_SIZE).draw();
 		glColor4f(1f, 1f, 1f, 1f);

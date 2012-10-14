@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -12,22 +14,42 @@ import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.XMLOutputter;
 
 public class World {
-private Block[][] blocks = new Block[Constants.WORLD_WIDTH][Constants.WORLD_HEIGHT];
+	private Block[][] blocks = new Block[Constants.WORLD_WIDTH][Constants.WORLD_HEIGHT];
+	private List<Entity> entities = new ArrayList<Entity>();
+	private PhysicsEngine physics;
 	
-	public World() {
+	public World(PhysicsEngine physics) {
+		this.physics = physics;
 		for (int x = 0; x < Constants.WORLD_WIDTH - 1; x++) {
 			for (int y = 0; y < Constants.WORLD_HEIGHT - 1; y++) {
-				blocks[x][y] = new Block(BlockType.AIR, x * Constants.BLOCK_SIZE, y * Constants.BLOCK_SIZE);
+				setAt(x, y, BlockType.AIR);
 			}
 		}
 	}
 	
-	public World(File load_file) {
+	public World(PhysicsEngine physics, File load_file) {
+		this.physics = physics;
 		load(load_file);
 	}
 	
+	public void addEntity(Entity e) {
+		entities.add(e);
+		if (e.hasPhysics) {
+			physics.registerObject(e);
+			e.registerSensors(physics);
+		}
+	}
+	
+	public List<Entity> getEntities() {
+		return this.entities;
+	}
+	
 	public void setAt(int x, int y, BlockType b) {
-		blocks[x][y] = new Block(b, x * Constants.BLOCK_SIZE, y * Constants.BLOCK_SIZE);
+		Block block = new Block(b, x * Constants.BLOCK_SIZE, y * Constants.BLOCK_SIZE);
+		blocks[x][y] = block;
+		if (b.has_physics) {
+			physics.registerObject(block);
+		}
 	}
 	
 	public Block getAt(int x, int y) {
@@ -38,6 +60,7 @@ private Block[][] blocks = new Block[Constants.WORLD_WIDTH][Constants.WORLD_HEIG
 	}
 	
 	public void draw() {
+		//TODO Add frustrum culling 
 		int left_edge = 0;
 		int right_edge = 0;
 		for (int x = left_edge; x < Constants.WORLD_WIDTH - 1; x++) {
@@ -81,7 +104,7 @@ private Block[][] blocks = new Block[Constants.WORLD_WIDTH][Constants.WORLD_HEIG
 			for (Element block : root.getChildren()) {
 				int x = Integer.parseInt(block.getAttributeValue("x"));
 				int y = Integer.parseInt(block.getAttributeValue("y"));
-				blocks[x][y] = new Block(BlockType.valueOf(block.getAttributeValue("type")), x * Constants.BLOCK_SIZE, y * Constants.BLOCK_SIZE);
+				this.setAt(x, y, BlockType.valueOf(block.getAttributeValue("type")));
 			}
 		} catch (JDOMException e) {
 			// TODO Auto-generated catch block

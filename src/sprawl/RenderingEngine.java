@@ -80,6 +80,12 @@ public class RenderingEngine {
 		//TODO
 	}
 	
+	public static void drawEntities(Camera camera, World world) {
+		for (Entity e : world.getEntities()) {
+			e.draw();
+		}
+	}
+	
 	public static void drawSelectionBox(Camera camera) {
 		glColor4f(1f, 1f, 1f, 0.5f);
 		new Block(GameEngine.selection, GameEngine.selector_x * Constants.BLOCK_SIZE, GameEngine.selector_y * Constants.BLOCK_SIZE).draw();
@@ -90,5 +96,15 @@ public class RenderingEngine {
 	public static void updateDisplay() {
         //Display.sync(60);
 		Display.update();
+	}
+	
+	public static void drawPhysicsEntity(PhysicsEntity p) {
+		glBegin(GL_POLYGON);
+			glColor3f(0,0,0);
+			glVertex2f(p.getX(), p.getY());
+			glVertex2f(p.getX() + p.getWidth(), p.getY());
+			glVertex2f(p.getX() + p.getWidth(), p.getY() + p.getHeight());
+			glVertex2f(p.getX(), p.getY() + p.getHeight());
+		glEnd();
 	}
 }

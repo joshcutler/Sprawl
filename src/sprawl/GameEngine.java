@@ -27,10 +27,8 @@ public class GameEngine {
 	}
 	
 	public static World world;
-	
-	//32 pixels is one meter
-	private static org.jbox2d.dynamics.World physics_world = new org.jbox2d.dynamics.World(new Vec2(0, -9.81f), true);
-	private static Set<Body> bodies = new HashSet<Body>();
+	public static PC pc;
+	public static PhysicsEngine physics;
 	
 	public static BlockType selection = BlockType.STONE;
 	public static int selector_x = 0;
@@ -41,6 +39,8 @@ public class GameEngine {
 	private int fps;
 	private int last_fps = 0;
 	
+	public static boolean drawPhysics = false;
+	
 	public Camera camera;
 	
 	public GameEngine() {}
@@ -49,8 +49,13 @@ public class GameEngine {
 		RenderingEngine.initOpenGL();
 		
 		camera = new Camera(0, 0);
-        //world = new World(new File("save.xml"));
-        world = new World();
+        physics = new PhysicsEngine();
+		world = new World(physics, new File("save.xml"));
+        pc = new PC();
+        
+        pc.setAt(0, 0);
+        world.addEntity(pc);
+        
 		getDelta();
         lastFPS = getTime();
 	}
@@ -79,7 +84,6 @@ public class GameEngine {
 	private void gameLoop() {
 		lastFPS = getTime();
 		
-		setupObjects();
 		RenderingEngine.initFonts();
 		RenderingEngine.initGeometry();
 		RenderingEngine.initTextures();
@@ -91,11 +95,17 @@ public class GameEngine {
 			glPushMatrix();
         	camera.update(delta);
         	
-        	InputEngine.handleInput(camera); 
+        	InputEngine.handleInput(camera, pc); 
+        	physics.update(delta);
         	world.draw();
+        	RenderingEngine.drawEntities(camera, world);
         	RenderingEngine.drawSelectionBox(camera);
+        	
+        	if (drawPhysics) {
+        		physics.drawPhysicsWorld();
+        	}
+        	
         	updateFPS();
-        	updatePhysics();
         	glPopMatrix();
         	
         	RenderingEngine.updateDisplay();
@@ -103,34 +113,5 @@ public class GameEngine {
  
         Display.destroy();
         System.exit(0);
-	}
-	
-	private void updatePhysics() {
-		physics_world.step(1/60f, 8, 3);
-		
-		for (Body body : bodies) {
-			if (body.getType() == BodyType.DYNAMIC) {
-				glPushMatrix();
-				Vec2 bodyPosition = body.getPosition().mul(32);
-				glTranslatef(bodyPosition.x, -bodyPosition.y, 0);
-				glRectf(-0.75f * 32, -0.75f * 32, 0.75f * 32, 0.75f * 32);
-				glPopMatrix();
-			}
-		}
-	}
-	
-	private void setupObjects() {
-		BodyDef boxDef = new BodyDef();
-		boxDef.position.set(60, 60);
-		boxDef.type = BodyType.DYNAMIC;
-		
-		PolygonShape boxShape = new PolygonShape();
-		boxShape.setAsBox(0.75f, 0.75f);
-		Body box = physics_world.createBody(boxDef);
-		FixtureDef boxFixture = new FixtureDef();
-		boxFixture.density = 0.1f;
-		boxFixture.shape = boxShape;
-		box.createFixture(boxFixture);
-		bodies.add(box);
 	}
 }

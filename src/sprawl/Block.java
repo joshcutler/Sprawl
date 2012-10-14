@@ -1,20 +1,13 @@
 package sprawl;
+import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.BodyType;
+
 import sprawl.Constants;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.FloatBuffer;
-
-import org.lwjgl.BufferUtils;
-import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureLoader;
-
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL15.*;
 
-public class Block {
+public class Block implements PhysicsEntity{
 	private BlockType type = BlockType.AIR;
     private int x;
     private int y;
@@ -66,5 +59,45 @@ public class Block {
 
 	public void setY(int y) {
 		this.y = y;
-	}  
+	}
+
+	@Override
+	public BodyType getPhysicsType() {
+		return BodyType.STATIC;
+	}
+
+	@Override
+	public float getDensity() {
+		return 1;
+	}
+
+	@Override
+	public int getWidth() {
+		return Constants.BLOCK_SIZE;
+	}
+
+	@Override
+	public int getHeight() {
+		return Constants.BLOCK_SIZE;
+	}
+
+	@Override
+	public void setPhysicsBody(Body b) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void move(Vec2 force, Vec2 position) {
+		// TODO Auto-generated method stub
+	}
+	
+	public float getFriction() {
+		return 10f;
+	}
+
+	@Override
+	public Body getPhysicsBody() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

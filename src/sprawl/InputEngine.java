@@ -47,6 +47,11 @@ public class InputEngine {
 				Display.destroy();
 				System.exit(0);
 			}
+			if (Keyboard.getEventKey() == Keyboard.KEY_R) {
+				pc.x = 0;
+				pc.y = 0;
+				pc.getPhysicsBody().setTransform(new Vec2(0f, 0f), 0);
+			}
 			if (Keyboard.getEventKey() == Keyboard.KEY_P) {
 				if (KeyCommand.DRAW_PHYSICS.isArmed()) {
 					GameEngine.drawPhysics = GameEngine.drawPhysics ? false : true;
@@ -59,7 +64,9 @@ public class InputEngine {
 		// Handle movement
 		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE) && pc.onSolidGround()) {
 			if (KeyCommand.JUMP.isArmed()) {
-				pc.move(new Vec2(0, -pc.getJumpSpeed()), pc.physics_body.getPosition());
+				Vec2 current_speed = pc.physics_body.getLinearVelocity();
+				pc.getPhysicsBody().setLinearVelocity(new Vec2(current_speed.x, -pc.getJumpSpeed()));
+				System.out.println("Jump");
 				KeyCommand.JUMP.resetArmed();
 			}
 		}
@@ -78,7 +85,8 @@ public class InputEngine {
 		} else {
 			// Stop the dude from sliding
 			if (pc.onSolidGround()) {
-				pc.physics_body.setLinearVelocity(new Vec2(0, 0));
+				Vec2 current_speed = pc.physics_body.getLinearVelocity();
+				pc.physics_body.setLinearVelocity(new Vec2(0, current_speed.y));
 			}
 		}
 		KeyCommand.MOVE_RIGHT.updatePressed(Keyboard.isKeyDown(Keyboard.KEY_D));

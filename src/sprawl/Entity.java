@@ -65,13 +65,13 @@ public abstract class Entity implements PhysicsEntity {
 		}
     	glBegin(GL_QUADS);
     		glTexCoord2f(0, 0);
-	    	glVertex2f(0 + x, 0 + y);
+	    	glVertex2f(x, y);
 	    	glTexCoord2f(1, 0);
-	    	glVertex2f(width + x, 0 + y);
+	    	glVertex2f(width + x, y);
 	    	glTexCoord2f(1, 1);
 	    	glVertex2f(width + x, height + y);
 	    	glTexCoord2f(0, 1);
-	    	glVertex2f(0 + x, height + y);
+	    	glVertex2f(x, height + y);
 	    glEnd();
 	}
 	
@@ -93,5 +93,13 @@ public abstract class Entity implements PhysicsEntity {
 	
 	public void registerSensors(PhysicsEngine physics) {
 		
+	}
+	
+	public float getRestitution() {
+		return 0.1f;
+	}
+	
+	public float getMass() {
+		return 1;
 	}
 }

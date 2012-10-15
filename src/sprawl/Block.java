@@ -9,6 +9,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Block implements PhysicsEntity{
 	private BlockType type = BlockType.AIR;
+	private Body physics_body;
     private int x;
     private int y;
     
@@ -82,11 +83,6 @@ public class Block implements PhysicsEntity{
 	}
 
 	@Override
-	public void setPhysicsBody(Body b) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
 	public void move(Vec2 force, Vec2 position) {
 		// TODO Auto-generated method stub
 	}
@@ -97,7 +93,18 @@ public class Block implements PhysicsEntity{
 
 	@Override
 	public Body getPhysicsBody() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.physics_body;
+	}
+	public void setPhysicsBody(Body body) {
+		this.physics_body = body;
+	}
+
+	@Override
+	public float getRestitution() {
+		return 0.5f;
+	}
+	
+	public float getMass() {
+		return 1;
 	}
 }

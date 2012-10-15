@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.jbox2d.collision.shapes.MassData;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
@@ -53,8 +54,9 @@ public class GameEngine {
 		world = new World(physics, new File("save.xml"));
         pc = new PC();
         
-        pc.setAt(0, 0);
+        pc.setAt(16, 16);
         world.addEntity(pc);
+        pc.getPhysicsBody().m_mass = 0f;
         
 		getDelta();
         lastFPS = getTime();

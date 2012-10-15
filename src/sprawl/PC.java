@@ -21,11 +21,13 @@ public class PC extends Entity {
 
 	public PC() {
 		this.hasPhysics = true;
-		this.height = Constants.BLOCK_SIZE * 3;
-		this.width = Constants.BLOCK_SIZE;
+		this.height = Constants.BLOCK_SIZE * 4;
+		this.width = Constants.BLOCK_SIZE* 2;
 		this.texture_location = "res/textures/PC.png";
 		this.speed = 5f;
-		this.jumpSpeed = 50f;
+		this.friction = 0;
+		
+		this.jumpSpeed = 10f;
 		try {
 			this.texture = TextureLoader.getTexture("PNG",
 					new FileInputStream(new File(
@@ -80,6 +82,10 @@ public class PC extends Entity {
 	@Override
 	public int getHeight() {
 		return this.height;
+	}
+	
+	public float getMass() {
+		return 0;
 	}
 
 }

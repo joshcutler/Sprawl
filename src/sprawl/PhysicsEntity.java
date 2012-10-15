@@ -18,4 +18,6 @@ public interface PhysicsEntity {
 	public float getFriction();
 	public BodyType getPhysicsType();
 	public float getDensity();
+	public float getRestitution();
+	public float getMass();
 }

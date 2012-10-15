@@ -7,6 +7,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.Fixture;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -94,17 +98,29 @@ public class RenderingEngine {
 	}
 	
 	public static void updateDisplay() {
-        //Display.sync(60);
+        Display.sync(60);
 		Display.update();
 	}
 	
-	public static void drawPhysicsEntity(PhysicsEntity p) {
-		glBegin(GL_POLYGON);
-			glColor3f(0,0,0);
-			glVertex2f(p.getX(), p.getY());
-			glVertex2f(p.getX() + p.getWidth(), p.getY());
-			glVertex2f(p.getX() + p.getWidth(), p.getY() + p.getHeight());
-			glVertex2f(p.getX(), p.getY() + p.getHeight());
-		glEnd();
+	public static void drawPhysicsEntity(Body body) {
+		Vec2 position = body.getPosition().mul(PhysicsEngine.pixels_per_meter);
+		Fixture fix = body.getFixtureList();
+		while (fix != null) {
+			PolygonShape shape = (PolygonShape) fix.getShape();
+			Vec2 tl = shape.getVertex(0).mul(PhysicsEngine.pixels_per_meter);
+			Vec2 tr = shape.getVertex(1).mul(PhysicsEngine.pixels_per_meter);
+			Vec2 br = shape.getVertex(2).mul(PhysicsEngine.pixels_per_meter);
+			Vec2 bl = shape.getVertex(3).mul(PhysicsEngine.pixels_per_meter);
+			
+			glBegin(GL_POLYGON);
+				glColor3f(0,0,0);
+				glVertex2f(position.x + tl.x, position.y + tl.y);
+				glVertex2f(position.x + tr.x, position.y + tr.y);
+				glVertex2f(position.x + br.x, position.y + br.y);
+				glVertex2f(position.x + bl.x, position.y + bl.y);
+			glEnd();
+			
+			fix = fix.getNext();
+		}
 	}
 }

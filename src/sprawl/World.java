@@ -35,7 +35,7 @@ public class World {
 	public void addEntity(Entity e) {
 		entities.add(e);
 		if (e.hasPhysics) {
-			physics.registerObject(e);
+			physics.registerEntity(e);
 			e.registerSensors(physics);
 		}
 	}

@@ -61,7 +61,11 @@ public class World {
 	public Block blockAt(float x, float y) {
 		int indexX = (int)Math.ceil((x / Constants.BLOCK_SIZE)) - 1;
 		int indexY = (int)Math.ceil((y / Constants.BLOCK_SIZE)) - 1;
-		return blocks[indexX][indexY];
+		Block b = null; 
+		if (indexX < blocks.length && indexY < blocks[0].length) {
+			b = blocks[indexX][indexY];
+		}
+		return b;
 	}
 	
 	public void draw() {
@@ -126,5 +130,13 @@ public class World {
 				blocks[x][y] = new Block(BlockType.AIR, x * Constants.BLOCK_SIZE, y * Constants.BLOCK_SIZE);
 			}
 		}
+	}
+	
+	public int getWidthInPixels() {
+		return (blocks.length - 1) * Constants.BLOCK_SIZE;
+	}
+	
+	public int getHeightInPixels() {
+		return (blocks[0].length - 1) * Constants.BLOCK_SIZE;
 	}
 }

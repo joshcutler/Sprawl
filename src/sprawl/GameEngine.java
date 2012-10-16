@@ -49,7 +49,7 @@ public class GameEngine {
 	private void start() {
 		RenderingEngine.initOpenGL();
 		
-		camera = new Camera(0, 0);
+		camera = new Camera();
         physics = new PhysicsEngine();
 		world = new World(physics, new File("save.xml"));
         pc = new PC();
@@ -84,6 +84,7 @@ public class GameEngine {
 	
 	public void updateDebug() {
 		RenderingEngine.font.drawString(camera.translateX(10), camera.translateY(20), "PC: " + pc.getX() + ", " + pc.getY());
+		RenderingEngine.font.drawString(camera.translateX(10), camera.translateY(30), "Camera: " + camera.getX() + ", " + camera.getY());
 	}
 	
 	private void gameLoop() {
@@ -98,10 +99,10 @@ public class GameEngine {
         	
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 			glPushMatrix();
-        	camera.update(delta);
-        	
         	InputEngine.handleInput(camera, pc); 
         	physics.update(delta, world);
+        	camera.update(pc, world);
+        	
         	world.draw();
         	RenderingEngine.drawEntities(camera, world);
         	RenderingEngine.drawSelectionBox(camera);

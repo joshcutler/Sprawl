@@ -68,15 +68,33 @@ public class World {
 		return b;
 	}
 	
-	public void draw() {
-		//TODO Add frustrum culling 
-		int left_edge = 0;
-		int right_edge = 0;
-		for (int x = left_edge; x < Constants.WORLD_WIDTH - 1; x++) {
-			for (int y = 0; y < Constants.WORLD_HEIGHT - 1; y++) {
+	public int draw(Camera camera) {
+		//Cull unneeded blocks
+		int left_edge = (int) -Math.floor((camera.getX() / Constants.BLOCK_SIZE)) - 1;
+		if (left_edge < 0) {
+			left_edge = 0;
+		}
+		int right_edge = (int) Math.ceil(((-camera.getX() + Constants.WINDOW_WIDTH) / Constants.BLOCK_SIZE)) + 2;
+		if (right_edge >= blocks.length) {
+			right_edge = blocks.length;
+		}
+		int top_edge = (int) -Math.floor((camera.getY() / Constants.BLOCK_SIZE)) - 1;
+		if (top_edge < 0) {
+			top_edge = 0;
+		}
+		int bottom_edge = (int) Math.ceil(((-camera.getY() + Constants.WINDOW_HEIGHT) / Constants.BLOCK_SIZE)) + 2;
+		if (bottom_edge >= blocks[0].length) {
+			bottom_edge = blocks[0].length;
+		}
+
+		int tiles_drawn = 0;
+		for (int x = left_edge; x < right_edge - 1; x++) {
+			for (int y = top_edge; y < bottom_edge - 1; y++) {
 				blocks[x][y].draw();
+				tiles_drawn++;
 			}
 		}
+		return tiles_drawn;
 	}
 		
 	public void save(File save_file) {

@@ -1,16 +1,7 @@
 package sprawl;
 
 import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
 
-import org.jbox2d.collision.shapes.MassData;
-import org.jbox2d.collision.shapes.PolygonShape;
-import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.Body;
-import org.jbox2d.dynamics.BodyDef;
-import org.jbox2d.dynamics.BodyType;
-import org.jbox2d.dynamics.FixtureDef;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
  
@@ -82,9 +73,10 @@ public class GameEngine {
 		fps++;
 	}
 	
-	public void updateDebug() {
+	public void updateDebug(int tiles_drawn) {
 		RenderingEngine.font.drawString(camera.translateX(10), camera.translateY(20), "PC: " + pc.getX() + ", " + pc.getY());
 		RenderingEngine.font.drawString(camera.translateX(10), camera.translateY(30), "Camera: " + camera.getX() + ", " + camera.getY());
+		RenderingEngine.font.drawString(camera.translateX(10), camera.translateY(40), "Tiles: " + tiles_drawn);
 	}
 	
 	private void gameLoop() {
@@ -103,12 +95,12 @@ public class GameEngine {
         	physics.update(delta, world);
         	camera.update(pc, world);
         	
-        	world.draw();
+        	int tiles_drawn = world.draw(camera);
         	RenderingEngine.drawEntities(camera, world);
         	RenderingEngine.drawSelectionBox(camera);
         	
         	updateFPS();
-        	updateDebug();
+        	updateDebug(tiles_drawn);
         	glPopMatrix();
         	
         	RenderingEngine.updateDisplay();

@@ -2,7 +2,6 @@ package sprawl;
 
 import java.io.File;
 
-import org.jbox2d.common.Vec2;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
@@ -50,7 +49,7 @@ public class InputEngine {
 			if (Keyboard.getEventKey() == Keyboard.KEY_R) {
 				pc.x = 0;
 				pc.y = 0;
-				pc.getPhysicsBody().setTransform(new Vec2(0f, 0f), 0);
+				pc.moveTo(10, 10);
 			}
 			if (Keyboard.getEventKey() == Keyboard.KEY_P) {
 				if (KeyCommand.DRAW_PHYSICS.isArmed()) {
@@ -64,9 +63,7 @@ public class InputEngine {
 		// Handle movement
 		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE) && pc.onSolidGround()) {
 			if (KeyCommand.JUMP.isArmed()) {
-				Vec2 current_speed = pc.physics_body.getLinearVelocity();
-				pc.getPhysicsBody().setLinearVelocity(new Vec2(current_speed.x, -pc.getJumpSpeed()));
-				System.out.println("Jump");
+				pc.accelerateY(pc.jumpSpeed);
 				KeyCommand.JUMP.resetArmed();
 			}
 		}
@@ -74,19 +71,18 @@ public class InputEngine {
 		
 		if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
 			if (KeyCommand.MOVE_RIGHT.isArmed()) {
-				pc.move(new Vec2(pc.getSpeed(), 0), pc.physics_body.getPosition());
+				pc.setVelocityX(pc.speed);
 				KeyCommand.MOVE_RIGHT.resetArmed();
 			}
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
 			if (KeyCommand.MOVE_LEFT.isArmed()) {
-				pc.move(new Vec2(-pc.getSpeed(), 0), pc.physics_body.getPosition());
+				pc.setVelocityX(-pc.speed);
 				KeyCommand.MOVE_LEFT.resetArmed();
 			}
 		} else {
 			// Stop the dude from sliding
 			if (pc.onSolidGround()) {
-				Vec2 current_speed = pc.physics_body.getLinearVelocity();
-				pc.physics_body.setLinearVelocity(new Vec2(0, current_speed.y));
+				pc.setVelocityX(0);
 			}
 		}
 		KeyCommand.MOVE_RIGHT.updatePressed(Keyboard.isKeyDown(Keyboard.KEY_D));

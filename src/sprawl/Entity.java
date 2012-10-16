@@ -6,53 +6,41 @@ import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glVertex2f;
 
-import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.Body;
 import org.newdawn.slick.opengl.Texture;
 
-public abstract class Entity implements PhysicsEntity {
-	protected boolean hasPhysics = false;
-	protected Body physics_body;
-	protected int x;
-	protected int y;
+public abstract class Entity {
+	protected PhysicsType physicsType = PhysicsType.DYNAMIC;
+	protected Vec2 linearVelocity;
+	
+	public Vec2 getLinearVelocity() {
+		return linearVelocity;
+	}
+
+	public void setLinearVelocity(Vec2 linearVelocity) {
+		this.linearVelocity = linearVelocity;
+	}
+
+	protected float x;
+	protected float y;
 	protected int height;
 	protected int width;
+	protected float jumpSpeed;
 	protected float speed;
-	protected float friction = 0;
-	private int footContacts = 0;
+	protected float mass = 1;
+	protected boolean onSolidground = false;
 	
 	public boolean onSolidGround() {
-		return (this.footContacts > 0);
+		return onSolidground;
 	}
 	
-	public void incrementFootContacts() {
-		this.footContacts++;
+	public void onSolidGround(boolean b) {
+		onSolidground = b;
 	}
 	
-	public void decrementFootContacts() {
-		this.footContacts--;
-	}
-	
-	public int getFootContacts() {
-		return this.footContacts;
-	}
-	
-	public float getFriction() {
-		return friction;
-	}
-	
-	public float getSpeed() {
-		return speed;
-	}
-
-	public void setSpeed(float speed) {
-		this.speed = speed;
-	}
-
 	public String texture_location;
     public Texture texture;
 	
-	public void setAt(int x, int y) {
+	public void moveTo(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
@@ -79,27 +67,59 @@ public abstract class Entity implements PhysicsEntity {
 		this.texture.bind();
 	}
 	
-	public void setPhysicsBody(Body b) {
-		this.physics_body = b;
+	public float getX() {
+		return x;
+	}
+
+	public void setX(float x) {
+		this.x = x;
+	}
+
+	public float getY() {
+		return y;
+	}
+
+	public void setY(float y) {
+		this.y = y;
 	}
 	
-	public Body getPhysicsBody() {
-		return this.physics_body;
+	public int heightInBlocks() {
+		return (int) Math.ceil((float)this.height / Constants.BLOCK_SIZE);
 	}
 	
-	public void move(Vec2 force, Vec2 position) {
-		this.physics_body.applyForce(force, position);
+	public int widthInBlocks() {
+		return (int) Math.ceil((float)this.width / Constants.BLOCK_SIZE);
 	}
 	
-	public void registerSensors(PhysicsEngine physics) {
+	public int widthBlocksSpanned() {
+ 		return PhysicsEngine.numberOfBlocks((int)Math.floor(this.x + this.width)) - PhysicsEngine.numberOfBlocks((int) Math.ceil(this.x)) + 1;
+	}
+	
+	public int heightBlocksSpanned() {
+		return PhysicsEngine.numberOfBlocks((int)Math.ceil(this.y + this.height)) - PhysicsEngine.numberOfBlocks((int)Math.ceil(this.y));
+	}
 		
+	public float getJumpSpeed() {
+		return jumpSpeed;
+	}
+
+	public void setJumpSpeed(float jump_speed) {
+		this.jumpSpeed = jump_speed;
 	}
 	
-	public float getRestitution() {
-		return 0.1f;
+	public void setVelocityX(float x) {
+		this.linearVelocity.x = x;
 	}
 	
-	public float getMass() {
-		return 1;
+	public void setVelocityY(float y) {
+		this.linearVelocity.y = y;
+	}
+	
+	public void accelerateX(float x) {
+		this.linearVelocity.x += x;
+	}
+	
+	public void accelerateY(float y) {
+		this.linearVelocity.y += y;
 	}
 }

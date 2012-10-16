@@ -54,9 +54,8 @@ public class GameEngine {
 		world = new World(physics, new File("save.xml"));
         pc = new PC();
         
-        pc.setAt(16, 16);
+        pc.moveTo(16, 16);
         world.addEntity(pc);
-        pc.getPhysicsBody().m_mass = 0f;
         
 		getDelta();
         lastFPS = getTime();
@@ -83,6 +82,10 @@ public class GameEngine {
 		fps++;
 	}
 	
+	public void updateDebug() {
+		RenderingEngine.font.drawString(camera.translateX(10), camera.translateY(20), "PC: " + pc.getX() + ", " + pc.getY());
+	}
+	
 	private void gameLoop() {
 		lastFPS = getTime();
 		
@@ -98,16 +101,13 @@ public class GameEngine {
         	camera.update(delta);
         	
         	InputEngine.handleInput(camera, pc); 
-        	physics.update(delta);
+        	physics.update(delta, world);
         	world.draw();
         	RenderingEngine.drawEntities(camera, world);
         	RenderingEngine.drawSelectionBox(camera);
         	
-        	if (drawPhysics) {
-        		physics.drawPhysicsWorld();
-        	}
-        	
         	updateFPS();
+        	updateDebug();
         	glPopMatrix();
         	
         	RenderingEngine.updateDisplay();

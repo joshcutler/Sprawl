@@ -113,9 +113,13 @@ public class PhysicsEngine {
 			}
 			
 			// Stop you from bad vertical motion
-			if (downCollisionBlock != null || upCollisionBlock != null) {
+			if (downCollisionBlock != null) {
 				newVelocity.y = 0;
-				newY = e.getY();
+				newY = downCollisionBlock.getY() - e.getHeight() + 1;
+			}
+			if (upCollisionBlock != null) {
+				newVelocity.y = 0;
+				newY = upCollisionBlock.getY() + Constants.BLOCK_SIZE + 1;
 			}
 			
 			// Stop you from bad horizontal motion

@@ -6,11 +6,18 @@ import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glVertex2f;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureLoader;
 
 public abstract class Entity {
 	protected PhysicsType physicsType = PhysicsType.DYNAMIC;
 	protected Vec2 linearVelocity;
+	protected EntityDirection direction;
 	
 	public Vec2 getLinearVelocity() {
 		return linearVelocity;
@@ -23,6 +30,7 @@ public abstract class Entity {
 	protected float x;
 	protected float y;
 	protected int height;
+	protected float acceleration;
 	public int getHeight() {
 		return height;
 	}
@@ -37,6 +45,25 @@ public abstract class Entity {
 
 	public void setWidth(int width) {
 		this.width = width;
+	}
+	
+	protected void loadTexture() {
+		try {
+			String filename = this.texture_location + "-" + this.direction.toString().toLowerCase() + ".png";
+			this.texture = TextureLoader.getTexture("PNG",
+					new FileInputStream(new File(filename)));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void changeDirection(EntityDirection dir) {
+		this.direction = dir;
+		this.loadTexture();
 	}
 
 	protected int width;
@@ -133,6 +160,11 @@ public abstract class Entity {
 	
 	public void accelerateX(float x) {
 		this.linearVelocity.x += x;
+		if (this.linearVelocity.x > this.speed) {
+			this.linearVelocity.x = this.speed;
+		} else if (this.linearVelocity.x < -(this.speed)) {
+			this.linearVelocity.x = -(this.speed);
+		}
 	}
 	
 	public void accelerateY(float y) {

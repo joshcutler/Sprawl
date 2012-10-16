@@ -68,12 +68,14 @@ public class InputEngine {
 		
 		if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
 			if (KeyCommand.MOVE_RIGHT.isArmed()) {
-				pc.setVelocityX(pc.speed);
+				pc.accelerateX(pc.acceleration);
+				pc.changeDirection(EntityDirection.RIGHT);
 				KeyCommand.MOVE_RIGHT.resetArmed();
 			}
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
 			if (KeyCommand.MOVE_LEFT.isArmed()) {
-				pc.setVelocityX(-pc.speed);
+				pc.accelerateX(-pc.acceleration);
+				pc.changeDirection(EntityDirection.LEFT);
 				KeyCommand.MOVE_LEFT.resetArmed();
 			}
 		} else {

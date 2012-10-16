@@ -1,5 +1,7 @@
 package sprawl;
 
+import static org.lwjgl.opengl.GL11.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -69,6 +71,20 @@ public class World {
 	}
 	
 	public int draw(Camera camera) {
+		//Draw Skybox
+		glColor3f(1f, 1f, 1f);
+		BlockType.AIR.texture.bind();
+		glBegin(GL_QUADS);
+			glTexCoord2f(0, 0);
+			glVertex2f(-camera.getX(), -camera.getY());
+			glTexCoord2f(1, 0);
+			glVertex2f(-camera.getX() + Constants.WINDOW_WIDTH , -camera.getY());
+			glTexCoord2f(1, 1);
+			glVertex2f(-camera.getX() + Constants.WINDOW_WIDTH, -camera.getY()  + Constants.WINDOW_HEIGHT);
+			glTexCoord2f(0, 1);
+			glVertex2f(-camera.getX(), -camera.getY()  + Constants.WINDOW_HEIGHT );
+	    glEnd();
+		
 		//Cull unneeded blocks
 		int left_edge = (int) -Math.floor((camera.getX() / Constants.BLOCK_SIZE)) - 1;
 		if (left_edge < 0) {
@@ -90,8 +106,10 @@ public class World {
 		int tiles_drawn = 0;
 		for (int x = left_edge; x < right_edge - 1; x++) {
 			for (int y = top_edge; y < bottom_edge - 1; y++) {
-				blocks[x][y].draw();
-				tiles_drawn++;
+				if (blocks[x][y].getType() != BlockType.AIR) {
+					blocks[x][y].draw();
+					tiles_drawn++;
+				}
 			}
 		}
 		return tiles_drawn;

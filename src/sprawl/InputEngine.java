@@ -34,9 +34,6 @@ public class InputEngine {
 				GameEngine.selection = BlockType.DIRT;
 			}
 			if (Keyboard.getEventKey() == Keyboard.KEY_3) {
-				GameEngine.selection = BlockType.GRASS;
-			}
-			if (Keyboard.getEventKey() == Keyboard.KEY_4) {
 				GameEngine.selection = BlockType.AIR;
 			}
 			if (Keyboard.getEventKey() == Keyboard.KEY_C) {

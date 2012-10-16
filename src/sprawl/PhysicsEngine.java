@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class PhysicsEngine {
 	public static final int pixels_per_meter = 16;
-	private static final float gravity = -30f;
+	private static final float gravity = -40f;
 	private static Set<Entity> dynamic_entities = new HashSet<Entity>();
 
 	public PhysicsEngine() {

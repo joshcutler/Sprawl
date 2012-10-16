@@ -11,10 +11,10 @@ public class PC extends Entity {
 	public PC() {
 		this.physicsType = PhysicsType.DYNAMIC;
 		this.height = Constants.BLOCK_SIZE * 4;
-		this.width = Constants.BLOCK_SIZE * 2 - 4;
+		this.width = Constants.BLOCK_SIZE * 2 - Constants.BLOCK_SIZE / 2;
 		this.texture_location = "res/textures/PC.png";
-		this.speed = 7f;
-		this.jumpSpeed = 15f;
+		this.speed = 12f;
+		this.jumpSpeed = 25f;
 		
 		try {
 			this.texture = TextureLoader.getTexture("PNG",

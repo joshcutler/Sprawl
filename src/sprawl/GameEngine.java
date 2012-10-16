@@ -43,6 +43,7 @@ public class GameEngine {
 		camera = new Camera();
         physics = new PhysicsEngine();
 		world = new World(physics, new File("save.xml"));
+		GameTime.reset();
         pc = new PC();
         
         pc.moveTo(16, 16);
@@ -77,6 +78,8 @@ public class GameEngine {
 		RenderingEngine.font.drawString(camera.translateX(10), camera.translateY(20), "PC: " + pc.getX() + ", " + pc.getY());
 		RenderingEngine.font.drawString(camera.translateX(10), camera.translateY(30), "Camera: " + camera.getX() + ", " + camera.getY());
 		RenderingEngine.font.drawString(camera.translateX(10), camera.translateY(40), "Tiles: " + tiles_drawn);
+		
+		RenderingEngine.font.drawString(camera.translateX(Constants.WINDOW_WIDTH - 70), camera.translateY(10), GameTime.getDays() + "d " + GameTime.getHours() + "h " + GameTime.getMinutes() + " m" );
 	}
 	
 	private void gameLoop() {
@@ -91,8 +94,10 @@ public class GameEngine {
         	
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 			glPushMatrix();
-        	InputEngine.handleInput(camera, pc); 
-        	physics.update(delta, world);
+        	
+			InputEngine.handleInput(camera, pc); 
+        	GameTime.update(delta);
+			physics.update(delta, world);
         	camera.update(pc, world);
         	
         	int tiles_drawn = world.draw(camera);

@@ -86,22 +86,10 @@ public class World {
 	    glEnd();
 		
 		//Cull unneeded blocks
-		int left_edge = (int) -Math.floor((camera.getX() / Constants.BLOCK_SIZE)) - 1;
-		if (left_edge < 0) {
-			left_edge = 0;
-		}
-		int right_edge = (int) Math.ceil(((-camera.getX() + Constants.WINDOW_WIDTH) / Constants.BLOCK_SIZE)) + 2;
-		if (right_edge >= blocks.length) {
-			right_edge = blocks.length;
-		}
-		int top_edge = (int) -Math.floor((camera.getY() / Constants.BLOCK_SIZE)) - 1;
-		if (top_edge < 0) {
-			top_edge = 0;
-		}
-		int bottom_edge = (int) Math.ceil(((-camera.getY() + Constants.WINDOW_HEIGHT) / Constants.BLOCK_SIZE)) + 2;
-		if (bottom_edge >= blocks[0].length) {
-			bottom_edge = blocks[0].length;
-		}
+		int left_edge = camera.leftVisibleBlockIndex();
+		int right_edge = camera.rightVisibleBlockIndex();
+		int top_edge = camera.topVisibleBlockIndex();
+		int bottom_edge = camera.bottomVisibleBlockIndex();
 
 		int tiles_drawn = 0;
 		for (int x = left_edge; x < right_edge - 1; x++) {

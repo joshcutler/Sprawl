@@ -1,11 +1,7 @@
 package sprawl;
 
-import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glEnd;
-import static org.lwjgl.opengl.GL11.glTexCoord2f;
-import static org.lwjgl.opengl.GL11.glVertex2f;
-
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL14.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -95,6 +91,9 @@ public abstract class Entity {
 			e.printStackTrace();
 		}
     	glBegin(GL_QUADS);
+    		//TODO: Changes color of sprite
+    		// glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    		// glColor3f(.5f, .5f, .5f);
     		glTexCoord2f(0, 0);
 	    	glVertex2f(x, y);
 	    	glTexCoord2f(1, 0);

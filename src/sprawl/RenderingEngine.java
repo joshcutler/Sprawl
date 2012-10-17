@@ -1,6 +1,10 @@
 package sprawl;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL14.GL_FUNC_ADD;
+import static org.lwjgl.opengl.GL14.GL_MIN;
+import static org.lwjgl.opengl.GL14.GL_MAX;
+import static org.lwjgl.opengl.GL14.glBlendEquation;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -65,6 +69,19 @@ public class RenderingEngine {
 				e.printStackTrace();
 			}
 		}
+		for (LightSource light_source : LightSource.values()) {
+			try {
+				light_source.texture = TextureLoader.getTexture("PNG",
+						new FileInputStream(new File(
+								light_source.texture_location)));
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -88,6 +105,69 @@ public class RenderingEngine {
 		for (Entity e : world.getEntities()) {
 			e.draw();
 		}
+	}
+	
+	public static void drawLights(Camera camera, World world) {
+		//Load light mask		
+	    glColorMask(false, false, false, true);
+	    LightSource.SKY.texture.bind();
+	    glBlendFunc(GL_DST_ALPHA, GL_ONE_MINUS_DST_ALPHA);
+	    glBlendEquation(GL_MIN);
+
+	    //Cull unneeded blocks and draw ambient sky light
+		int extra_lights = 8;
+	    int left_edge = camera.leftVisibleBlockIndex() - extra_lights;
+	    if (left_edge < 0) {
+			left_edge = 0;
+		}
+		int right_edge = camera.rightVisibleBlockIndex() + extra_lights;
+		if (right_edge >= Constants.WORLD_WIDTH) {
+			right_edge = Constants.WORLD_WIDTH;
+		}
+		int top_edge = camera.topVisibleBlockIndex() - extra_lights;
+		if (top_edge < 0) {
+			top_edge = 0;
+		}
+		int bottom_edge = camera.bottomVisibleBlockIndex() + extra_lights;
+		if (bottom_edge >= Constants.WORLD_HEIGHT) {
+			bottom_edge = Constants.WORLD_HEIGHT;
+		}
+		float radius = LightSource.SKY.distance * Constants.BLOCK_SIZE;
+		for (int i = left_edge; i < right_edge - 1; i++) {
+			for (int j = top_edge; j < bottom_edge - 1; j++) {
+				Block b = world.getAt(i, j);
+				if (b.getType() == BlockType.AIR) {
+					float x = b.getX() + b.getWidth() / 2;
+					float y = b.getY() + b.getHeight() / 2;
+					glBegin(GL_QUADS);
+				    	glTexCoord2f(0, 0);
+				    	glVertex2f(x - radius , y - radius);
+				    	glTexCoord2f(1, 0);
+				    	glVertex2f(x + radius, y - radius);
+				    	glTexCoord2f(1, 1);
+				    	glVertex2f(x + radius, y + radius);
+				    	glTexCoord2f(0, 1);
+				    	glVertex2f(x - radius, y + radius);
+				    glEnd();
+				}
+			}
+		}
+	    
+	    glColorMask(true, true, true, true);
+	    LightSource.SHADOW.texture.bind();
+	    glBlendEquation(GL_FUNC_ADD);
+	    float lighting_buffer = Constants.BLOCK_SIZE * extra_lights;
+	    glBegin(GL_QUADS);
+			glTexCoord2f(0, 0);
+			glVertex2f(-camera.getX() - lighting_buffer, -camera.getY() - lighting_buffer);
+			glTexCoord2f(1, 0);
+			glVertex2f(-camera.getX() + Constants.WINDOW_WIDTH + lighting_buffer, -camera.getY() - lighting_buffer);
+			glTexCoord2f(1, 1);
+			glVertex2f(-camera.getX() + Constants.WINDOW_WIDTH + lighting_buffer, -camera.getY()  + Constants.WINDOW_HEIGHT + lighting_buffer);
+			glTexCoord2f(0, 1);
+			glVertex2f(-camera.getX() - lighting_buffer, -camera.getY()  + Constants.WINDOW_HEIGHT + lighting_buffer);
+	    glEnd();
+	    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 	
 	public static void drawSelectionBox(Camera camera) {

@@ -18,7 +18,6 @@ public class Camera {
 	public Camera() {
 		current_x = 0;
 		current_y = 0;
-		
 	}
 	
 	public void update(PC pc, World world) {
@@ -55,5 +54,35 @@ public class Camera {
 	
 	public int translateY(int y) {
 		return y - current_y;
+	}
+	
+	public int leftVisibleBlockIndex() {
+		int left_edge = (int) -Math.floor((this.getX() / Constants.BLOCK_SIZE)) - 1;
+		if (left_edge < 0) {
+			left_edge = 0;
+		}
+		return left_edge;
+	}
+
+	public int rightVisibleBlockIndex() {
+		int right_edge = (int) Math.ceil(((-this.getX() + Constants.WINDOW_WIDTH) / Constants.BLOCK_SIZE)) + 2;
+		if (right_edge >= Constants.WORLD_WIDTH) {
+			right_edge = Constants.WORLD_WIDTH;
+		}
+		return right_edge;
+	}
+	public int topVisibleBlockIndex() {
+		int top_edge = (int) -Math.floor((this.getY() / Constants.BLOCK_SIZE)) - 1;
+		if (top_edge < 0) {
+			top_edge = 0;
+		}
+		return top_edge;
+	}
+	public int bottomVisibleBlockIndex() {
+		int bottom_edge = (int) Math.ceil(((-this.getY() + Constants.WINDOW_HEIGHT) / Constants.BLOCK_SIZE)) + 2;
+		if (bottom_edge >= Constants.WORLD_HEIGHT) {
+			bottom_edge = Constants.WORLD_HEIGHT;
+		}
+		return bottom_edge;
 	}
 }

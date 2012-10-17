@@ -102,6 +102,7 @@ public class GameEngine {
         	
         	int tiles_drawn = world.draw(camera);
         	RenderingEngine.drawEntities(camera, world);
+        	RenderingEngine.drawLights(camera, world);
         	RenderingEngine.drawSelectionBox(camera);
         	
         	updateFPS();

@@ -43,7 +43,7 @@ public class GameEngine {
 		camera = new Camera();
         physics = new PhysicsEngine();
 		world = new World(physics, new File("save.xml"));
-		GameTime.reset();
+		GameTime.reset(0, 12, 0);
         pc = new PC();
         
         pc.moveTo(16, 16);

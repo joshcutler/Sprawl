@@ -1,10 +1,7 @@
 package sprawl;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL14.GL_FUNC_ADD;
-import static org.lwjgl.opengl.GL14.GL_MIN;
-import static org.lwjgl.opengl.GL14.GL_MAX;
-import static org.lwjgl.opengl.GL14.glBlendEquation;
+import static org.lwjgl.opengl.GL14.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -113,8 +110,8 @@ public class RenderingEngine {
 	    LightSource.SKY.texture.bind();
 	    glBlendFunc(GL_DST_ALPHA, GL_ONE_MINUS_DST_ALPHA);
 	    glBlendEquation(GL_MIN);
-
-	    //Cull unneeded blocks and draw ambient sky light
+	    
+	    //Cull unneeded blocks and draw ambient sky light sources
 		int extra_lights = 8;
 	    int left_edge = camera.leftVisibleBlockIndex() - extra_lights;
 	    if (left_edge < 0) {
@@ -153,10 +150,12 @@ public class RenderingEngine {
 			}
 		}
 	    
-	    glColorMask(true, true, true, true);
-	    LightSource.SHADOW.texture.bind();
-	    glBlendEquation(GL_FUNC_ADD);
-	    float lighting_buffer = Constants.BLOCK_SIZE * extra_lights;
+		//Draw overall light intensity
+		LightSource.SHADOW.texture.bind();
+		float lighting_buffer = Constants.BLOCK_SIZE * extra_lights;
+	    
+	    glColor4f(0, 0, 0, 1 - GameTime.daylight());
+	    glBlendEquation(GL_MAX);
 	    glBegin(GL_QUADS);
 			glTexCoord2f(0, 0);
 			glVertex2f(-camera.getX() - lighting_buffer, -camera.getY() - lighting_buffer);
@@ -167,6 +166,20 @@ public class RenderingEngine {
 			glTexCoord2f(0, 1);
 			glVertex2f(-camera.getX() - lighting_buffer, -camera.getY()  + Constants.WINDOW_HEIGHT + lighting_buffer);
 	    glEnd();
+	    
+	    glColorMask(true, true, true, false);
+	    glBlendEquation(GL_FUNC_ADD);
+	    glBegin(GL_QUADS);
+			glTexCoord2f(0, 0);
+			glVertex2f(-camera.getX() - lighting_buffer, -camera.getY() - lighting_buffer);
+			glTexCoord2f(1, 0);
+			glVertex2f(-camera.getX() + Constants.WINDOW_WIDTH + lighting_buffer, -camera.getY() - lighting_buffer);
+			glTexCoord2f(1, 1);
+			glVertex2f(-camera.getX() + Constants.WINDOW_WIDTH + lighting_buffer, -camera.getY()  + Constants.WINDOW_HEIGHT + lighting_buffer);
+			glTexCoord2f(0, 1);
+			glVertex2f(-camera.getX() - lighting_buffer, -camera.getY()  + Constants.WINDOW_HEIGHT + lighting_buffer);
+	    glEnd();
+	    glColorMask(true, true, true, true);
 	    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 	

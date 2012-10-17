@@ -94,10 +94,6 @@ public class RenderingEngine {
         }
     }
 	
-	public static void initGeometry() {
-		//TODO
-	}
-	
 	public static void drawEntities(Camera camera, World world) {
 		for (Entity e : world.getEntities()) {
 			e.draw();
@@ -185,7 +181,7 @@ public class RenderingEngine {
 	
 	public static void drawSelectionBox(Camera camera) {
 		glColor4f(1f, 1f, 1f, 0.5f);
-		new Block(GameEngine.selection, GameEngine.selector_x * Constants.BLOCK_SIZE, GameEngine.selector_y * Constants.BLOCK_SIZE).draw();
+		new Block(Game.selection, Game.selector_x * Constants.BLOCK_SIZE, Game.selector_y * Constants.BLOCK_SIZE).draw();
 		glColor4f(1f, 1f, 1f, 1f);
 		
 	}

@@ -57,7 +57,7 @@ public class PhysicsEngine {
 					//Check that there are no block in between current position and the target position
 					for (int j = 0; j < numberOfBlocks(newY - e.getY()); j++) {
 						Block b = world.blockAt((int) Math.floor(e.getX()) + Constants.BLOCK_SIZE * i + 1, e.getY() + e.getHeight() + Constants.BLOCK_SIZE * j + 1);
-						if (GameEngine.drawPhysics) {
+						if (Game.drawPhysics) {
 							b.setTempType(BlockType.DIRT);
 						}
 						if (b != null && b.getType() != BlockType.AIR) {
@@ -71,7 +71,7 @@ public class PhysicsEngine {
 					//Check that there are no block in between current position and the target position
 					for (int j = 0; j < numberOfBlocks(e.getY() - newY); j++) {
 						Block b = world.blockAt((int)Math.floor(e.getX()) + Constants.BLOCK_SIZE * i + 1, e.getY() - Constants.BLOCK_SIZE * j - 1);
-						if (GameEngine.drawPhysics) {
+						if (Game.drawPhysics) {
 							b.setTempType(BlockType.DIRT);
 						}
 						if (b != null && b.getType() != BlockType.AIR) {
@@ -87,7 +87,7 @@ public class PhysicsEngine {
 					//Check that there are no block in between current position and the target position
 					for (int j = 0; j < numberOfBlocks(e.getX() - newX); j++) {
 						Block b = world.blockAt(newX - Constants.BLOCK_SIZE * j, e.getY() + 1 + Constants.BLOCK_SIZE * i);
-						if (GameEngine.drawPhysics) {
+						if (Game.drawPhysics) {
 							b.setTempType(BlockType.DIRT);
 						}
 						if (b.getType() != BlockType.AIR) {
@@ -101,7 +101,7 @@ public class PhysicsEngine {
 					//Check that there are no block in between current position and the target position
 					for (int j = 0; j < numberOfBlocks(newX - e.getX()); j++) {
 						Block b = world.blockAt(newX + e.getWidth() + Constants.BLOCK_SIZE * j, e.getY() + 1 + Constants.BLOCK_SIZE * i);
-						if (GameEngine.drawPhysics) {
+						if (Game.drawPhysics) {
 							b.setTempType(BlockType.DIRT);
 						}
 						if (b != null && b != null && b.getType() != BlockType.AIR) {

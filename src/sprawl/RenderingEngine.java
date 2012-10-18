@@ -100,11 +100,15 @@ public class RenderingEngine {
 		}
 	}
 	
-	public static void drawLights(Camera camera, World world) {
+	public static void drawLights(Game game) {
+		Camera camera = game.getCamera();
+		World world = game.getWorld();
+		PC pc = game.getPC();
+		
 		//Load light mask		
 	    glColorMask(false, false, false, true);
 	    LightSource.SKY.texture.bind();
-	    glBlendFunc(GL_DST_ALPHA, GL_ONE_MINUS_DST_ALPHA);
+	    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_DST_ALPHA);
 	    glBlendEquation(GL_MIN);
 	    
 	    //Cull unneeded blocks and draw ambient sky light sources
@@ -151,6 +155,7 @@ public class RenderingEngine {
 		float lighting_buffer = Constants.BLOCK_SIZE * extra_lights;
 	    
 	    glColor4f(0, 0, 0, 1 - GameTime.daylight());
+	    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_DST_ALPHA);
 	    glBlendEquation(GL_MAX);
 	    glBegin(GL_QUADS);
 			glTexCoord2f(0, 0);
@@ -163,6 +168,31 @@ public class RenderingEngine {
 			glVertex2f(-camera.getX() - lighting_buffer, -camera.getY()  + Constants.WINDOW_HEIGHT + lighting_buffer);
 	    glEnd();
 	    
+	    // Draw individual light sources
+	    glBlendEquation(GL_MIN);
+	    glColor4f(1, 1, 1, 1);
+	    for (Entity e : world.getEntities()) {
+	    	LightSource l = e.getLightSource();
+	    	if (l != null) {
+	    		l.texture.bind();
+	    		float x = e.getLightSourceX();
+	    		float y = e.getLightSourceY();
+	    		radius = e.getLightSourceRadius();
+			    glBegin(GL_QUADS);
+					glTexCoord2f(0, 0);
+					glVertex2f(x - radius , y - radius);
+					glTexCoord2f(1, 0);
+					glVertex2f(x + radius, y - radius);
+					glTexCoord2f(1, 1);
+					glVertex2f(x + radius, y + radius);
+					glTexCoord2f(0, 1);
+					glVertex2f(x - radius, y + radius);
+				glEnd();
+	    	}
+	    }
+	    
+	    
+		// Draw the black shadow color
 	    glColorMask(true, true, true, false);
 	    glBlendEquation(GL_FUNC_ADD);
 	    glBegin(GL_QUADS);

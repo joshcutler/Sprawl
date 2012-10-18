@@ -14,6 +14,7 @@ public abstract class Entity {
 	protected PhysicsType physicsType = PhysicsType.DYNAMIC;
 	protected Vec2 linearVelocity;
 	protected EntityDirection direction;
+	protected LightSource lightSource;
 	
 	public Vec2 getLinearVelocity() {
 		return linearVelocity;
@@ -168,5 +169,24 @@ public abstract class Entity {
 	
 	public void accelerateY(float y) {
 		this.linearVelocity.y += y;
+	}
+
+	public LightSource getLightSource() {
+		return lightSource;
+	}
+	
+	public float getLightSourceX() {
+		return x + width / 2;
+	}
+	
+	public float getLightSourceY() {
+		return y + height / 2;
+	}
+	
+	public float getLightSourceRadius() {
+		if (lightSource != null) {
+			return lightSource.distance * Constants.BLOCK_SIZE;
+		}
+		return 0; 
 	}
 }

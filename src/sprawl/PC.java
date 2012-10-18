@@ -10,7 +10,12 @@ public class PC extends Entity {
 		this.speed = 12f;
 		this.jumpSpeed = 25f;
 		this.direction = EntityDirection.LEFT;
+		this.lightSource = LightSource.Entity;
 		
 		this.loadTexture();
+	}
+	
+	public float getLightSourceRadius() {
+		return 10f * Constants.BLOCK_SIZE;
 	}
 }

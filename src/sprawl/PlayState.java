@@ -26,7 +26,7 @@ public class PlayState implements GameState {
 		
 		int tiles_drawn = world.draw(camera);
     	RenderingEngine.drawEntities(camera, world);
-    	RenderingEngine.drawLights(camera, world);
+    	RenderingEngine.drawLights(game);
     	RenderingEngine.drawSelectionBox(camera);
     	
     	renderDebug(tiles_drawn, camera, pc);

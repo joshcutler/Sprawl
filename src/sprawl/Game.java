@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-import javax.swing.JOptionPane;
-
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
  

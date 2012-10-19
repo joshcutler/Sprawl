@@ -1,7 +1,6 @@
 package sprawl;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.lwjgl.input.Keyboard;

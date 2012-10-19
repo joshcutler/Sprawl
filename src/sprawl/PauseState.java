@@ -8,6 +8,7 @@ import org.newdawn.slick.font.effects.ColorEffect;
 public class PauseState implements GameState{
 	UnicodeFont pauseFont;
 	
+	@SuppressWarnings("unchecked")
 	public PauseState() {
 		java.awt.Font font = new java.awt.Font("Times New Roman", java.awt.Font.BOLD, 32);
 		pauseFont = new UnicodeFont(font);

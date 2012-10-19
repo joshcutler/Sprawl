@@ -27,7 +27,6 @@ public class RenderingEngine {
             Display.setTitle(Constants.APPLICATION_NAME);
             Display.create();
             System.out.println("OpenGL Version: " + GL11.glGetString(GL11.GL_VERSION));
-            
 		} catch (LWJGLException e) {
             e.printStackTrace();
             Display.destroy();
@@ -52,8 +51,7 @@ public class RenderingEngine {
 		for (BlockType block_type : BlockType.values()) {
 			try {
 				block_type.texture = TextureLoader.getTexture("PNG",
-						new FileInputStream(new File(
-								block_type.texture_location)));
+						RenderingEngine.class.getResourceAsStream(block_type.texture_location));
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -65,8 +63,7 @@ public class RenderingEngine {
 		for (LightSource light_source : LightSource.values()) {
 			try {
 				light_source.texture = TextureLoader.getTexture("PNG",
-						new FileInputStream(new File(
-								light_source.texture_location)));
+						RenderingEngine.class.getResourceAsStream(light_source.texture_location));
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -99,7 +96,6 @@ public class RenderingEngine {
 	public static void drawLights(Game game) {
 		Camera camera = game.getCamera();
 		World world = game.getWorld();
-		PC pc = game.getPC();
 		
 		//Load light mask		
 	    glColorMask(false, false, false, true);

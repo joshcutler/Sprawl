@@ -48,7 +48,7 @@ public abstract class Entity {
 		try {
 			String filename = this.texture_location + "-" + this.direction.toString().toLowerCase() + ".png";
 			this.texture = TextureLoader.getTexture("PNG",
-					new FileInputStream(new File(filename)));
+					RenderingEngine.class.getResourceAsStream(filename));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

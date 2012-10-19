@@ -22,16 +22,23 @@ public class World {
 	
 	public World(PhysicsEngine physics) {
 		this.physics = physics;
+	}
+	
+	public World(PhysicsEngine physics, File load_file) {
+		this.physics = physics;
+		try {
+			load(load_file);
+		} catch (IOException e) {
+			resetWorld();
+		}
+	}
+	
+	public void resetWorld() {
 		for (int x = 0; x < Constants.WORLD_WIDTH - 1; x++) {
 			for (int y = 0; y < Constants.WORLD_HEIGHT - 1; y++) {
 				setAt(x, y, BlockType.AIR);
 			}
 		}
-	}
-	
-	public World(PhysicsEngine physics, File load_file) {
-		this.physics = physics;
-		load(load_file);
 	}
 	
 	public void addEntity(Entity e) {
@@ -129,7 +136,7 @@ public class World {
 		}
 	}
 	
-	public void load(File load_file) {
+	public void load(File load_file) throws IOException {
 		try {
 			SAXBuilder builder = new SAXBuilder();
 			Document document = builder.build(load_file);
@@ -140,9 +147,6 @@ public class World {
 				this.setAt(x, y, BlockType.valueOf(block.getAttributeValue("type")));
 			}
 		} catch (JDOMException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

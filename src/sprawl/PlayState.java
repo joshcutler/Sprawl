@@ -1,6 +1,8 @@
 package sprawl;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -75,7 +77,11 @@ public class PlayState implements GameState {
 				world.save(new File("save.xml"));
 			}
 			if (Keyboard.getEventKey() == Keyboard.KEY_L) {
-				world.load(new File("save.xml"));
+				try {
+					world.load(new File("save.xml"));
+				} catch(IOException e) {
+					e.printStackTrace();
+				}
 			}
 			if (Keyboard.getEventKey() == Keyboard.KEY_1) {
 				Game.selection = BlockType.STONE;

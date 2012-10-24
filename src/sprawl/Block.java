@@ -17,8 +17,8 @@ public class Block extends Entity {
 		this.width = Constants.BLOCK_SIZE;
 		this.height = Constants.BLOCK_SIZE;
 		this.speed = 0;
-		this.physicsType = PhysicsType.STATIC;
 		this.light = 0;
+		this.physicsType = PhysicsType.STATIC;
 	}
     
     public void draw() {

@@ -9,10 +9,10 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
 public abstract class Entity {
-	protected PhysicsType physicsType = PhysicsType.DYNAMIC;
 	protected Vec2 linearVelocity;
 	protected EntityDirection direction;
 	protected LightSource lightSource;
+	protected PhysicsType physicsType;
 	
 	public Vec2 getLinearVelocity() {
 		return linearVelocity;

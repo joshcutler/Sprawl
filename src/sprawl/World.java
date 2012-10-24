@@ -43,9 +43,6 @@ public class World {
 	
 	public void addEntity(Entity e) {
 		entities.add(e);
-		if (e.physicsType == PhysicsType.DYNAMIC) {
-			physics.registerObject(e);
-		}
 	}
 	
 	public List<Entity> getEntities() {

@@ -16,6 +16,7 @@ public class PlayState implements GameState {
 		game.setPC(new PC());
         
 		game.getPC().moveTo(16, 16);
+		game.getPhysics().registerObject(game.getPC());
 		game.getWorld().addEntity(game.getPC());
 	}
 

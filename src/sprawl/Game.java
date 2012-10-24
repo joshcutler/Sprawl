@@ -10,7 +10,7 @@ import org.lwjgl.opengl.Display;
 import static org.lwjgl.opengl.GL11.*;
 
 public class Game {
-	
+	public static final String version = "0.1"; 
 	/**
 	 * @param args
 	 */

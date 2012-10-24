@@ -8,7 +8,7 @@ public class GameTime {
 	private static float dawn_length = 2*60;
 	private static float dusk = 19*60;
 	private static float dusk_length = 2*60;
-	private static float nighttime_brightness = 0.15f;
+	private static float nighttime_brightness = 0.10f;
 	
 	public static void update(int delta) {
 		GameTime.minutes += 1 / 1000f * (float) delta / Constants.GAME_SPEED;

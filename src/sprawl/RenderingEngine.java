@@ -92,6 +92,112 @@ public class RenderingEngine {
 	}
 	
 	public static void drawLights(Game game) {
+		// Set lighting on each tile
+		Camera camera = game.getCamera();
+		World world = game.getWorld();
+		
+		//Load light mask		
+	    glColorMask(false, false, false, true);
+	    glBlendEquation(GL_MIN);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_DST_ALPHA);
+
+	    LightSource.SHADOW.texture.bind();
+		//Cull unneeded blocks and set light parameters
+		int extra_lights = 10;
+	    int left_edge = camera.leftVisibleBlockIndex() - extra_lights;
+	    if (left_edge < 0) {
+			left_edge = 0;
+		}
+		int right_edge = camera.rightVisibleBlockIndex() + extra_lights;
+		if (right_edge >= Constants.WORLD_WIDTH) {
+			right_edge = Constants.WORLD_WIDTH;
+		}
+		int top_edge = camera.topVisibleBlockIndex() - extra_lights;
+		if (top_edge < 0) {
+			top_edge = 0;
+		}
+		int bottom_edge = camera.bottomVisibleBlockIndex() + extra_lights;
+		if (bottom_edge >= Constants.WORLD_HEIGHT) {
+			bottom_edge = Constants.WORLD_HEIGHT;
+		}
+		float daylight = GameTime.daylight();
+		for (int i = left_edge; i < right_edge - 1; i++) {
+			for (int j = top_edge; j < bottom_edge - 1; j++) {
+				Block b = world.getAt(i, j);
+				float maxLight = 0;
+				float attenuation = 1;
+				
+				if (b.getType() == BlockType.AIR) {
+					maxLight = daylight;
+				} else {
+					//Get max light from a neighbor
+					int left = i - 1;
+					if (left < 0) {
+						left = 0;
+					}
+					int right = i + 1;
+					if (right >= Constants.WORLD_WIDTH - 1) {
+						right = i - 1;
+					}
+					int top = j - 1;
+					if (top < 0) {
+						top = 0;
+					}
+					int bottom = j + 1;
+					if (bottom >= Constants.WORLD_HEIGHT - 1) {
+						bottom = j - 1;
+					}
+					
+					for (int k = left; k <= right; k++) {
+						for (int l = top; l <= bottom; l++) {
+							Block neighbor = world.getAt(k, l);
+							if (neighbor.getLight() * neighbor.getType().light_attenuation > maxLight * attenuation) {
+								maxLight = neighbor.getLight();
+								attenuation = neighbor.getType().light_attenuation;
+							}
+						}
+					}
+				}
+				b.setLight(attenuation * maxLight);
+					
+				float x = b.getX();
+				float y = b.getY();
+				glColor4f(0, 0, 0, 1 - b.getLight());
+				glBegin(GL_QUADS);
+			    	glTexCoord2f(0, 0);
+			    	glVertex2f(x , y);
+			    	glTexCoord2f(1, 0);
+			    	glVertex2f(x + Constants.BLOCK_SIZE, y);
+			    	glTexCoord2f(1, 1);
+			    	glVertex2f(x + Constants.BLOCK_SIZE, y + Constants.BLOCK_SIZE);
+			    	glTexCoord2f(0, 1);
+			    	glVertex2f(x, y + Constants.BLOCK_SIZE);
+			    glEnd();
+			}
+		}
+		
+		// Draw the black shadow color
+		glColor4f(1, 1, 1, 1);
+		float lighting_buffer = Constants.BLOCK_SIZE * extra_lights;
+	    glColorMask(true, true, true, false);
+	    glBlendEquation(GL_FUNC_ADD);
+	    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_DST_ALPHA);
+	    glBegin(GL_QUADS);
+			glTexCoord2f(0, 0);
+			glVertex2f(-camera.getX() - lighting_buffer, -camera.getY() - lighting_buffer);
+			glTexCoord2f(1, 0);
+			glVertex2f(-camera.getX() + Constants.WINDOW_WIDTH + lighting_buffer, -camera.getY() - lighting_buffer);
+			glTexCoord2f(1, 1);
+			glVertex2f(-camera.getX() + Constants.WINDOW_WIDTH + lighting_buffer, -camera.getY()  + Constants.WINDOW_HEIGHT + lighting_buffer);
+			glTexCoord2f(0, 1);
+			glVertex2f(-camera.getX() - lighting_buffer, -camera.getY()  + Constants.WINDOW_HEIGHT + lighting_buffer);
+	    glEnd();
+	    glColorMask(true, true, true, true);
+	    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	}
+	
+	// Old lighting algorithm
+	public static void drawLights1(Game game) {
 		Camera camera = game.getCamera();
 		World world = game.getWorld();
 		

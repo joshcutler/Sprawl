@@ -7,7 +7,8 @@ import static org.lwjgl.opengl.GL11.*;
 public class Block extends Entity {
 	private BlockType type = BlockType.AIR;
 	private BlockType tempType = null;
-    
+    private float light;
+	
     public Block(BlockType type, int x, int y) {
 		super();
 		this.type = type;
@@ -17,6 +18,7 @@ public class Block extends Entity {
 		this.height = Constants.BLOCK_SIZE;
 		this.speed = 0;
 		this.physicsType = PhysicsType.STATIC;
+		this.light = 0;
 	}
     
     public void draw() {
@@ -52,5 +54,13 @@ public class Block extends Entity {
 	
 	public void setTempType(BlockType type) {
 		this.tempType = type;
+	}
+
+	public float getLight() {
+		return light;
+	}
+
+	public void setLight(float light) {
+		this.light = light;
 	}
 }

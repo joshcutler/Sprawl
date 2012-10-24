@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -19,6 +20,7 @@ public class World {
 	private Block[][] blocks = new Block[Constants.WORLD_WIDTH][Constants.WORLD_HEIGHT];
 	private List<Entity> entities = new ArrayList<Entity>();
 	private PhysicsEngine physics;
+	private int seaLevel, crustLevel;
 	
 	public World(PhysicsEngine physics) {
 		this.physics = physics;
@@ -100,6 +102,10 @@ public class World {
 			for (int y = top_edge; y < bottom_edge - 1; y++) {
 				if (blocks[x][y].getType() != BlockType.AIR) {
 					blocks[x][y].draw();
+					Vegetation vegetation = blocks[x][y].getVegetation();
+					if (vegetation != null) {
+						vegetation.draw();
+					}
 					tiles_drawn++;
 				}
 			}
@@ -163,5 +169,40 @@ public class World {
 	
 	public int getHeightInPixels() {
 		return (blocks[0].length - 1) * Constants.BLOCK_SIZE;
+	}
+	
+	public void generate(int seed) {
+		Random gen = new Random(seed);
+		
+		seaLevel = (int) ((int) Constants.WORLD_HEIGHT * 0.10);
+		crustLevel = (int) ((int) Constants.WORLD_HEIGHT * 0.10) + seaLevel;
+		//Draw some air
+		for (int i = 0; i < Constants.WORLD_WIDTH; i++) {
+			for (int j = 0; j < seaLevel; j++) {
+				setAt(i, j, BlockType.AIR);
+			}
+		}
+		//Draw some dirt
+		for (int i = 0; i < Constants.WORLD_WIDTH; i++) {
+			for (int j = seaLevel; j < crustLevel; j++) {
+				setAt(i, j, BlockType.DIRT);
+			}
+		}
+		
+		//Draw some stone
+		for (int i = 0; i < Constants.WORLD_WIDTH; i++) {
+			for (int j = crustLevel; j < Constants.WORLD_HEIGHT; j++) {
+				setAt(i, j, BlockType.STONE);
+			}
+		}
+		
+		//Generate Vegetation
+		//For now loop over the ground level
+		for (int i = 0; i < Constants.WORLD_WIDTH; i++) {
+			int j = seaLevel;
+			if (gen.nextFloat() < 0.1f) {
+				getAt(i, j).setVegetation(new Tree(gen.nextInt(Tree.maxHeight)));
+			}
+		}
 	}
 }

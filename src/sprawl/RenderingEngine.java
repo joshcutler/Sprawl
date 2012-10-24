@@ -197,113 +197,113 @@ public class RenderingEngine {
 	}
 	
 	// Old lighting algorithm
-	public static void drawLights1(Game game) {
-		Camera camera = game.getCamera();
-		World world = game.getWorld();
-		
-		//Load light mask		
-	    glColorMask(false, false, false, true);
-	    LightSource.SKY.texture.bind();
-	    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_DST_ALPHA);
-	    glBlendEquation(GL_MIN);
-	    
-	    //Cull unneeded blocks and draw ambient sky light sources
-		int extra_lights = 8;
-	    int left_edge = camera.leftVisibleBlockIndex() - extra_lights;
-	    if (left_edge < 0) {
-			left_edge = 0;
-		}
-		int right_edge = camera.rightVisibleBlockIndex() + extra_lights;
-		if (right_edge >= Constants.WORLD_WIDTH) {
-			right_edge = Constants.WORLD_WIDTH;
-		}
-		int top_edge = camera.topVisibleBlockIndex() - extra_lights;
-		if (top_edge < 0) {
-			top_edge = 0;
-		}
-		int bottom_edge = camera.bottomVisibleBlockIndex() + extra_lights;
-		if (bottom_edge >= Constants.WORLD_HEIGHT) {
-			bottom_edge = Constants.WORLD_HEIGHT;
-		}
-		float radius = LightSource.SKY.distance * Constants.BLOCK_SIZE;
-		for (int i = left_edge; i < right_edge - 1; i++) {
-			for (int j = top_edge; j < bottom_edge - 1; j++) {
-				Block b = world.getAt(i, j);
-				if (b.getType() == BlockType.AIR) {
-					float x = b.getX() + b.getWidth() / 2;
-					float y = b.getY() + b.getHeight() / 2;
-					glBegin(GL_QUADS);
-				    	glTexCoord2f(0, 0);
-				    	glVertex2f(x - radius , y - radius);
-				    	glTexCoord2f(1, 0);
-				    	glVertex2f(x + radius, y - radius);
-				    	glTexCoord2f(1, 1);
-				    	glVertex2f(x + radius, y + radius);
-				    	glTexCoord2f(0, 1);
-				    	glVertex2f(x - radius, y + radius);
-				    glEnd();
-				}
-			}
-		}
-	    
-		//Draw overall light intensity
-		LightSource.SHADOW.texture.bind();
-		float lighting_buffer = Constants.BLOCK_SIZE * extra_lights;
-	    
-	    glColor4f(0, 0, 0, 1 - GameTime.daylight());
-	    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_DST_ALPHA);
-	    glBlendEquation(GL_MAX);
-	    glBegin(GL_QUADS);
-			glTexCoord2f(0, 0);
-			glVertex2f(-camera.getX() - lighting_buffer, -camera.getY() - lighting_buffer);
-			glTexCoord2f(1, 0);
-			glVertex2f(-camera.getX() + Constants.WINDOW_WIDTH + lighting_buffer, -camera.getY() - lighting_buffer);
-			glTexCoord2f(1, 1);
-			glVertex2f(-camera.getX() + Constants.WINDOW_WIDTH + lighting_buffer, -camera.getY()  + Constants.WINDOW_HEIGHT + lighting_buffer);
-			glTexCoord2f(0, 1);
-			glVertex2f(-camera.getX() - lighting_buffer, -camera.getY()  + Constants.WINDOW_HEIGHT + lighting_buffer);
-	    glEnd();
-	    
-	    // Draw individual light sources
-	    glBlendEquation(GL_MIN);
-	    glColor4f(1, 1, 1, 1);
-	    for (Entity e : world.getEntities()) {
-	    	LightSource l = e.getLightSource();
-	    	if (l != null) {
-	    		l.texture.bind();
-	    		float x = e.getLightSourceX();
-	    		float y = e.getLightSourceY();
-	    		radius = e.getLightSourceRadius();
-			    glBegin(GL_QUADS);
-					glTexCoord2f(0, 0);
-					glVertex2f(x - radius , y - radius);
-					glTexCoord2f(1, 0);
-					glVertex2f(x + radius, y - radius);
-					glTexCoord2f(1, 1);
-					glVertex2f(x + radius, y + radius);
-					glTexCoord2f(0, 1);
-					glVertex2f(x - radius, y + radius);
-				glEnd();
-	    	}
-	    }
-	    
-	    
-		// Draw the black shadow color
-	    glColorMask(true, true, true, false);
-	    glBlendEquation(GL_FUNC_ADD);
-	    glBegin(GL_QUADS);
-			glTexCoord2f(0, 0);
-			glVertex2f(-camera.getX() - lighting_buffer, -camera.getY() - lighting_buffer);
-			glTexCoord2f(1, 0);
-			glVertex2f(-camera.getX() + Constants.WINDOW_WIDTH + lighting_buffer, -camera.getY() - lighting_buffer);
-			glTexCoord2f(1, 1);
-			glVertex2f(-camera.getX() + Constants.WINDOW_WIDTH + lighting_buffer, -camera.getY()  + Constants.WINDOW_HEIGHT + lighting_buffer);
-			glTexCoord2f(0, 1);
-			glVertex2f(-camera.getX() - lighting_buffer, -camera.getY()  + Constants.WINDOW_HEIGHT + lighting_buffer);
-	    glEnd();
-	    glColorMask(true, true, true, true);
-	    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	}
+//	public static void drawLights1(Game game) {
+//		Camera camera = game.getCamera();
+//		World world = game.getWorld();
+//		
+//		//Load light mask		
+//	    glColorMask(false, false, false, true);
+//	    LightSource.SKY.texture.bind();
+//	    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_DST_ALPHA);
+//	    glBlendEquation(GL_MIN);
+//	    
+//	    //Cull unneeded blocks and draw ambient sky light sources
+//		int extra_lights = 8;
+//	    int left_edge = camera.leftVisibleBlockIndex() - extra_lights;
+//	    if (left_edge < 0) {
+//			left_edge = 0;
+//		}
+//		int right_edge = camera.rightVisibleBlockIndex() + extra_lights;
+//		if (right_edge >= Constants.WORLD_WIDTH) {
+//			right_edge = Constants.WORLD_WIDTH;
+//		}
+//		int top_edge = camera.topVisibleBlockIndex() - extra_lights;
+//		if (top_edge < 0) {
+//			top_edge = 0;
+//		}
+//		int bottom_edge = camera.bottomVisibleBlockIndex() + extra_lights;
+//		if (bottom_edge >= Constants.WORLD_HEIGHT) {
+//			bottom_edge = Constants.WORLD_HEIGHT;
+//		}
+//		float radius = LightSource.SKY.distance * Constants.BLOCK_SIZE;
+//		for (int i = left_edge; i < right_edge - 1; i++) {
+//			for (int j = top_edge; j < bottom_edge - 1; j++) {
+//				Block b = world.getAt(i, j);
+//				if (b.getType() == BlockType.AIR) {
+//					float x = b.getX() + b.getWidth() / 2;
+//					float y = b.getY() + b.getHeight() / 2;
+//					glBegin(GL_QUADS);
+//				    	glTexCoord2f(0, 0);
+//				    	glVertex2f(x - radius , y - radius);
+//				    	glTexCoord2f(1, 0);
+//				    	glVertex2f(x + radius, y - radius);
+//				    	glTexCoord2f(1, 1);
+//				    	glVertex2f(x + radius, y + radius);
+//				    	glTexCoord2f(0, 1);
+//				    	glVertex2f(x - radius, y + radius);
+//				    glEnd();
+//				}
+//			}
+//		}
+//	    
+//		//Draw overall light intensity
+//		LightSource.SHADOW.texture.bind();
+//		float lighting_buffer = Constants.BLOCK_SIZE * extra_lights;
+//	    
+//	    glColor4f(0, 0, 0, 1 - GameTime.daylight());
+//	    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_DST_ALPHA);
+//	    glBlendEquation(GL_MAX);
+//	    glBegin(GL_QUADS);
+//			glTexCoord2f(0, 0);
+//			glVertex2f(-camera.getX() - lighting_buffer, -camera.getY() - lighting_buffer);
+//			glTexCoord2f(1, 0);
+//			glVertex2f(-camera.getX() + Constants.WINDOW_WIDTH + lighting_buffer, -camera.getY() - lighting_buffer);
+//			glTexCoord2f(1, 1);
+//			glVertex2f(-camera.getX() + Constants.WINDOW_WIDTH + lighting_buffer, -camera.getY()  + Constants.WINDOW_HEIGHT + lighting_buffer);
+//			glTexCoord2f(0, 1);
+//			glVertex2f(-camera.getX() - lighting_buffer, -camera.getY()  + Constants.WINDOW_HEIGHT + lighting_buffer);
+//	    glEnd();
+//	    
+//	    // Draw individual light sources
+//	    glBlendEquation(GL_MIN);
+//	    glColor4f(1, 1, 1, 1);
+//	    for (Entity e : world.getEntities()) {
+//	    	LightSource l = e.getLightSource();
+//	    	if (l != null) {
+//	    		l.texture.bind();
+//	    		float x = e.getLightSourceX();
+//	    		float y = e.getLightSourceY();
+//	    		radius = e.getLightSourceRadius();
+//			    glBegin(GL_QUADS);
+//					glTexCoord2f(0, 0);
+//					glVertex2f(x - radius , y - radius);
+//					glTexCoord2f(1, 0);
+//					glVertex2f(x + radius, y - radius);
+//					glTexCoord2f(1, 1);
+//					glVertex2f(x + radius, y + radius);
+//					glTexCoord2f(0, 1);
+//					glVertex2f(x - radius, y + radius);
+//				glEnd();
+//	    	}
+//	    }
+//	    
+//	    
+//		// Draw the black shadow color
+//	    glColorMask(true, true, true, false);
+//	    glBlendEquation(GL_FUNC_ADD);
+//	    glBegin(GL_QUADS);
+//			glTexCoord2f(0, 0);
+//			glVertex2f(-camera.getX() - lighting_buffer, -camera.getY() - lighting_buffer);
+//			glTexCoord2f(1, 0);
+//			glVertex2f(-camera.getX() + Constants.WINDOW_WIDTH + lighting_buffer, -camera.getY() - lighting_buffer);
+//			glTexCoord2f(1, 1);
+//			glVertex2f(-camera.getX() + Constants.WINDOW_WIDTH + lighting_buffer, -camera.getY()  + Constants.WINDOW_HEIGHT + lighting_buffer);
+//			glTexCoord2f(0, 1);
+//			glVertex2f(-camera.getX() - lighting_buffer, -camera.getY()  + Constants.WINDOW_HEIGHT + lighting_buffer);
+//	    glEnd();
+//	    glColorMask(true, true, true, true);
+//	    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//	}
 	
 	public static void drawSelectionBox(Camera camera) {
 		glColor4f(1f, 1f, 1f, 0.5f);

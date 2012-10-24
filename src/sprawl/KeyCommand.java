@@ -2,7 +2,7 @@ package sprawl;
 
 public enum KeyCommand {
 
-    MOVE_LEFT(10), MOVE_RIGHT(10), JUMP(30), DRAW_PHYSICS(60), PAUSE(600);
+    MOVE_LEFT(10), MOVE_RIGHT(10), JUMP(30), DRAW_PHYSICS(60), PAUSE(600), GENERATE_WORLD(1000);
     private final int repeat;
     private int countDown;
     private boolean armed;

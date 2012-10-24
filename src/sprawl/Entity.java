@@ -90,9 +90,6 @@ public abstract class Entity {
 			e.printStackTrace();
 		}
     	glBegin(GL_QUADS);
-    		//TODO: Changes color of sprite
-    		// glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-    		// glColor3f(.5f, .5f, .5f);
     		glTexCoord2f(0, 0);
 	    	glVertex2f(x, y);
 	    	glTexCoord2f(1, 0);

@@ -47,7 +47,18 @@ public class PauseState implements GameState{
 					KeyCommand.PAUSE.resetArmed();
 				}
 			}
+			if (Keyboard.getEventKey() == Keyboard.KEY_G) {
+				if (KeyCommand.GENERATE_WORLD.isArmed()) {
+					PC pc = game.getPC();
+					pc.x = 0;
+					pc.y = 0;
+					pc.moveTo(10, 10);
+					game.getWorld().generate(100);
+					KeyCommand.GENERATE_WORLD.resetArmed();
+				}
+			}
 		}
 		KeyCommand.PAUSE.updatePressed(true);
+		KeyCommand.GENERATE_WORLD.updatePressed(true);
 	}
 }

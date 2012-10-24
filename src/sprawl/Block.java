@@ -8,8 +8,18 @@ public class Block extends Entity {
 	private BlockType type = BlockType.AIR;
 	private BlockType tempType = null;
     private float light;
+    private Vegetation vegetation;
 	
-    public Block(BlockType type, int x, int y) {
+    public Vegetation getVegetation() {
+		return vegetation;
+	}
+
+	public void setVegetation(Vegetation vegetation) {
+		this.vegetation = vegetation;
+		vegetation.setBlock(this);
+	}
+
+	public Block(BlockType type, int x, int y) {
 		super();
 		this.type = type;
 		this.x = x;

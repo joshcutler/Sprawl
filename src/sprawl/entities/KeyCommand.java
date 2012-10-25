@@ -1,4 +1,4 @@
-package sprawl;
+package sprawl.entities;
 
 public enum KeyCommand {
 

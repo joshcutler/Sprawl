@@ -8,8 +8,8 @@ import org.newdawn.slick.font.effects.ColorEffect;
 import sprawl.Camera;
 import sprawl.Constants;
 import sprawl.Game;
-import sprawl.KeyCommand;
 import sprawl.World;
+import sprawl.entities.KeyCommand;
 import sprawl.entities.PC;
 
 public class PauseState implements GameState{

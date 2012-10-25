@@ -11,17 +11,15 @@ import sprawl.Camera;
 import sprawl.Constants;
 import sprawl.Game;
 import sprawl.GameTime;
-import sprawl.KeyCommand;
 import sprawl.PhysicsEngine;
 import sprawl.RenderingEngine;
 import sprawl.World;
 import sprawl.blocks.BlockType;
 import sprawl.entities.EntityDirection;
+import sprawl.entities.KeyCommand;
 import sprawl.entities.PC;
 
 public class PlayState implements GameState {
-	private int secondClock = 0;
-	
 	public PlayState(Game game) {
 		game.setCamera(new Camera());
 		game.setPhysics(new PhysicsEngine());

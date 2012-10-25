@@ -27,6 +27,7 @@ public class RenderingEngine {
 	public static void initOpenGL() {
 		try {
 			RenderingEngine.setDisplayMode(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, true);
+			Display.setVSyncEnabled(true);
 			Display.setTitle(Constants.APPLICATION_NAME);
             Display.create();
             System.out.println("OpenGL Version: " + GL11.glGetString(GL11.GL_VERSION));
@@ -116,6 +117,7 @@ public class RenderingEngine {
 			try {
 				block_type.texture = TextureLoader.getTexture("PNG",
 						RenderingEngine.class.getResourceAsStream(block_type.texture_location));
+				System.out.println("Texture Loaded: " + block_type.texture_location);
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -128,6 +130,7 @@ public class RenderingEngine {
 			try {
 				cover_type.texture = TextureLoader.getTexture("PNG",
 						RenderingEngine.class.getResourceAsStream(cover_type.texture_location));
+				System.out.println("Texture Loaded: " + cover_type.texture_location);
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -141,6 +144,7 @@ public class RenderingEngine {
 			try {
 				light_source.texture = TextureLoader.getTexture("PNG",
 						RenderingEngine.class.getResourceAsStream(light_source.texture_location));
+				System.out.println("Texture Loaded: " + light_source.texture_location);
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

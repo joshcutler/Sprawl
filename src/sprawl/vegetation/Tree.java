@@ -27,6 +27,7 @@ public class Tree extends Vegetation {
 		if (Tree.texture == null) {
 			try {
 				Tree.texture = TextureLoader.getTexture("PNG", RenderingEngine.class.getResourceAsStream(Tree.texture_location + ".png"));
+				System.out.println("Texture Loaded: Tree.png");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

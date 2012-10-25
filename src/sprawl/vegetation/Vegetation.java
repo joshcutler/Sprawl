@@ -1,7 +1,5 @@
 package sprawl.vegetation;
 
-import org.newdawn.slick.opengl.Texture;
-
 import sprawl.PhysicsType;
 import sprawl.blocks.Block;
 

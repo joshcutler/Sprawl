@@ -55,10 +55,14 @@ public abstract class Entity {
 	public void bind() throws Exception {
 		this.texture.bind();
 	}
+	
 	public void changeDirection(EntityDirection dir) {
-		this.direction = dir;
-		this.loadTexture();
+		if (dir != this.direction) {
+			this.direction = dir;
+			this.loadTexture();
+		}
 	}
+	
 	public void draw() {
 		try {
 			this.bind();
@@ -171,6 +175,7 @@ public abstract class Entity {
 			String filename = this.texture_location + "-" + this.direction.toString().toLowerCase() + ".png";
 			this.texture = TextureLoader.getTexture("PNG",
 					RenderingEngine.class.getResourceAsStream(filename));
+			System.out.println("Texture Loaded: " + filename);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -6,6 +6,11 @@ import java.net.URISyntaxException;
 
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
+
+import sprawl.blocks.BlockType;
+import sprawl.entities.PC;
+import sprawl.states.GameState;
+import sprawl.states.PlayState;
  
 import static org.lwjgl.opengl.GL11.*;
 

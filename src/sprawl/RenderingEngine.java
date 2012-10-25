@@ -15,6 +15,11 @@ import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.opengl.TextureLoader;
 
+import sprawl.blocks.Block;
+import sprawl.blocks.BlockType;
+import sprawl.entities.Entity;
+import sprawl.vegetation.CoverType;
+
 public class RenderingEngine {
 	public static int VBO_id;
 	public static UnicodeFont font;
@@ -58,6 +63,19 @@ public class RenderingEngine {
 				e.printStackTrace();
 			}
 		}
+		for (CoverType cover_type : CoverType.values()) {
+			try {
+				cover_type.texture = TextureLoader.getTexture("PNG",
+						RenderingEngine.class.getResourceAsStream(cover_type.texture_location));
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+			
 		for (LightSource light_source : LightSource.values()) {
 			try {
 				light_source.texture = TextureLoader.getTexture("PNG",

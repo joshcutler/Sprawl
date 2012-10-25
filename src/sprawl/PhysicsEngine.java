@@ -3,6 +3,10 @@ package sprawl;
 import java.util.HashSet;
 import java.util.Set;
 
+import sprawl.blocks.Block;
+import sprawl.blocks.BlockType;
+import sprawl.entities.Entity;
+
 public class PhysicsEngine {
 	public static final int pixels_per_meter = 16;
 	private static final float gravity = -40f;
@@ -125,11 +129,11 @@ public class PhysicsEngine {
 			// Stop you from bad horizontal motion
 			if (leftCollisionBlock != null) {
 				newVelocity.x = 0;
-				newX = leftCollisionBlock.getX() + leftCollisionBlock.width + 1;
+				newX = leftCollisionBlock.getX() + leftCollisionBlock.getWidth() + 1;
 			}
 			if (rightCollisionBlock != null) {
 				newVelocity.x = 0;
-				newX = rightCollisionBlock.getX() - (e.width + 1);
+				newX = rightCollisionBlock.getX() - (e.getWidth() + 1);
 			}
 			
 			//Special Case the ground
@@ -150,7 +154,7 @@ public class PhysicsEngine {
 	}
 
 	public void registerObject(Entity e) {
-		if (e.physicsType == PhysicsType.DYNAMIC) {
+		if (e.getPhysicsType() == PhysicsType.DYNAMIC) {
 			e.setLinearVelocity(new Vec2(0, 0));
 			dynamic_entities.add(e);
 		}

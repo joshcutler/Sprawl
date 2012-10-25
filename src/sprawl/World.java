@@ -16,6 +16,13 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.XMLOutputter;
 
+import sprawl.blocks.Block;
+import sprawl.blocks.BlockType;
+import sprawl.entities.Entity;
+import sprawl.vegetation.CoverType;
+import sprawl.vegetation.Tree;
+import sprawl.vegetation.Vegetation;
+
 public class World {
 	private Block[][] blocks = new Block[Constants.WORLD_WIDTH][Constants.WORLD_HEIGHT];
 	private List<Entity> entities = new ArrayList<Entity>();
@@ -24,6 +31,7 @@ public class World {
 	
 	public World(PhysicsEngine physics) {
 		this.physics = physics;
+		generate(new Random().nextInt());
 	}
 	
 	public World(PhysicsEngine physics, File load_file) {
@@ -106,6 +114,7 @@ public class World {
 					if (vegetation != null) {
 						vegetation.draw();
 					}
+					
 					tiles_drawn++;
 				}
 			}
@@ -197,12 +206,16 @@ public class World {
 		}
 		
 		//Generate Vegetation
+		
 		//For now loop over the ground level
 		for (int i = 0; i < Constants.WORLD_WIDTH; i++) {
 			int j = seaLevel;
+			Block b = getAt(i, j);
+			b.setCoverType(CoverType.GRASS);
 			if (gen.nextFloat() < 0.1f) {
-				getAt(i, j).setVegetation(new Tree(gen.nextInt(Tree.maxHeight)));
+				b.setVegetation(new Tree(gen.nextInt(Tree.maxHeight)));
 			}
 		}
+		
 	}
 }

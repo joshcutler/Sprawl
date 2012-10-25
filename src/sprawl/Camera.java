@@ -1,6 +1,7 @@
 package sprawl;
 
 import static org.lwjgl.opengl.GL11.glTranslatef;
+import sprawl.entities.PC;
 
 public class Camera {
 	public int getX() {

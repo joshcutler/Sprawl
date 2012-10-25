@@ -58,7 +58,6 @@ public abstract class Entity {
 	public void changeDirection(EntityDirection dir) {
 		if (dir != this.direction) {
 			this.direction = dir;
-			this.loadTexture();
 		}
 	}
 	
@@ -68,16 +67,29 @@ public abstract class Entity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-    	glBegin(GL_QUADS);
-    		glTexCoord2f(0, 0);
-	    	glVertex2f(x, y);
-	    	glTexCoord2f(1, 0);
-	    	glVertex2f(width + x, y);
-	    	glTexCoord2f(1, 1);
-	    	glVertex2f(width + x, height + y);
-	    	glTexCoord2f(0, 1);
-	    	glVertex2f(x, height + y);
-	    glEnd();
+		if (this.direction == EntityDirection.LEFT) { 
+	    	glBegin(GL_QUADS);
+	    		glTexCoord2f(0, 0);
+		    	glVertex2f(x, y);
+		    	glTexCoord2f(1, 0);
+		    	glVertex2f(width + x, y);
+		    	glTexCoord2f(1, 1);
+		    	glVertex2f(width + x, height + y);
+		    	glTexCoord2f(0, 1);
+		    	glVertex2f(x, height + y);
+		    glEnd();
+		} else if (this.direction == EntityDirection.RIGHT) {
+			glBegin(GL_QUADS);
+	    		glTexCoord2f(1, 0);
+		    	glVertex2f(x, y);
+		    	glTexCoord2f(0, 0);
+		    	glVertex2f(width + x, y);
+		    	glTexCoord2f(0, 1);
+		    	glVertex2f(width + x, height + y);
+		    	glTexCoord2f(1, 1);
+		    	glVertex2f(x, height + y);
+		    glEnd();
+		}
 	}
 	public int getHeight() {
 		return height;
@@ -171,10 +183,9 @@ public abstract class Entity {
 	
 	protected void loadTexture() {
 		try {
-			String filename = this.texture_location + "-" + this.direction.toString().toLowerCase() + ".png";
 			this.texture = TextureLoader.getTexture("PNG",
-					RenderingEngine.class.getResourceAsStream(filename));
-			System.out.println("Texture Loaded: " + filename);
+					RenderingEngine.class.getResourceAsStream(this.texture_location));
+			System.out.println("Texture Loaded: " + this.texture_location);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

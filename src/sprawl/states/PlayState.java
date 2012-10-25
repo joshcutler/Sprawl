@@ -9,7 +9,6 @@ import org.lwjgl.opengl.Display;
 
 import sprawl.Camera;
 import sprawl.Constants;
-import sprawl.EntityDirection;
 import sprawl.Game;
 import sprawl.GameTime;
 import sprawl.KeyCommand;
@@ -17,6 +16,7 @@ import sprawl.PhysicsEngine;
 import sprawl.RenderingEngine;
 import sprawl.World;
 import sprawl.blocks.BlockType;
+import sprawl.entities.EntityDirection;
 import sprawl.entities.PC;
 
 public class PlayState implements GameState {

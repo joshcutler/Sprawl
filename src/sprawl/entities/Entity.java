@@ -9,7 +9,6 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
 import sprawl.Constants;
-import sprawl.EntityDirection;
 import sprawl.LightSource;
 import sprawl.PhysicsEngine;
 import sprawl.PhysicsType;

@@ -1,7 +1,6 @@
 package sprawl.entities;
 
 import sprawl.Constants;
-import sprawl.EntityDirection;
 import sprawl.LightSource;
 import sprawl.PhysicsType;
 

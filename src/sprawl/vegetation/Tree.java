@@ -23,6 +23,7 @@ public class Tree extends Vegetation {
 	 
 	public Tree(int height) {
 		this.height = height;
+		this.growthRate = 0.01f;
 		
 		if (Tree.texture == null) {
 			try {
@@ -55,6 +56,12 @@ public class Tree extends Vegetation {
 		    	glTexCoord2f(0, 1);
 		    	glVertex2f(x, height + y);
 		    glEnd();
+		}
+	}
+	
+	public void grow() {
+		if (this.height + 1 < Tree.maxHeight && Math.random() < growthRate) {
+			this.height++;
 		}
 	}
 }

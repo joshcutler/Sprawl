@@ -26,7 +26,7 @@ public class RenderingEngine {
 	
 	public static void initOpenGL() {
 		try {
-			RenderingEngine.setDisplayMode(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, true);
+			RenderingEngine.setDisplayMode(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, Constants.FULLSCREEN);
 			Display.setVSyncEnabled(true);
 			Display.setTitle(Constants.APPLICATION_NAME);
             Display.create();

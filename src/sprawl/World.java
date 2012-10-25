@@ -206,7 +206,6 @@ public class World {
 		}
 		
 		//Generate Vegetation
-		
 		//For now loop over the ground level
 		for (int i = 0; i < Constants.WORLD_WIDTH; i++) {
 			int j = seaLevel;
@@ -215,7 +214,78 @@ public class World {
 			if (gen.nextFloat() < 0.1f) {
 				b.setVegetation(new Tree(gen.nextInt(Tree.maxHeight)));
 			}
+		}	
+	}
+	
+	public void growPlants(int delta, Camera camera) {
+		int left_edge = camera.leftVisibleBlockIndex();
+		int right_edge = camera.rightVisibleBlockIndex();
+		int top_edge = camera.topVisibleBlockIndex();
+		int bottom_edge = camera.bottomVisibleBlockIndex();
+
+		for (int x = left_edge; x < right_edge - 1; x++) {
+			for (int y = top_edge; y < bottom_edge - 1; y++) {
+				if (blocks[x][y].getType() != BlockType.AIR) {
+					Vegetation vegetation = blocks[x][y].getVegetation();
+					if (vegetation != null) {
+						if (Math.random() < (vegetation.getGrowthRate() * delta / 1000f)) {
+							vegetation.grow();
+						}
+					}
+				}
+			}
 		}
-		
+	}
+	
+	public void growGroundCover(int delta, Camera camera) {
+		int left_edge = camera.leftVisibleBlockIndex();
+		int right_edge = camera.rightVisibleBlockIndex();
+		int top_edge = camera.topVisibleBlockIndex();
+		int bottom_edge = camera.bottomVisibleBlockIndex();
+
+		for (int x = left_edge; x < right_edge - 1; x++) {
+			for (int y = top_edge; y < bottom_edge - 1; y++) {
+				if (blocks[x][y].getType() != BlockType.AIR) {
+					CoverType cover = blocks[x][y].getCoverType();
+					if (cover != null) {
+						if (Math.random() < (cover.growthRate * delta / 1000f)) {
+							
+							//Grow Left
+							if (x - 1 >= 0) {
+								Block left = blocks[x-1][y];
+								Block left_top = blocks[x-1][y-1];
+								
+								if (left.getType() == BlockType.AIR) {
+									//TODO: Draw side grass down!
+								} else if (left_top.getType() == BlockType.DIRT) {
+									//TODO: Need to grow side grass up!
+								} else if (left.getType() == BlockType.DIRT && left_top.getType() == BlockType.AIR) {
+									if (left.getCoverType() == null) {
+										left.setCoverType(cover);
+									}
+								}
+							}
+							
+							//Grow right
+							if (x + 1 < Constants.WINDOW_WIDTH) {
+								Block right = blocks[x+1][y];
+								Block right_top = blocks[x+1][y-1];
+								
+								if (right.getType() == BlockType.AIR) {
+									//TODO: Draw side grass down!
+								} else if (right_top.getType() == BlockType.DIRT) {
+									//TODO: Need to grow side grass up!
+								} else if (right.getType() == BlockType.DIRT && right_top.getType() == BlockType.AIR) {
+									if (right.getCoverType() == null) {
+										right.setCoverType(cover);
+									}
+								}
+							}
+							
+						}
+					}
+				}
+			}
+		}
 	}
 }

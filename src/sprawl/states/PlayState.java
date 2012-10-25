@@ -20,6 +20,8 @@ import sprawl.entities.EntityDirection;
 import sprawl.entities.PC;
 
 public class PlayState implements GameState {
+	private int secondClock = 0;
+	
 	public PlayState(Game game) {
 		game.setCamera(new Camera());
 		game.setPhysics(new PhysicsEngine());
@@ -64,6 +66,9 @@ public class PlayState implements GameState {
     	GameTime.update(delta);
 		physics.update(delta, world);
     	camera.update(pc, world);
+    	
+    	world.growPlants(delta, camera);
+    	world.growGroundCover(delta, camera);
 	}
 
 	@Override

@@ -152,7 +152,7 @@ public class PhysicsEngine {
 	public void registerObject(Entity e) {
 		if (e.physicsType == PhysicsType.DYNAMIC) {
 			e.setLinearVelocity(new Vec2(0, 0));
-			this.dynamic_entities.add(e);
+			dynamic_entities.add(e);
 		}
 	}
 }

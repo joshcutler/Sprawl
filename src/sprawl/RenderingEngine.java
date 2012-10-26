@@ -15,10 +15,11 @@ import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.opengl.TextureLoader;
 
-import sprawl.blocks.Block;
-import sprawl.blocks.BlockType;
 import sprawl.entities.Entity;
 import sprawl.vegetation.CoverType;
+import sprawl.world.Block;
+import sprawl.world.BlockType;
+import sprawl.world.World;
 
 public class RenderingEngine {
 	public static int VBO_id;

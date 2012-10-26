@@ -1,0 +1,66 @@
+package sprawl.world;
+
+import java.util.ArrayList;
+import java.util.Random;
+
+import sprawl.Constants;
+import sprawl.vegetation.CoverType;
+import sprawl.vegetation.Tree;
+
+public class WorldGenerator {
+	public static World generate(int seed) {
+		Random gen = new Random(seed);
+		World world = new World();
+		
+		int seaLevel = (int) ((int) Constants.WORLD_HEIGHT * 0.10);
+		int crustLevel = (int) ((int) Constants.WORLD_HEIGHT * 0.10) + seaLevel;
+		
+		//Generate the Biomes
+		ArrayList<Biome> biomes = WorldGenerator.generateBiomes(gen);
+		world.setBiomes(biomes);
+		
+		// Generate the land based on this biome
+		for (int i = 0; i < Constants.WORLD_WIDTH; i++) {
+			Biome biome = world.biomeAt(i);
+			BiomeType biomeType = biome.getType();
+			for (int j = 0; j < Constants.WORLD_HEIGHT; j++) {
+				// Generate Blocks
+				if (j < seaLevel) {
+					world.setAt(i, j, BlockType.AIR);
+				} else if (j >= seaLevel && j < crustLevel) {
+					world.setAt(i, j, BlockType.DIRT);
+				} else if (j > crustLevel) {
+					world.setAt(i, j, BlockType.STONE);
+				}
+				
+				// Generate Vegetation
+				if (j == seaLevel) {
+					Block b = world.getAt(i, j);
+					b.setCoverType(CoverType.GRASS);
+					if (gen.nextFloat() < biomeType.treeGrowth) {
+						b.setVegetation(new Tree(gen.nextInt(Tree.maxHeight)));
+					}
+				}
+			}
+		}
+		return world;
+	}
+	
+	public static ArrayList<Biome> generateBiomes(Random gen) {
+		ArrayList<Biome> biomes = new ArrayList<Biome>();
+		
+		int biomeCover = 0;
+		BiomeType[] biomeTypes = BiomeType.values();
+		while (biomeCover < Constants.WORLD_WIDTH) {
+			//Pick a biome
+			BiomeType type = biomeTypes[gen.nextInt(biomeTypes.length)];
+			//Set its size
+			int size = BiomeType.biomeWidth + (gen.nextInt(BiomeType.biomeVariance) * (-1 ^ (gen.nextInt(2) + 1)));
+			
+			biomes.add(new Biome(type, size));
+			biomeCover += size;
+		}
+		
+		return biomes;
+	}
+}

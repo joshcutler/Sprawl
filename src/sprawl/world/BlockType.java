@@ -1,4 +1,4 @@
-package sprawl.blocks;
+package sprawl.world;
 
 import org.newdawn.slick.opengl.Texture;
 

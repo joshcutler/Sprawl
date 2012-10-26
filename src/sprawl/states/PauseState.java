@@ -8,9 +8,10 @@ import org.newdawn.slick.font.effects.ColorEffect;
 import sprawl.Camera;
 import sprawl.Constants;
 import sprawl.Game;
-import sprawl.World;
 import sprawl.entities.KeyCommand;
 import sprawl.entities.PC;
+import sprawl.world.World;
+import sprawl.world.WorldGenerator;
 
 public class PauseState implements GameState{
 	UnicodeFont pauseFont;
@@ -60,7 +61,7 @@ public class PauseState implements GameState{
 					pc.setX(0);
 					pc.setY(0);
 					pc.moveTo(10, 10);
-					game.getWorld().generate(100);
+					game.setWorld(WorldGenerator.generate(1));
 					KeyCommand.GENERATE_WORLD.resetArmed();
 				}
 			}

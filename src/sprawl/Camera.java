@@ -2,6 +2,7 @@ package sprawl;
 
 import static org.lwjgl.opengl.GL11.glTranslatef;
 import sprawl.entities.PC;
+import sprawl.world.World;
 
 public class Camera {
 	public int getX() {

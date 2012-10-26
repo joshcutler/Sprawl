@@ -1,4 +1,4 @@
-package sprawl;
+package sprawl.world;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -8,7 +8,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -16,21 +15,20 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.XMLOutputter;
 
-import sprawl.blocks.Block;
-import sprawl.blocks.BlockType;
+import sprawl.Camera;
+import sprawl.Constants;
+import sprawl.Vec2;
 import sprawl.entities.Entity;
 import sprawl.vegetation.CoverType;
-import sprawl.vegetation.Tree;
 import sprawl.vegetation.Vegetation;
 
 public class World {
 	private Block[][] blocks = new Block[Constants.WORLD_WIDTH][Constants.WORLD_HEIGHT];
 	private List<Entity> entities = new ArrayList<Entity>();
 	private int seaLevel, crustLevel;
+	private List<Biome> biomes = new ArrayList<Biome>();
 	
-	public World(PhysicsEngine physics) {
-		generate(new Random().nextInt());
-	}
+	public World() {}
 	
 	public World(File load_file) {
 		try {
@@ -182,43 +180,6 @@ public class World {
 		return (blocks[0].length - 1) * Constants.BLOCK_SIZE;
 	}
 	
-	public void generate(int seed) {
-		Random gen = new Random(seed);
-		
-		seaLevel = (int) ((int) Constants.WORLD_HEIGHT * 0.10);
-		crustLevel = (int) ((int) Constants.WORLD_HEIGHT * 0.10) + seaLevel;
-		//Draw some air
-		for (int i = 0; i < Constants.WORLD_WIDTH; i++) {
-			for (int j = 0; j < seaLevel; j++) {
-				setAt(i, j, BlockType.AIR);
-			}
-		}
-		//Draw some dirt
-		for (int i = 0; i < Constants.WORLD_WIDTH; i++) {
-			for (int j = seaLevel; j < crustLevel; j++) {
-				setAt(i, j, BlockType.DIRT);
-			}
-		}
-		
-		//Draw some stone
-		for (int i = 0; i < Constants.WORLD_WIDTH; i++) {
-			for (int j = crustLevel; j < Constants.WORLD_HEIGHT; j++) {
-				setAt(i, j, BlockType.STONE);
-			}
-		}
-		
-		//Generate Vegetation
-		//For now loop over the ground level
-		for (int i = 0; i < Constants.WORLD_WIDTH; i++) {
-			int j = seaLevel;
-			Block b = getAt(i, j);
-			b.setCoverType(CoverType.GRASS);
-			if (gen.nextFloat() < 0.1f) {
-				b.setVegetation(new Tree(gen.nextInt(Tree.maxHeight)));
-			}
-		}	
-	}
-	
 	public void growPlants(int delta, Camera camera) {
 		int left_edge = camera.leftVisibleBlockIndex();
 		int right_edge = camera.rightVisibleBlockIndex();
@@ -293,5 +254,41 @@ public class World {
 	
 	public static Vec2 getBlockCoordinates(int x, int y) {
 		return(new Vec2(x * Constants.BLOCK_SIZE, y * Constants.BLOCK_SIZE));
+	}
+
+	public int getSeaLevel() {
+		return seaLevel;
+	}
+
+	public void setSeaLevel(int seaLevel) {
+		this.seaLevel = seaLevel;
+	}
+
+	public int getCrustLevel() {
+		return crustLevel;
+	}
+
+	public void setCrustLevel(int crustLevel) {
+		this.crustLevel = crustLevel;
+	}
+
+	public List<Biome> getBiomes() {
+		return biomes;
+	}
+
+	public void setBiomes(List<Biome> biomes) {
+		this.biomes = biomes;
+	}
+	
+	public Biome biomeAt(int x) {
+		int count = 0;
+		for (Biome b: this.biomes) {
+			if (x >= count && x < count + b.getWidth()) {
+				return b;
+			}
+			count += b.getWidth();
+		}
+		
+		return null;
 	}
 }

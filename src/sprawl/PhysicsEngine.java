@@ -3,9 +3,10 @@ package sprawl;
 import java.util.HashSet;
 import java.util.Set;
 
-import sprawl.blocks.Block;
-import sprawl.blocks.BlockType;
 import sprawl.entities.Entity;
+import sprawl.world.Block;
+import sprawl.world.BlockType;
+import sprawl.world.World;
 
 public class PhysicsEngine {
 	public static final int pixels_per_meter = 16;

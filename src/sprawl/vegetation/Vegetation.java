@@ -1,7 +1,7 @@
 package sprawl.vegetation;
 
 import sprawl.PhysicsType;
-import sprawl.blocks.Block;
+import sprawl.world.Block;
 
 public abstract class Vegetation {
 	PhysicsType physicsType = PhysicsType.FOREGROUND;

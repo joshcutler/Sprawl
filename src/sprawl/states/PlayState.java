@@ -13,17 +13,18 @@ import sprawl.Game;
 import sprawl.GameTime;
 import sprawl.PhysicsEngine;
 import sprawl.RenderingEngine;
-import sprawl.World;
-import sprawl.blocks.BlockType;
 import sprawl.entities.EntityDirection;
 import sprawl.entities.KeyCommand;
 import sprawl.entities.PC;
+import sprawl.world.BlockType;
+import sprawl.world.World;
+import sprawl.world.WorldGenerator;
 
 public class PlayState implements GameState {
 	public PlayState(Game game) {
 		game.setCamera(new Camera());
 		game.setPhysics(new PhysicsEngine());
-		game.setWorld(new World(game.getPhysics()));
+		game.setWorld(WorldGenerator.generate(1));
 		GameTime.reset(0, 12, 0);
 		game.setPC(new PC());
         

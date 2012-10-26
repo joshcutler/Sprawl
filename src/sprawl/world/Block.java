@@ -1,4 +1,4 @@
-package sprawl.blocks;
+package sprawl.world;
 
 import sprawl.Constants;
 import sprawl.vegetation.CoverType;

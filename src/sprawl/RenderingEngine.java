@@ -243,18 +243,17 @@ public class RenderingEngine {
 				}
 				b.setLight(attenuation * maxLight);
 					
-				float x = b.getX();
-				float y = b.getY();
+				Vec2 pos = World.getBlockCoordinates(i,  j);
 				glColor4f(0, 0, 0, 1 - b.getLight());
 				glBegin(GL_QUADS);
 			    	glTexCoord2f(0, 0);
-			    	glVertex2f(x , y);
+			    	glVertex2f(pos.x , pos.y);
 			    	glTexCoord2f(1, 0);
-			    	glVertex2f(x + Constants.BLOCK_SIZE, y);
+			    	glVertex2f(pos.x + Constants.BLOCK_SIZE, pos.y);
 			    	glTexCoord2f(1, 1);
-			    	glVertex2f(x + Constants.BLOCK_SIZE, y + Constants.BLOCK_SIZE);
+			    	glVertex2f(pos.x + Constants.BLOCK_SIZE, pos.y + Constants.BLOCK_SIZE);
 			    	glTexCoord2f(0, 1);
-			    	glVertex2f(x, y + Constants.BLOCK_SIZE);
+			    	glVertex2f(pos.x, pos.y + Constants.BLOCK_SIZE);
 			    glEnd();
 			}
 		}
@@ -390,7 +389,7 @@ public class RenderingEngine {
 	
 	public static void drawSelectionBox(Camera camera) {
 		glColor4f(1f, 1f, 1f, 0.5f);
-		new Block(Game.selection, Game.selector_x * Constants.BLOCK_SIZE, Game.selector_y * Constants.BLOCK_SIZE).draw();
+		new Block(Game.selection).draw(Game.selector_x * Constants.BLOCK_SIZE, Game.selector_y * Constants.BLOCK_SIZE);
 		glColor4f(1f, 1f, 1f, 1f);
 		
 	}

@@ -33,6 +33,7 @@ public class PhysicsEngine {
 			Block upCollisionBlock = null;
 			Block rightCollisionBlock = null;
 			Block leftCollisionBlock = null;
+			int downY = 0, upY = 0, leftX = 0, rightX = 0;
 			
 			//Left Wall
 			if (newX < 1) {
@@ -60,12 +61,15 @@ public class PhysicsEngine {
 				for (int i = 0; i < e.widthBlocksSpanned(); i++) {
 					//Check that there are no block in between current position and the target position
 					for (int j = 0; j < numberOfBlocks(newY - e.getY()); j++) {
-						Block b = world.blockAt((int) Math.floor(e.getX()) + Constants.BLOCK_SIZE * i + 1, e.getY() + e.getHeight() + Constants.BLOCK_SIZE * j + 1);
+						int x = (int) Math.floor(e.getX()) + Constants.BLOCK_SIZE * i + 1;
+						int y = (int) e.getY() + e.getHeight() + Constants.BLOCK_SIZE * j + 1;
+						Block b = world.blockAt(x, y);
 						if (Game.drawPhysics) {
 							b.setTempType(BlockType.DIRT);
 						}
 						if (b != null && b.getType() != BlockType.AIR) {
 							downCollisionBlock = b;
+							downY = (int) world.blockStartsAt(x, y).y;
 							break;
 						}
 					}
@@ -74,12 +78,15 @@ public class PhysicsEngine {
 				for (int i = 0; i < e.widthBlocksSpanned(); i++) {
 					//Check that there are no block in between current position and the target position
 					for (int j = 0; j < numberOfBlocks(e.getY() - newY); j++) {
-						Block b = world.blockAt((int)Math.floor(e.getX()) + Constants.BLOCK_SIZE * i + 1, e.getY() - Constants.BLOCK_SIZE * j - 1);
+						int x = (int) Math.floor(e.getX()) + Constants.BLOCK_SIZE * i + 1;
+						int y = (int) e.getY() - Constants.BLOCK_SIZE * j - 1;
+						Block b = world.blockAt(x, y);
 						if (Game.drawPhysics) {
 							b.setTempType(BlockType.DIRT);
 						}
 						if (b != null && b.getType() != BlockType.AIR) {
 							upCollisionBlock = b;
+							upY = (int) world.blockStartsAt(x, y).y;
 							break;
 						}
 					}
@@ -90,12 +97,15 @@ public class PhysicsEngine {
 				for (int i = 0; i < e.heightBlocksSpanned(); i++) {
 					//Check that there are no block in between current position and the target position
 					for (int j = 0; j < numberOfBlocks(e.getX() - newX); j++) {
-						Block b = world.blockAt(newX - Constants.BLOCK_SIZE * j, e.getY() + 1 + Constants.BLOCK_SIZE * i);
+						int x = (int) newX - Constants.BLOCK_SIZE * j;
+						int y = (int) e.getY() + 1 + Constants.BLOCK_SIZE * i;
+						Block b = world.blockAt(x, y);
 						if (Game.drawPhysics) {
 							b.setTempType(BlockType.DIRT);
 						}
 						if (b.getType() != BlockType.AIR) {
 							leftCollisionBlock = b;
+							leftX = (int) world.blockStartsAt(x, y).x;
 							break;
 						}
 					}
@@ -104,12 +114,15 @@ public class PhysicsEngine {
 				for (int i = 0; i < e.heightBlocksSpanned(); i++) {
 					//Check that there are no block in between current position and the target position
 					for (int j = 0; j < numberOfBlocks(newX - e.getX()); j++) {
-						Block b = world.blockAt(newX + e.getWidth() + Constants.BLOCK_SIZE * j, e.getY() + 1 + Constants.BLOCK_SIZE * i);
+						int x = (int) newX + e.getWidth() + Constants.BLOCK_SIZE * j;
+						int y = (int) e.getY() + 1 + Constants.BLOCK_SIZE * i;
+						Block b = world.blockAt(x, y);
 						if (Game.drawPhysics) {
 							b.setTempType(BlockType.DIRT);
 						}
 						if (b != null && b != null && b.getType() != BlockType.AIR) {
 							rightCollisionBlock = b;
+							rightX = (int) world.blockStartsAt(x, y).x;
 							break;
 						}
 					}
@@ -119,21 +132,21 @@ public class PhysicsEngine {
 			// Stop you from bad vertical motion
 			if (downCollisionBlock != null) {
 				newVelocity.y = 0;
-				newY = downCollisionBlock.getY() - e.getHeight() + 1;
+				newY = downY - e.getHeight() + 1;
 			}
 			if (upCollisionBlock != null) {
 				newVelocity.y = 0;
-				newY = upCollisionBlock.getY() + Constants.BLOCK_SIZE + 1;
+				newY = upY + Constants.BLOCK_SIZE + 1;
 			}
 			
 			// Stop you from bad horizontal motion
 			if (leftCollisionBlock != null) {
 				newVelocity.x = 0;
-				newX = leftCollisionBlock.getX() + leftCollisionBlock.getWidth() + 1;
+				newX = leftX + Constants.BLOCK_SIZE + 1;
 			}
 			if (rightCollisionBlock != null) {
 				newVelocity.x = 0;
-				newX = rightCollisionBlock.getX() - (e.getWidth() + 1);
+				newX = rightX - (e.getWidth() + 1);
 			}
 			
 			//Special Case the ground

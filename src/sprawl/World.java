@@ -26,16 +26,13 @@ import sprawl.vegetation.Vegetation;
 public class World {
 	private Block[][] blocks = new Block[Constants.WORLD_WIDTH][Constants.WORLD_HEIGHT];
 	private List<Entity> entities = new ArrayList<Entity>();
-	private PhysicsEngine physics;
 	private int seaLevel, crustLevel;
 	
 	public World(PhysicsEngine physics) {
-		this.physics = physics;
 		generate(new Random().nextInt());
 	}
 	
-	public World(PhysicsEngine physics, File load_file) {
-		this.physics = physics;
+	public World(File load_file) {
 		try {
 			load(load_file);
 		} catch (IOException e) {
@@ -60,11 +57,8 @@ public class World {
 	}
 	
 	public void setAt(int x, int y, BlockType b) {
-		Block block = new Block(b, x * Constants.BLOCK_SIZE, y * Constants.BLOCK_SIZE);
+		Block block = new Block(b);
 		blocks[x][y] = block;
-		if (b.has_physics) {
-			physics.registerObject(block);
-		}
 	}
 	
 	public Block getAt(int x, int y) {
@@ -82,6 +76,13 @@ public class World {
 			b = blocks[indexX][indexY];
 		}
 		return b;
+	}
+	
+	public Vec2 blockStartsAt(float x, float y) {
+		return(new Vec2(
+				(int) (Math.ceil((x / Constants.BLOCK_SIZE) - 1) * Constants.BLOCK_SIZE), 
+				(int) (Math.ceil((y / Constants.BLOCK_SIZE) - 1) * Constants.BLOCK_SIZE)
+			));
 	}
 	
 	public int draw(Camera camera) {
@@ -109,10 +110,11 @@ public class World {
 		for (int x = left_edge; x < right_edge - 1; x++) {
 			for (int y = top_edge; y < bottom_edge - 1; y++) {
 				if (blocks[x][y].getType() != BlockType.AIR) {
-					blocks[x][y].draw();
+					Vec2 pos = World.getBlockCoordinates(x, y);
+					blocks[x][y].draw(pos.x, pos.y);
 					Vegetation vegetation = blocks[x][y].getVegetation();
 					if (vegetation != null) {
-						vegetation.draw();
+						vegetation.draw((int)pos.x, (int)pos.y);
 					}
 					
 					tiles_drawn++;
@@ -167,7 +169,7 @@ public class World {
 	public void clear() {
 		for (int x = 0; x < Constants.WORLD_WIDTH - 1; x++) {
 			for (int y = 0; y < Constants.WORLD_HEIGHT - 1; y++) {
-				blocks[x][y] = new Block(BlockType.AIR, x * Constants.BLOCK_SIZE, y * Constants.BLOCK_SIZE);
+				blocks[x][y] = new Block(BlockType.AIR);
 			}
 		}
 	}
@@ -287,5 +289,9 @@ public class World {
 				}
 			}
 		}
+	}
+	
+	public static Vec2 getBlockCoordinates(int x, int y) {
+		return(new Vec2(x * Constants.BLOCK_SIZE, y * Constants.BLOCK_SIZE));
 	}
 }

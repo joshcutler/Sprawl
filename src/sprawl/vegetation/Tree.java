@@ -36,11 +36,9 @@ public class Tree extends Vegetation {
 		}
 	}
 	
-	public void draw() {
+	public void draw(int startX, int startY) {
 		Tree.texture.bind();
 		
-		float startX = block.getX();
-		float startY = block.getY();
 		float width = Constants.BLOCK_SIZE;
 		float height = Constants.BLOCK_SIZE;
 		for (int i = 1; i <= this.height; i++) {

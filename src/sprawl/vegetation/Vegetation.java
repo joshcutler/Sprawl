@@ -17,7 +17,7 @@ public abstract class Vegetation {
 		this.block = block;
 	}
 
-	public abstract void draw();
+	public abstract void draw(int x, int y);
 	public abstract void grow();
 
 	public float getGrowthRate() {

@@ -1,14 +1,12 @@
 package sprawl.blocks;
 
 import sprawl.Constants;
-import sprawl.PhysicsType;
-import sprawl.entities.Entity;
 import sprawl.vegetation.CoverType;
 import sprawl.vegetation.Vegetation;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class Block extends Entity {
+public class Block {
 	private BlockType type = BlockType.AIR;
 	private BlockType tempType = null;
     private float light;
@@ -32,19 +30,13 @@ public class Block extends Entity {
 		vegetation.setBlock(this);
 	}
 
-	public Block(BlockType type, int x, int y) {
+	public Block(BlockType type) {
 		super();
 		this.type = type;
-		this.x = x;
-		this.y = y;
-		this.width = Constants.BLOCK_SIZE;
-		this.height = Constants.BLOCK_SIZE;
-		this.speed = 0;
 		this.light = 0;
-		this.physicsType = PhysicsType.STATIC;
 	}
     
-    public void draw() {
+    public void draw(float x, float y) {
     	this.bind();
     	glBegin(GL_QUADS);
     		glTexCoord2f(0, 0);

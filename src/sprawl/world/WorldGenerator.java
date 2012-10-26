@@ -14,6 +14,7 @@ public class WorldGenerator {
 		
 		int seaLevel = (int) ((int) Constants.WORLD_HEIGHT * 0.10);
 		int crustLevel = (int) ((int) Constants.WORLD_HEIGHT * 0.10) + seaLevel;
+		int currentElevation = seaLevel;
 		
 		//Generate the Biomes
 		ArrayList<Biome> biomes = WorldGenerator.generateBiomes(gen);
@@ -23,18 +24,27 @@ public class WorldGenerator {
 		for (int i = 0; i < Constants.WORLD_WIDTH; i++) {
 			Biome biome = world.biomeAt(i);
 			BiomeType biomeType = biome.getType();
+			
+			// Calculate elevation change
+			float changeElevation = gen.nextFloat();
+			if (changeElevation <= biomeType.elevationUp) {
+				currentElevation += gen.nextInt(biomeType.maxElevationChange + 1);
+			} else if (changeElevation <= biomeType.elevationUp + biomeType.elevationDown) {
+				currentElevation -= gen.nextInt(biomeType.maxElevationChange + 1);
+			}
+			
 			for (int j = 0; j < Constants.WORLD_HEIGHT; j++) {
-				// Generate Blocks
-				if (j < seaLevel) {
+				// Generate Blocks in a vertical strip
+				if (j < currentElevation) {
 					world.setAt(i, j, BlockType.AIR);
-				} else if (j >= seaLevel && j < crustLevel) {
+				} else if (j >= currentElevation && j < crustLevel) {
 					world.setAt(i, j, BlockType.DIRT);
 				} else if (j > crustLevel) {
 					world.setAt(i, j, BlockType.STONE);
 				}
 				
 				// Generate Vegetation
-				if (j == seaLevel) {
+				if (j == currentElevation) {
 					Block b = world.getAt(i, j);
 					b.setCoverType(CoverType.GRASS);
 					if (gen.nextFloat() < biomeType.treeGrowth) {

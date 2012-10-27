@@ -1,7 +1,7 @@
 package sprawl.world;
 
 public enum BiomeType {
-	FOREST(		.1f, .1f, 2, .8f, .1f), 
+	FOREST(		 .1f,  .1f, 2, .8f, .1f), 
 	GRASSLAND(	.05f, .05f, 1,  0f,  1f);
 	
 	public float treeGrowth;

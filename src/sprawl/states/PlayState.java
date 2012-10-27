@@ -78,13 +78,14 @@ public class PlayState implements GameState {
 		
 		int mouse_x = Mouse.getX();
 		int mouse_y = Constants.WINDOW_HEIGHT - Mouse.getY() - 1;
-		boolean mouse_clicked = Mouse.isButtonDown(0);
+		boolean left_mouse_clicked = Mouse.isButtonDown(0);
+		boolean right_mouse_clicked = Mouse.isButtonDown(1);
 		
 		Game.selector_x = Math.round(camera.translateX(mouse_x) / Constants.BLOCK_SIZE);
 		Game.selector_y = Math.round(camera.translateY(mouse_y) / Constants.BLOCK_SIZE);
 
 		
-		if (mouse_clicked) {			
+		if (right_mouse_clicked) {			
 			world.setAt(Game.selector_x, Game.selector_y, Game.selection);
 		}
 		

@@ -45,6 +45,7 @@ public class PlayState implements GameState {
     	RenderingEngine.drawSelectionBox(camera);
     	
     	renderDebug(tiles_drawn, camera, pc);
+    	game.updateFPS();
 	}
 	
 	private void renderDebug(int tiles_drawn, Camera camera, PC pc) {

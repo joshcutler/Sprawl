@@ -158,7 +158,7 @@ public class RenderingEngine {
 	
 	@SuppressWarnings("unchecked")
     public static void initFonts() {
-        java.awt.Font awtFont = new java.awt.Font("Times New Roman", java.awt.Font.BOLD, 12);
+        java.awt.Font awtFont = new java.awt.Font("Arial", java.awt.Font.BOLD, 12);
         font = new UnicodeFont(awtFont);
         font.getEffects().add(new ColorEffect(java.awt.Color.white));
         font.addAsciiGlyphs();

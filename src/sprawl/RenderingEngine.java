@@ -396,7 +396,6 @@ public class RenderingEngine {
 	}
 	
 	public static void updateDisplay() {
-        Display.sync(60);
-		Display.update();
+        Display.update();
 	}
 }

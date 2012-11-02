@@ -2,8 +2,6 @@ package sprawl.controllers;
 
 import org.lwjgl.opengl.Display;
 
-import sprawl.Game;
-import sprawl.states.PlayState;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
@@ -24,7 +22,7 @@ public class MenuController implements ScreenController{
 	}
 	
 	public void newGame() {
-		Game.currentState = new PlayState(Game.currentGame);
+		nifty.gotoScreen("setseed");
 	}
 
 	@Override

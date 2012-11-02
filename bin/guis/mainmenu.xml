@@ -14,7 +14,7 @@
   <style id="special-scrollpanel#scrollpanel">
     <attributes />
   </style>
-
+  
   <!-- main menu style -->
   <style id="menu">
     <attributes align="left" valign="center" width="100%" height="400px" />
@@ -41,15 +41,16 @@
       <onLostFocus name="textSize" startSize="1.05" endSize="1.0" length="150" />
     </effect>
   </style>
+  
+  <style id="menu-label" base="menu-font">
+  	<attributes align="left" textHAlign="left" color="#f" width="100%" />
+  </style>
 
   <!-- +++++++++++++++++++++++++++++++++++++++ -->
   <!-- intro screen -->
   <!-- +++++++++++++++++++++++++++++++++++++++ -->
   <screen id="start" controller="sprawl.controllers.SplashController" inputMapping="de.lessvoid.nifty.input.mapping.DefaultScreenMapping">
     <layer id="background" childLayout="center" backgroundColor="#FFFF">
-      <effect>
-        <onEndScreen name="fade" startColor="#0000" endColor="#FFFF" length="1500" startDelay="500" post="false" inherit="true" alternateEnable="exit"/>
-      </effect>
       <panel id="panel" childLayout="center" width="100%" height="100%">
         <effect>
           <onStartScreen name="fade" startColor="#fff0" endColor="#ffff" length="1000" post="false"/> 
@@ -108,5 +109,19 @@
         </panel>
       </panel>
     </layer>
+  </screen>
+  
+  <screen id="setseed" controller="sprawl.controllers.SetSeedController">
+  	<layer id="ss_background" childLayout="vertical">
+  	  <panel childLayout="center" width="100%" height="100%">
+        <panel align="center" valign="center" childLayout="vertical" height="100px" width="400px">
+          <text text="Enter a world seed" style="menu-label"/>
+      	  <control id="#txt_seed" name="textfield" text="1" />
+      	  <control id="btn_setSeed" name="button" label="Generate World">
+      	  	<interact onClick="newGame()" />
+      	  </control> 
+        </panel>
+      </panel>
+  	</layer>
   </screen>
 </nifty>

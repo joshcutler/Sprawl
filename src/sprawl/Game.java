@@ -1,19 +1,26 @@
 package sprawl;
 
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_STENCIL_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glPopMatrix;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
 
 import sprawl.entities.PC;
 import sprawl.states.GameState;
-import sprawl.states.PlayState;
+import sprawl.states.MainMenuState;
 import sprawl.world.BlockType;
 import sprawl.world.World;
- 
-import static org.lwjgl.opengl.GL11.*;
 
 public class Game {
 	public static final String version = "0.1"; 
@@ -38,8 +45,10 @@ public class Game {
 	private long lastFrame;
 	private int fps;
 	private int last_fps = 0;
-	private GameState currentState;
-	private GameState previousState;
+	
+	public static GameState currentState;
+	public static GameState previousState;
+	public static Game currentGame;
 	
 	public static boolean drawPhysics = false;
 
@@ -76,6 +85,10 @@ public class Game {
             System.exit(-1);
         }
         System.setProperty("org.lwjgl.librarypath", nativeDir);
+        
+        //Fix Nifty Logging
+        Logger.getLogger("de.lessvoid.nifty").setLevel(Level.SEVERE); 
+        Logger.getLogger("NiftyInputEventHandlingLog").setLevel(Level.SEVERE); 
 	}
 	
 	private void init() {
@@ -83,7 +96,8 @@ public class Game {
 		getDelta();
         lastFPS = getTime();
         
-        currentState = new PlayState(this);
+        Game.currentState = new MainMenuState();
+        Game.currentGame = this;
 	}
 	
 	public long getTime() {
@@ -123,7 +137,6 @@ public class Game {
 			currentState.update(delta, this);
         	currentState.render(delta, this);
         	
-        	updateFPS();
         	glPopMatrix();
         	
         	RenderingEngine.updateDisplay();

@@ -21,10 +21,10 @@ import sprawl.world.World;
 import sprawl.world.WorldGenerator;
 
 public class PlayState implements GameState {
-	public PlayState(Game game) {
+	public PlayState(Game game, int seed) {
 		game.setCamera(new Camera());
 		game.setPhysics(new PhysicsEngine());
-		game.setWorld(WorldGenerator.generate(1));
+		game.setWorld(WorldGenerator.generate(seed));
 		GameTime.reset(0, 12, 0);
 		game.setPC(new PC());
         
@@ -45,6 +45,7 @@ public class PlayState implements GameState {
     	RenderingEngine.drawSelectionBox(camera);
     	
     	renderDebug(tiles_drawn, camera, pc);
+    	game.updateFPS();
 	}
 	
 	private void renderDebug(int tiles_drawn, Camera camera, PC pc) {

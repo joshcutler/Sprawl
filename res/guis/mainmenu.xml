@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nifty xmlns="http://nifty-gui.sourceforge.net/nifty-1.3.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nifty-gui.sourceforge.net/nifty-1.3.xsd http://nifty-gui.sourceforge.net/nifty-1.3.xsd">
+  <!-- +++++++++++++++++++++++++++++++++++++++ -->
+  <!-- load styles -->
+  <!-- +++++++++++++++++++++++++++++++++++++++ -->
+  <useStyles filename="nifty-default-styles.xml" />
+  <useControls filename="nifty-default-controls.xml" />
+
+  <!-- +++++++++++++++++++++++++++++++++++++++ -->
+  <!-- register sounds -->
+  <!-- +++++++++++++++++++++++++++++++++++++++ -->
+  <!-- <registerSound id="gong" filename="sound/19546__tobi123__Gong_mf2.ogg" /> -->
+  
+  <style id="special-scrollpanel#scrollpanel">
+    <attributes />
+  </style>
+  
+  <!-- main menu style -->
+  <style id="menu">
+    <attributes align="left" valign="center" width="100%" height="400px" />
+    <effect>
+      <onStartScreen name="move" timeType="exp" factor="3.5" direction="left" mode="in" length="250" startDelay="1500" inherit="true"/>
+      <onEndScreen name="move" timeType="exp" factor="3.5" direction="left" mode="out" length="250" inherit="true"/>
+    </effect>
+  </style>
+
+  <style id="menu-font">
+    <attributes font="/res/fonts/hobo.24.fnt"/>
+  </style>
+
+  <!-- menu item style -->
+  <style id="menu-item" base="menu-font">
+    <attributes align="left" textHAlign="left" color="#f" width="100%"
+                focusable="true"
+                controller="de.lessvoid.nifty.controls.MenuItemControl"
+                inputMapping="de.lessvoid.nifty.input.mapping.MenuInputMapping" />
+    <effect>
+      <onHover name="focus" />
+      <onFocus name="textColor" color="#f00f" />
+      <onFocus name="textSize" startSize="1.0" endSize="1.05" length="150" />
+      <onLostFocus name="textSize" startSize="1.05" endSize="1.0" length="150" />
+    </effect>
+  </style>
+  
+  <style id="menu-label" base="menu-font">
+  	<attributes align="left" textHAlign="left" color="#f" width="100%" />
+  </style>
+
+  <!-- +++++++++++++++++++++++++++++++++++++++ -->
+  <!-- intro screen -->
+  <!-- +++++++++++++++++++++++++++++++++++++++ -->
+  <screen id="start" controller="sprawl.controllers.SplashController" inputMapping="de.lessvoid.nifty.input.mapping.DefaultScreenMapping">
+    <layer id="background" childLayout="center" backgroundColor="#FFFF">
+      <panel id="panel" childLayout="center" width="100%" height="100%">
+        <effect>
+          <onStartScreen name="fade" startColor="#fff0" endColor="#ffff" length="1000" post="false"/> 
+        </effect>
+        <panel align="center" valign="center" childLayout="vertical">
+          <effect>
+            <onEndScreen name="fade" startColor="#ffff" endColor="#0000" length="500" startDelay="1500" post="false" inherit="true"/>
+          </effect>
+          <image align="center" valign="center" filename="/res/assets/company.png">
+            <effect>
+              <onStartScreen name="fade" startColor="#0000" endColor="#000f" length="500" startDelay="1500" post="false"/>
+            </effect>
+          </image> 
+        </panel>
+      </panel>
+    </layer>
+  </screen>
+
+  <!-- +++++++++++++++++++++++++++++++++++++++ -->
+  <!-- menu screen -->
+  <!-- +++++++++++++++++++++++++++++++++++++++ -->
+  <screen id="menu" controller="sprawl.controllers.MenuController">
+    <layer id="top" childLayout="vertical">
+      <effect>
+        <onStartScreen name="fade" start="#0" end="#f" length="500" alternateEnable="fade" />
+        <onEndScreen name="fade" startColor="#393939ff" endColor="#00000000" startDelay="1000" length="500" alternateEnable="fade"/>
+      </effect>
+      <panel id="panel" width="100%" height="30%" childLayout="center">
+        <image id="image" filename="/res/assets/logo.png" align="center" valign="center">
+          <effect>
+            <onStartScreen name="fade" start="#0" end="#f" startDelay="500" length="500" />
+            <onStartScreen name="move" timeType="exp" factor="3.5" direction="top" mode="in" startDelay="500" length="500" />
+            <onEndScreen name="fade" startColor="#ffff" endColor="#0000" startDelay="500" length="500" />
+          </effect>
+        </image>
+      </panel>
+    </layer>
+    <layer id="menu" childLayout="vertical">
+      <panel height="20%" childLayout="center"/>
+      <panel height="*" childLayout="center" width="100%">
+        <panel id="mainMenu" style="menu" childLayout="center" padding="50px,20px,60px,20px" width="100%">
+          <panel childLayout="horizontal" width="100%" height="100%">
+            <control id="menuScrollPanel" name="scrollPanel" style="special-scrollpanel" horizontal="false" vertical="false" stepSizeY="30" height="100%" width="100%">
+              <panel id="huhu-1" childLayout="center" width="100%" padding="30px,40px,0px,40px" align="center">
+                <panel id="huhu-2" childLayout="vertical" align="center" width="100px">
+                  <text id="newGame" text="New Game" style="menu-item" align="center">
+                    <interact onClick="newGame()" onClickAlternateKey="fade" />
+                  </text>
+                  <text id="quit" text="Quit" style="menu-item" align="center">
+                    <interact onClick="quit()" onClickAlternateKey="fade" />
+                  </text>
+                </panel>
+              </panel>            
+            </control>
+          </panel>
+        </panel>
+      </panel>
+    </layer>
+  </screen>
+  
+  <screen id="setseed" controller="sprawl.controllers.SetSeedController">
+  	<layer id="ss_background" childLayout="vertical">
+  	  <panel childLayout="center" width="100%" height="100%">
+        <panel align="center" valign="center" childLayout="vertical" height="100px" width="400px">
+          <text text="Enter a world seed" style="menu-label"/>
+      	  <control id="#txt_seed" name="textfield" text="1" />
+      	  <control id="btn_setSeed" name="button" label="Generate World">
+      	  	<interact onClick="newGame()" />
+      	  </control> 
+        </panel>
+      </panel>
+  	</layer>
+  </screen>
+</nifty>

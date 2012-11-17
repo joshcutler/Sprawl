@@ -19,6 +19,7 @@ import org.lwjgl.opengl.Display;
 import sprawl.entities.PC;
 import sprawl.states.GameState;
 import sprawl.states.MainMenuState;
+import sprawl.states.PlayState;
 import sprawl.world.BlockType;
 import sprawl.world.World;
 
@@ -28,6 +29,11 @@ public class Game {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		for (String s: args) {
+			if (s.equals("debug")) {
+				Game.debug = true;
+			}
+		}
 		Game game = new Game();
 		game.gameLoop();
 	}
@@ -48,6 +54,7 @@ public class Game {
 	public static GameState currentState;
 	public static GameState previousState;
 	public static Game currentGame;
+	public static boolean debug = false;
 	
 	public static boolean drawPhysics = false;
 
@@ -93,7 +100,11 @@ public class Game {
 		getDelta();
         lastFPS = getTime();
         
-        Game.currentState = new MainMenuState();
+        if (Game.debug) {
+        	Game.currentState = new PlayState(this, 1);
+        } else {
+        	Game.currentState = new MainMenuState();
+        }
         Game.currentGame = this;
 	}
 		

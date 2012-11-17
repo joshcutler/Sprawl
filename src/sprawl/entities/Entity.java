@@ -29,6 +29,7 @@ public abstract class Entity {
 	protected boolean onSolidground = false;
 	protected PhysicsType physicsType;
 	protected float speed;
+	protected float walkSpeed;
 	public Texture texture;
 
 	public String texture_location;
@@ -39,12 +40,13 @@ public abstract class Entity {
 	
 	protected float y;
 	
-	public void accelerateX(float x) {
+	public void accelerateX(float x, boolean isWalking) {
 		this.linearVelocity.x += x;
-		if (this.linearVelocity.x > this.speed) {
-			this.linearVelocity.x = this.speed;
-		} else if (this.linearVelocity.x < -(this.speed)) {
-			this.linearVelocity.x = -(this.speed);
+		float topSpeed = isWalking ? this.walkSpeed : this.speed;
+		if (this.linearVelocity.x > topSpeed) {
+			this.linearVelocity.x = topSpeed;
+		} else if (this.linearVelocity.x < -(topSpeed)) {
+			this.linearVelocity.x = -(topSpeed);
 		}
 	}
 

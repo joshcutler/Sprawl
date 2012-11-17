@@ -49,7 +49,7 @@ public class PauseState implements GameState{
 	@Override
 	public void handleInput(Game game) {
 		while (Keyboard.next()) {
-			if (Keyboard.getEventKey() == Keyboard.KEY_P) {
+			if (Keyboard.getEventKey() == Keyboard.KEY_ESCAPE) {
 				if (KeyCommand.PAUSE.isArmed()) {
 					game.changeState(game.getPreviousState());
 					KeyCommand.PAUSE.resetArmed();

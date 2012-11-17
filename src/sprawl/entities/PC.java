@@ -11,6 +11,7 @@ public class PC extends Entity {
 		this.texture_location = "/textures/PC.png";
 		this.acceleration = 2f;
 		this.speed = 12f;
+		this.walkSpeed = 4f;
 		this.jumpSpeed = 25f;
 		this.direction = EntityDirection.RIGHT;
 		this.lightSource = LightSource.Entity;

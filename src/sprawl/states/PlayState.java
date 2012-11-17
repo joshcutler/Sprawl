@@ -144,15 +144,20 @@ public class PlayState implements GameState {
 		}
 		KeyCommand.JUMP.updatePressed(Keyboard.isKeyDown(Keyboard.KEY_SPACE));
 		
+		boolean walking = false;
+		if (Keyboard.isKeyDown(Keyboard.KEY_CAPITAL)) {
+			walking = true;
+		}
+		
 		if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
 			if (KeyCommand.MOVE_RIGHT.isArmed()) {
-				pc.accelerateX(pc.getAcceleration());
+				pc.accelerateX(pc.getAcceleration(), walking);
 				pc.changeDirection(EntityDirection.RIGHT);
 				KeyCommand.MOVE_RIGHT.resetArmed();
 			}
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
 			if (KeyCommand.MOVE_LEFT.isArmed()) {
-				pc.accelerateX(-pc.getAcceleration());
+				pc.accelerateX(-pc.getAcceleration(), walking);
 				pc.changeDirection(EntityDirection.LEFT);
 				KeyCommand.MOVE_LEFT.resetArmed();
 			}

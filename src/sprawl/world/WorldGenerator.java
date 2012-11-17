@@ -49,6 +49,7 @@ public class WorldGenerator {
 					b.setCoverType(CoverType.GRASS);
 					if (gen.nextFloat() < biomeType.treeGrowth) {
 						b.setVegetation(new Tree(gen.nextInt(Tree.maxHeight)));
+						b.getVegetation().updateForegroundBlocks(i, j, world);
 					}
 				}
 			}

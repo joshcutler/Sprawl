@@ -1,7 +1,30 @@
 package sprawl;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL14.*;
+import static org.lwjgl.opengl.GL11.GL_BLEND;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
+import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_DST_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_PROJECTION;
+import static org.lwjgl.opengl.GL11.GL_QUADS;
+import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glBlendFunc;
+import static org.lwjgl.opengl.GL11.glColor4f;
+import static org.lwjgl.opengl.GL11.glColorMask;
+import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glLoadIdentity;
+import static org.lwjgl.opengl.GL11.glMatrixMode;
+import static org.lwjgl.opengl.GL11.glOrtho;
+import static org.lwjgl.opengl.GL11.glTexCoord2f;
+import static org.lwjgl.opengl.GL11.glVertex2f;
+import static org.lwjgl.opengl.GL11.glViewport;
+import static org.lwjgl.opengl.GL14.GL_FUNC_ADD;
+import static org.lwjgl.opengl.GL14.GL_MIN;
+import static org.lwjgl.opengl.GL14.glBlendEquation;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -19,6 +42,7 @@ import sprawl.entities.Entity;
 import sprawl.vegetation.CoverType;
 import sprawl.world.Block;
 import sprawl.world.BlockType;
+import sprawl.world.ForeGroundType;
 import sprawl.world.World;
 
 public class RenderingEngine {
@@ -140,7 +164,19 @@ public class RenderingEngine {
 				e.printStackTrace();
 			}
 		}
-			
+		for (ForeGroundType fore_type : ForeGroundType.values()) {
+			try {
+				fore_type.texture = TextureLoader.getTexture("PNG",
+						RenderingEngine.class.getResourceAsStream(fore_type.texture_location));
+				System.out.println("Texture Loaded: " + fore_type.texture_location);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
 		for (LightSource light_source : LightSource.values()) {
 			try {
 				light_source.texture = TextureLoader.getTexture("PNG",

@@ -16,6 +16,7 @@ import sprawl.RenderingEngine;
 import sprawl.entities.EntityDirection;
 import sprawl.entities.KeyCommand;
 import sprawl.entities.PC;
+import sprawl.world.Block;
 import sprawl.world.BlockType;
 import sprawl.world.World;
 import sprawl.world.WorldGenerator;
@@ -44,14 +45,16 @@ public class PlayState implements GameState {
     	RenderingEngine.drawLights(game);
     	RenderingEngine.drawSelectionBox(camera);
     	
-    	renderDebug(tiles_drawn, camera, pc);
+    	renderDebug(tiles_drawn, camera, pc, world);
     	game.updateFPS();
 	}
 	
-	private void renderDebug(int tiles_drawn, Camera camera, PC pc) {
-		RenderingEngine.font.drawString(camera.translateX(10), camera.translateY(20), "PC: " + pc.getX() + ", " + pc.getY());
-		RenderingEngine.font.drawString(camera.translateX(10), camera.translateY(30), "Camera: " + camera.getX() + ", " + camera.getY());
-		RenderingEngine.font.drawString(camera.translateX(10), camera.translateY(40), "Tiles: " + tiles_drawn);
+	private void renderDebug(int tiles_drawn, Camera camera, PC pc, World world) {
+		RenderingEngine.font.drawString(camera.translateX(10), camera.translateY(20), "Camera: " + camera.getX() + ", " + camera.getY());
+		RenderingEngine.font.drawString(camera.translateX(10), camera.translateY(30), "Tiles: " + tiles_drawn);
+		RenderingEngine.font.drawString(camera.translateX(10), camera.translateY(40), "Mouse: " + Game.selector_x + ", " + Game.selector_y);
+		Block b = world.getAt(Game.selector_x, Game.selector_y);
+		RenderingEngine.font.drawString(camera.translateX(30), camera.translateY(50), "Type: " + b.getType().name() + " Cover: " + ((b.getCoverType() != null) ? b.getCoverType().name() : "None") + " Fore: " + ((b.getForeGround() != null) ? b.getForeGround().name() : "None") + " Veg: " + ((b.getVegetation() != null) ? b.getVegetation().getClass().getName() : "None"));
 		
 		RenderingEngine.font.drawString(camera.translateX(Constants.WINDOW_WIDTH - 70), camera.translateY(10), GameTime.getDays() + "d " + GameTime.getHours() + "h " + GameTime.getMinutes() + " m" );
 	}
@@ -85,7 +88,6 @@ public class PlayState implements GameState {
 		Game.selector_x = Math.round(camera.translateX(mouse_x) / Constants.BLOCK_SIZE);
 		Game.selector_y = Math.round(camera.translateY(mouse_y) / Constants.BLOCK_SIZE);
 
-		
 		if (right_mouse_clicked) {			
 			world.setAt(Game.selector_x, Game.selector_y, Game.selection);
 		}

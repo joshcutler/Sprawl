@@ -107,16 +107,9 @@ public class World {
 		int tiles_drawn = 0;
 		for (int x = left_edge; x < right_edge - 1; x++) {
 			for (int y = top_edge; y < bottom_edge - 1; y++) {
-				if (blocks[x][y].getType() != BlockType.AIR) {
-					Vec2 pos = World.getBlockCoordinates(x, y);
-					blocks[x][y].draw(pos.x, pos.y);
-					Vegetation vegetation = blocks[x][y].getVegetation();
-					if (vegetation != null) {
-						vegetation.draw((int)pos.x, (int)pos.y);
-					}
-					
-					tiles_drawn++;
-				}
+				Vec2 pos = World.getBlockCoordinates(x, y);
+				blocks[x][y].draw(pos.x, pos.y);
+				tiles_drawn++;
 			}
 		}
 		return tiles_drawn;
@@ -192,7 +185,10 @@ public class World {
 					Vegetation vegetation = blocks[x][y].getVegetation();
 					if (vegetation != null) {
 						if (Math.random() < (vegetation.getGrowthRate() * delta / 1000f)) {
-							vegetation.grow();
+							if (vegetation.grow()) {
+								//Update the surrounding foreground blocks
+								vegetation.updateForegroundBlocks(x, y, this);
+							}
 						}
 					}
 				}

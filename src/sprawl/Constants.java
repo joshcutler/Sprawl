@@ -9,6 +9,6 @@ public class Constants {
 	public static final boolean FULLSCREEN = false;
 	
 	public static final int BLOCK_SIZE = 16;
-	public static final int WORLD_HEIGHT = 4300;
-	public static final int WORLD_WIDTH = 1200;
+	public static final int WORLD_HEIGHT = 1028;
+	public static final int WORLD_WIDTH = 1028;
 }

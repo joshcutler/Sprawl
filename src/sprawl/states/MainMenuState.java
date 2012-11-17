@@ -1,7 +1,5 @@
 package sprawl.states;
 
-import org.lwjgl.input.Keyboard;
-
 import sprawl.Game;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.renderer.lwjgl.input.LwjglInputSystem;
@@ -16,8 +14,8 @@ public class MainMenuState implements GameState {
 	
 	public MainMenuState() {
 		nifty = new Nifty(new LwjglRenderDevice(), new OpenALSoundDevice(), new LwjglInputSystem(), new AccurateTimeProvider());
-		nifty.fromXml("/res/guis/mainmenu.xml", "start");
-		// nifty.setDebugOptionPanelColors(true);
+		nifty.fromXml("guis/mainmenu.xml", "start");
+		//nifty.setDebugOptionPanelColors(true);
 		
 		try {
 	      inputSystem = new LwjglInputSystem();

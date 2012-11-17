@@ -12,6 +12,7 @@ public class Block {
     private float light;
     private Vegetation vegetation;
     private CoverType coverType;
+    private ForeGroundType foreGround;
 	
     public CoverType getCoverType() {
 		return coverType;
@@ -37,20 +38,36 @@ public class Block {
 	}
     
     public void draw(float x, float y) {
-    	this.bind();
-    	glBegin(GL_QUADS);
-    		glTexCoord2f(0, 0);
-	    	glVertex2f(0 + x, 0 + y);
-	    	glTexCoord2f(1, 0);
-	    	glVertex2f(Constants.BLOCK_SIZE + x, 0 + y);
-	    	glTexCoord2f(1, 1);
-	    	glVertex2f(Constants.BLOCK_SIZE + x, Constants.BLOCK_SIZE + y);
-	    	glTexCoord2f(0, 1);
-	    	glVertex2f(0 + x, Constants.BLOCK_SIZE + y);
-	    glEnd();
+    	if (this.type != BlockType.AIR) {
+	    	this.bind();
+	    	glBegin(GL_QUADS);
+	    		glTexCoord2f(0, 0);
+		    	glVertex2f(0 + x, 0 + y);
+		    	glTexCoord2f(1, 0);
+		    	glVertex2f(Constants.BLOCK_SIZE + x, 0 + y);
+		    	glTexCoord2f(1, 1);
+		    	glVertex2f(Constants.BLOCK_SIZE + x, Constants.BLOCK_SIZE + y);
+		    	glTexCoord2f(0, 1);
+		    	glVertex2f(0 + x, Constants.BLOCK_SIZE + y);
+		    glEnd();
+		    
+		    if (this.coverType != null) {
+		    	this.coverType.texture.bind();
+		    	glBegin(GL_QUADS);
+		    		glTexCoord2f(0, 0);
+			    	glVertex2f(0 + x, 0 + y);
+			    	glTexCoord2f(1, 0);
+			    	glVertex2f(Constants.BLOCK_SIZE + x, 0 + y);
+			    	glTexCoord2f(1, 1);
+			    	glVertex2f(Constants.BLOCK_SIZE + x, Constants.BLOCK_SIZE + y);
+			    	glTexCoord2f(0, 1);
+			    	glVertex2f(0 + x, Constants.BLOCK_SIZE + y);
+			    glEnd();
+		    }
+    	}
 	    
-	    if (this.coverType != null) {
-	    	this.coverType.texture.bind();
+	    if (this.foreGround != null) {
+	    	this.foreGround.texture.bind();
 	    	glBegin(GL_QUADS);
 	    		glTexCoord2f(0, 0);
 		    	glVertex2f(0 + x, 0 + y);
@@ -91,5 +108,13 @@ public class Block {
 
 	public void setLight(float light) {
 		this.light = light;
+	}
+
+	public ForeGroundType getForeGround() {
+		return foreGround;
+	}
+
+	public void setForeGround(ForeGroundType foreGround) {
+		this.foreGround = foreGround;
 	}
 }

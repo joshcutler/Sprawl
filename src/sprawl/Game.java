@@ -29,7 +29,6 @@ public class Game {
 	 */
 	public static void main(String[] args) {
 		Game game = new Game();
-		game.init();
 		game.gameLoop();
 	}
 	
@@ -88,18 +87,16 @@ public class Game {
         
         //Fix Nifty Logging
         Logger.getLogger("de.lessvoid.nifty").setLevel(Level.SEVERE); 
-        Logger.getLogger("NiftyInputEventHandlingLog").setLevel(Level.SEVERE); 
-	}
-	
-	private void init() {
-		RenderingEngine.initOpenGL();
+        Logger.getLogger("NiftyInputEventHandlingLog").setLevel(Level.SEVERE);
+        
+        RenderingEngine.initOpenGL();
 		getDelta();
         lastFPS = getTime();
         
         Game.currentState = new MainMenuState();
         Game.currentGame = this;
 	}
-	
+		
 	public long getTime() {
 		return (Sys.getTime() * 1000) / Sys.getTimerResolution();
 	}
@@ -121,7 +118,7 @@ public class Game {
 		fps++;
 	}
 		
-	private void gameLoop() {
+	public void gameLoop() {
 		lastFPS = getTime();
 		
 		RenderingEngine.initFonts();

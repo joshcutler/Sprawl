@@ -25,7 +25,7 @@
   </style>
 
   <style id="menu-font">
-    <attributes font="/res/fonts/hobo.24.fnt"/>
+    <attributes font="fonts/hobo.24.fnt"/>
   </style>
 
   <!-- menu item style -->
@@ -59,7 +59,7 @@
           <effect>
             <onEndScreen name="fade" startColor="#ffff" endColor="#0000" length="500" startDelay="1500" post="false" inherit="true"/>
           </effect>
-          <image align="center" valign="center" filename="/res/assets/company.png">
+          <image align="center" valign="center" filename="assets/company.png">
             <effect>
               <onStartScreen name="fade" startColor="#0000" endColor="#000f" length="500" startDelay="1500" post="false"/>
             </effect>
@@ -79,7 +79,7 @@
         <onEndScreen name="fade" startColor="#393939ff" endColor="#00000000" startDelay="1000" length="500" alternateEnable="fade"/>
       </effect>
       <panel id="panel" width="100%" height="30%" childLayout="center">
-        <image id="image" filename="/res/assets/logo.png" align="center" valign="center">
+        <image id="image" filename="assets/logo.png" align="center" valign="center">
           <effect>
             <onStartScreen name="fade" start="#0" end="#f" startDelay="500" length="500" />
             <onStartScreen name="move" timeType="exp" factor="3.5" direction="top" mode="in" startDelay="500" length="500" />

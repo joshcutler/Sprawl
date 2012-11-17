@@ -56,7 +56,7 @@ public class Game {
 	public static Game currentGame;
 	public static boolean debug = false;
 	
-	public static boolean drawPhysics = false;
+	public static boolean drawPhysics = true;
 
 	public Game() {
 		/* Set lwjgl library path so that LWJGL finds the natives depending on the OS. */

@@ -10,7 +10,7 @@ import sprawl.world.World;
 
 public class PhysicsEngine {
 	public static final int pixels_per_meter = 16;
-	private static final float gravity = -40f;
+	private static final float gravity = -60f;
 	private static Set<Entity> dynamic_entities = new HashSet<Entity>();
 
 	public PhysicsEngine() {
@@ -27,7 +27,6 @@ public class PhysicsEngine {
 			Vec2 newVelocity = new Vec2(currentVelocity.x, currentVelocity.y + (gravity * step_size));
 			float newX = e.getX() + newVelocity.x * step_size * pixels_per_meter;
 			float newY = e.getY() - newVelocity.y * step_size* pixels_per_meter;
-			
 			
 			// Block Collision Detection
 			Block downCollisionBlock = null;
@@ -51,7 +50,7 @@ public class PhysicsEngine {
 				newY = 1;
 				newVelocity.y = 0;
 			}
-			//Right Wall
+			//Bottom Wall
 			if (newY > world.getHeightInPixels() - e.getHeight() - 1) {
 				newY = world.getHeightInPixels() - e.getHeight() - 1;
 				newVelocity.y = 0;

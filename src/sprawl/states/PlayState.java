@@ -96,7 +96,7 @@ public class PlayState implements GameState {
 		
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKey() == Keyboard.KEY_S) {
-				world.save(new File("save.xml"));
+				// world.save(new File("save.xml"));
 			}
 			if (Keyboard.getEventKey() == Keyboard.KEY_L) {
 				try {
@@ -114,23 +114,16 @@ public class PlayState implements GameState {
 			if (Keyboard.getEventKey() == Keyboard.KEY_3) {
 				Game.selection = BlockType.AIR;
 			}
-			if (Keyboard.getEventKey() == Keyboard.KEY_C) {
-				world.clear();
-			}
 			if (Keyboard.getEventKey() == Keyboard.KEY_ESCAPE) {
-				Display.destroy();
-				System.exit(0);
+				if (KeyCommand.PAUSE.isArmed()) {
+					game.changeState(new PauseState());
+					KeyCommand.PAUSE.resetArmed();
+				}
 			}
 			if (Keyboard.getEventKey() == Keyboard.KEY_R) {
 				pc.setX(0);
 				pc.setY(0);
 				pc.moveTo(10, 10);
-			}
-			if (Keyboard.getEventKey() == Keyboard.KEY_P) {
-				if (KeyCommand.PAUSE.isArmed()) {
-					game.changeState(new PauseState());
-					KeyCommand.PAUSE.resetArmed();
-				}
 			}
 			if (Keyboard.getEventKey() == Keyboard.KEY_M) {
 				if (KeyCommand.DRAW_PHYSICS.isArmed()) {
@@ -145,7 +138,7 @@ public class PlayState implements GameState {
 		// Handle movement
 		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE) && pc.onSolidGround()) {
 			if (KeyCommand.JUMP.isArmed()) {
-				pc.accelerateY(pc.getJumpSpeed());
+				pc.setVelocityY(pc.getJumpSpeed());
 				KeyCommand.JUMP.resetArmed();
 			}
 		}

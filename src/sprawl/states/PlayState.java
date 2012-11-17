@@ -88,8 +88,10 @@ public class PlayState implements GameState {
 		Game.selector_x = Math.round(camera.translateX(mouse_x) / Constants.BLOCK_SIZE);
 		Game.selector_y = Math.round(camera.translateY(mouse_y) / Constants.BLOCK_SIZE);
 
-		if (right_mouse_clicked) {			
-			world.setAt(Game.selector_x, Game.selector_y, Game.selection);
+		if (right_mouse_clicked) {
+			if (world.canPlace(Game.selector_x, Game.selector_y)) {
+				world.setAt(Game.selector_x, Game.selector_y, Game.selection);
+			}
 		}
 		
 		while (Keyboard.next()) {

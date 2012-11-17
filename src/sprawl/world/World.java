@@ -83,6 +83,13 @@ public class World {
 			));
 	}
 	
+	public boolean canPlace(int x, int y) {
+		if (blocks[x][y].getType() == BlockType.AIR && blocks[x][y].getForeGround() == null) {
+			return true;
+		}
+		return false;
+	}
+	
 	public int draw(Camera camera) {
 		//Draw Skybox
 		glColor3f(1f, 1f, 1f);

@@ -8,7 +8,7 @@ public class Tree extends Vegetation {
 	 
 	public Tree(int height) {
 		this.height = height;
-		this.growthRate = 0.01f;
+		this.growthRate = 0.001f;
 	}
 	
 	public boolean grow() {

@@ -49,11 +49,8 @@ public class PauseState implements GameState{
 	@Override
 	public void handleInput(Game game) {
 		while (Keyboard.next()) {
-			if (Keyboard.getEventKey() == Keyboard.KEY_ESCAPE) {
-				if (KeyCommand.PAUSE.isArmed()) {
-					game.changeState(game.getPreviousState());
-					KeyCommand.PAUSE.resetArmed();
-				}
+			if (Keyboard.getEventKey() == Keyboard.KEY_ESCAPE && Keyboard.getEventKeyState()) {
+				game.changeState(game.getPreviousState());
 			}
 			if (Keyboard.getEventKey() == Keyboard.KEY_G) {
 				if (KeyCommand.GENERATE_WORLD.isArmed()) {
@@ -66,7 +63,6 @@ public class PauseState implements GameState{
 				}
 			}
 		}
-		KeyCommand.PAUSE.updatePressed(true);
 		KeyCommand.GENERATE_WORLD.updatePressed(true);
 	}
 }

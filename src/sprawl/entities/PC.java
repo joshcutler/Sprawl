@@ -4,7 +4,7 @@ import sprawl.Constants;
 import sprawl.LightSource;
 import sprawl.PhysicsType;
 
-public class PC extends Entity {
+public class PC extends Killable{
 	public PC() {
 		this.height = Constants.BLOCK_SIZE * 4;
 		this.width = Constants.BLOCK_SIZE * 2 - Constants.BLOCK_SIZE / 2;
@@ -16,6 +16,8 @@ public class PC extends Entity {
 		this.direction = EntityDirection.RIGHT;
 		this.lightSource = LightSource.Entity;
 		this.physicsType = PhysicsType.DYNAMIC;
+		this.maxHealth = 10;
+		this.health = 10;
 		
 		this.loadTexture();
 	}

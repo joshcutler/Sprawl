@@ -39,11 +39,15 @@ import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.opengl.TextureLoader;
 
 import sprawl.entities.Entity;
+import sprawl.entities.PC;
 import sprawl.vegetation.CoverType;
 import sprawl.world.Block;
 import sprawl.world.BlockType;
 import sprawl.world.ForeGroundType;
 import sprawl.world.World;
+import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.elements.Element;
+import de.lessvoid.nifty.elements.render.TextRenderer;
 
 public class RenderingEngine {
 	public static int VBO_id;
@@ -427,8 +431,42 @@ public class RenderingEngine {
 	public static void drawSelectionBox(Camera camera) {
 		glColor4f(1f, 1f, 1f, 0.5f);
 		new Block(Game.selection).draw(Game.selector_x * Constants.BLOCK_SIZE, Game.selector_y * Constants.BLOCK_SIZE);
-		glColor4f(1f, 1f, 1f, 1f);
-		
+		glColor4f(1f, 1f, 1f, 1f);	
+	}
+	
+	public static void updateHUD(Nifty hud, PC pc, int tiles_drawn, World world, int fps) {
+		if (hud != null) {
+			// Update Health
+			Element health_meter = hud.getCurrentScreen().findElementByName("health");
+			health_meter.getRenderer(TextRenderer.class).setText(pc.getHealth() + "/" + pc.getMaxHealth());
+			
+			// Update Time
+			Element time_text = hud.getCurrentScreen().findElementByName("time");
+			time_text.getRenderer(TextRenderer.class).setText(GameTime.getDays() + "d " + GameTime.getHours() + "h " + GameTime.getMinutes() + " m");
+			
+			Element debug = hud.getCurrentScreen().findElementByName("debug");
+			if (Game.debug) {
+				debug.setVisible(true);
+				// Update FPS
+				Element fps_text = hud.getCurrentScreen().findElementByName("fps");
+				fps_text.getRenderer(TextRenderer.class).setText(Integer.toString(fps));
+				
+				// Update Tiles
+				Element tiles_text = hud.getCurrentScreen().findElementByName("tiles");
+				tiles_text.getRenderer(TextRenderer.class).setText(Integer.toString(tiles_drawn));
+				
+				// Update Mouse
+				Element mouse_text = hud.getCurrentScreen().findElementByName("mouse");
+				mouse_text.getRenderer(TextRenderer.class).setText(Game.selector_x + ", " + Game.selector_y);
+				
+				// Update Target
+				Block b = world.getAt(Game.selector_x, Game.selector_y);
+				Element target_text = hud.getCurrentScreen().findElementByName("target");
+				target_text.getRenderer(TextRenderer.class).setText(b.getType().name() +  ((b.getCoverType() != null) ? ", " + b.getCoverType().name() : "") + ((b.getForeGround() != null) ? ", " + b.getForeGround().name() : "") + ((b.getVegetation() != null) ? ", " + b.getVegetation().getName() : ""));
+			} else {
+				debug.setVisible(false);
+			}
+		}
 	}
 	
 	public static void updateDisplay() {

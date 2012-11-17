@@ -56,7 +56,7 @@ public class Game {
 	public static Game currentGame;
 	public static boolean debug = false;
 	
-	public static boolean drawPhysics = true;
+	public static boolean drawPhysics = false;
 
 	public Game() {
 		/* Set lwjgl library path so that LWJGL finds the natives depending on the OS. */
@@ -120,7 +120,6 @@ public class Game {
 	}
 	
 	public void updateFPS() {
-		RenderingEngine.font.drawString(camera.translateX(10), camera.translateY(10), "FPS: " + last_fps);
 		if (getTime() - lastFPS > 1000) {
 			last_fps = fps;
 			fps = 0;
@@ -197,5 +196,9 @@ public class Game {
 
 	public GameState getCurrentState() {
 		return currentState;
+	}
+
+	public int getFPS() {
+		return last_fps;
 	}
 }

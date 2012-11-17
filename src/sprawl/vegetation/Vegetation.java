@@ -55,5 +55,10 @@ public abstract class Vegetation {
 		this.height = height;
 	}
 	
+	public String getName() {
+		String classname = this.getClass().getName();
+		return classname.substring(classname.lastIndexOf(".") + 1);
+	}
+	
 	public abstract void updateForegroundBlocks(int x, int y, World world);
 }

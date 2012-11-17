@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nifty xmlns="http://nifty-gui.sourceforge.net/nifty-1.3.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nifty-gui.sourceforge.net/nifty-1.3.xsd http://nifty-gui.sourceforge.net/nifty-1.3.xsd">
+  <useStyles filename="nifty-default-styles.xml" />
+  <useControls filename="nifty-default-controls.xml" />
+  
+  <style id="hud-font">
+    <attributes font="fonts/hobo.16.fnt" color="#ffff"/>
+  </style>
+  
+  <screen id="hud" controller="sprawl.controllers.HUDController">
+  	<layer childLayout="vertical">
+  		<panel id="header" height="100px" width="100%" childLayout="horizontal" padding="10px">
+  			<panel id="inventory" height="100%" width="50%"></panel>
+  			<panel></panel>
+  			<panel id="status" height="100%" width="150px" childLayout="vertical">
+  				<panel childLayout="horizontal">
+  					<text text="Health: " style="hud-font" />
+  					<text id="health" style="hud-font" text="1000/1000"/>
+  				</panel>
+  				<panel childLayout="horizontal">
+  					<text text="Time: " style="hud-font" />
+  					<text id="time" style="hud-font" text="00m 00h 00d"/>
+  				</panel>
+  			</panel>
+  		</panel>
+  		<panel id="play_area"></panel>
+  		<panel id="footer" height="100px" width="100%" childLayout="horizontal">
+  			<panel id="updates" height="100%" width="50%"></panel>
+  			<panel></panel>
+  			<panel id="debug" height="100%" width="250px" childLayout="vertical" visible="false">
+  				<panel childLayout="horizontal">
+  					<text text="FPS: " style="hud-font" />
+  					<text id="fps" style="hud-font" text="60fps"/>
+  				</panel>
+  				<panel childLayout="horizontal">
+  					<text text="Tiles: " style="hud-font" />
+  					<text id="tiles" style="hud-font" text="10000"/>
+  				</panel>
+  				<panel childLayout="horizontal">
+  					<text text="Mouse: " style="hud-font" />
+  					<text id="mouse" style="hud-font" text="9999, 9999"/>
+  				</panel>
+  				<panel childLayout="horizontal">
+  					<text text="Target: " style="hud-font" />
+  					<text id="target" style="hud-font" text="A lot of things to say"/>
+  				</panel>
+  			</panel>
+  		</panel>
+  	</layer>
+  </screen>
+</nifty>

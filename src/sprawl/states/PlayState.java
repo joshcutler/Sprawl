@@ -5,7 +5,6 @@ import java.io.IOException;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
 
 import sprawl.Camera;
 import sprawl.Constants;
@@ -20,8 +19,16 @@ import sprawl.world.Block;
 import sprawl.world.BlockType;
 import sprawl.world.World;
 import sprawl.world.WorldGenerator;
+import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.renderer.lwjgl.input.LwjglInputSystem;
+import de.lessvoid.nifty.renderer.lwjgl.render.LwjglRenderDevice;
+import de.lessvoid.nifty.sound.openal.OpenALSoundDevice;
+import de.lessvoid.nifty.spi.time.impl.AccurateTimeProvider;
 
 public class PlayState implements GameState {
+	private Nifty nifty;
+	private LwjglInputSystem inputSystem;
+	
 	public PlayState(Game game, int seed) {
 		game.setCamera(new Camera());
 		game.setPhysics(new PhysicsEngine());
@@ -32,6 +39,17 @@ public class PlayState implements GameState {
 		game.getPC().moveTo(16, 16);
 		game.getPhysics().registerObject(game.getPC());
 		game.getWorld().addEntity(game.getPC());
+		
+		nifty = new Nifty(new LwjglRenderDevice(), new OpenALSoundDevice(), new LwjglInputSystem(), new AccurateTimeProvider());
+		nifty.fromXml("guis/hud.xml", "hud");
+		//nifty.setDebugOptionPanelColors(true);
+		
+		try {
+	      inputSystem = new LwjglInputSystem();
+	      inputSystem.startup();
+	    } catch (Exception e) {
+	      e.printStackTrace();
+	    }
 	}
 
 	@Override
@@ -44,19 +62,8 @@ public class PlayState implements GameState {
     	RenderingEngine.drawEntities(camera, world);
     	RenderingEngine.drawLights(game);
     	RenderingEngine.drawSelectionBox(camera);
-    	
-    	renderDebug(tiles_drawn, camera, pc, world);
-    	game.updateFPS();
-	}
-	
-	private void renderDebug(int tiles_drawn, Camera camera, PC pc, World world) {
-		RenderingEngine.font.drawString(camera.translateX(10), camera.translateY(20), "Camera: " + camera.getX() + ", " + camera.getY());
-		RenderingEngine.font.drawString(camera.translateX(10), camera.translateY(30), "Tiles: " + tiles_drawn);
-		RenderingEngine.font.drawString(camera.translateX(10), camera.translateY(40), "Mouse: " + Game.selector_x + ", " + Game.selector_y);
-		Block b = world.getAt(Game.selector_x, Game.selector_y);
-		RenderingEngine.font.drawString(camera.translateX(30), camera.translateY(50), "Type: " + b.getType().name() + " Cover: " + ((b.getCoverType() != null) ? b.getCoverType().name() : "None") + " Fore: " + ((b.getForeGround() != null) ? b.getForeGround().name() : "None") + " Veg: " + ((b.getVegetation() != null) ? b.getVegetation().getClass().getName() : "None"));
-		
-		RenderingEngine.font.drawString(camera.translateX(Constants.WINDOW_WIDTH - 70), camera.translateY(10), GameTime.getDays() + "d " + GameTime.getHours() + "h " + GameTime.getMinutes() + " m" );
+    	RenderingEngine.updateHUD(nifty, pc, tiles_drawn, world, game.getFPS());
+    	nifty.render(false);
 	}
 
 	@Override
@@ -72,6 +79,8 @@ public class PlayState implements GameState {
     	
     	world.growPlants(delta, camera);
     	world.growGroundCover(delta, camera);
+    	nifty.update();
+    	game.updateFPS();
 	}
 
 	@Override
@@ -95,6 +104,9 @@ public class PlayState implements GameState {
 		}
 		
 		while (Keyboard.next()) {
+			if (Keyboard.getEventKey() == Keyboard.KEY_P && Keyboard.getEventKeyState()) {
+				Game.debug = !Game.debug;
+			}
 			if (Keyboard.getEventKey() == Keyboard.KEY_S) {
 				// world.save(new File("save.xml"));
 			}
@@ -114,11 +126,8 @@ public class PlayState implements GameState {
 			if (Keyboard.getEventKey() == Keyboard.KEY_3) {
 				Game.selection = BlockType.AIR;
 			}
-			if (Keyboard.getEventKey() == Keyboard.KEY_ESCAPE) {
-				if (KeyCommand.PAUSE.isArmed()) {
-					game.changeState(new PauseState());
-					KeyCommand.PAUSE.resetArmed();
-				}
+			if (Keyboard.getEventKey() == Keyboard.KEY_ESCAPE && Keyboard.getEventKeyState()) {
+				game.changeState(new PauseState());
 			}
 			if (Keyboard.getEventKey() == Keyboard.KEY_R) {
 				pc.setX(0);
@@ -133,7 +142,6 @@ public class PlayState implements GameState {
 			}
 		}
 		KeyCommand.DRAW_PHYSICS.updatePressed(true);
-		KeyCommand.PAUSE.updatePressed(true);
 		
 		// Handle movement
 		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE) && pc.onSolidGround()) {

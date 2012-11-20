@@ -135,13 +135,9 @@ public class PlayState implements GameState {
 				pc.moveTo(10, 10);
 			}
 			if (Keyboard.getEventKey() == Keyboard.KEY_M) {
-				if (KeyCommand.DRAW_PHYSICS.isArmed()) {
-					Game.drawPhysics = Game.drawPhysics ? false : true;
-					KeyCommand.DRAW_PHYSICS.resetArmed();
-				}
+				Game.drawPhysics = Game.drawPhysics ? false : true;
 			}
 		}
-		KeyCommand.DRAW_PHYSICS.updatePressed(true);
 		
 		// Handle movement
 		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE) && pc.onSolidGround()) {

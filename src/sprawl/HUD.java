@@ -28,6 +28,17 @@ public class HUD {
 		inventory.setVisible(!inventory.isVisible());
 	}
 	
+	public static void selectItem(Element slot, String itemHash) {
+		//TODO: Do something in the UI to show that it is selected
+		
+		System.out.println("Searching for Item: " + itemHash);
+		Item item = Game.currentGame.getPC().getItemByHash(itemHash);
+		if (item != null) {
+			System.out.println("Item Selected: " + item.toString());
+			Game.selected_item = item;
+		}
+	}
+	
 	public static void drawInventory() {
 		Game game = Game.currentGame;
 		PC pc = game.getPC();
@@ -56,12 +67,12 @@ public class HUD {
 			}
 			for (int i = 0; i < slots_to_draw; i++) {
 				Element el = null;
-				
+				final String slotId = "slot" + ((j-1)*row_length + i);
 				try {
-					Item item = inventory.get((j-1)*row_length  + i);
+					final Item item = inventory.get((j-1)*row_length  + i);
 					final String texture = item.getType().texture_location.substring(1);
 					
-					el = new ControlBuilder("slot-" + ((j-1)*row_length + i), "droppable") {{
+					el = new ControlBuilder(slotId, "droppable") {{
 						width("32px");
 						height("32px");
 						marginTop("4px");
@@ -69,7 +80,8 @@ public class HUD {
 						panel(new PanelBuilder() {{
 							backgroundColor("#3333");
 							childLayoutCenter();
-							control(new DraggableBuilder() {{
+							interactOnClick("selectItem(" + slotId + ")");
+							control(new DraggableBuilder("item-" + item.getHash()) {{
 								childLayoutCenter();
 								image(new ImageBuilder() {{
 									childLayoutCenter();
@@ -80,7 +92,7 @@ public class HUD {
 					}}.build(nifty, screen, p); 
 					
 				} catch (IndexOutOfBoundsException e) {
-					el = new ControlBuilder("slot-" + ((j-1)*row_length + i), "droppable") {{
+					el = new ControlBuilder(slotId, "droppable") {{
 						width("32px");
 						height("32px");
 						marginTop("4px");
@@ -88,6 +100,7 @@ public class HUD {
 						panel(new PanelBuilder() {{
 							backgroundColor("#3333");
 							childLayoutCenter();
+							interactOnClick("selectItem(" + slotId + ")");
 						}});
 					}}.build(nifty, screen, p); 
 				}

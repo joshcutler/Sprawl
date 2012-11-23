@@ -43,4 +43,15 @@ public class PC extends Killable{
 	public ArrayList<Item> getInventory() {
 		return inventory;
 	}
+	
+	public Item getItemByHash(String itemHash) {
+		for (Item i : inventory) {
+			if (i != null) {
+				if (i.hasHash(itemHash)) {
+					return i;
+				}
+			}
+		}
+		return null;
+	}
 }

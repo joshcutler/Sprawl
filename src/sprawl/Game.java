@@ -17,10 +17,10 @@ import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
 
 import sprawl.entities.PC;
+import sprawl.items.Item;
 import sprawl.states.GameState;
 import sprawl.states.MainMenuState;
 import sprawl.states.PlayState;
-import sprawl.world.BlockType;
 import sprawl.world.World;
 
 public class Game {
@@ -42,7 +42,7 @@ public class Game {
 	private PC pc;
 	private PhysicsEngine physics;
 	private Camera camera;
-	public static BlockType selection = BlockType.STONE;
+	public static Item selected_item;
 	public static int selector_x = 0;
 	public static int selector_y = 0;
 	

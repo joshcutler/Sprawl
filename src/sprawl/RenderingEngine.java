@@ -445,9 +445,11 @@ public class RenderingEngine {
 //	}
 	
 	public static void drawSelectionBox(Camera camera) {
-		glColor4f(1f, 1f, 1f, 0.5f);
-		new Block(Game.selection).draw(Game.selector_x * Constants.BLOCK_SIZE, Game.selector_y * Constants.BLOCK_SIZE);
-		glColor4f(1f, 1f, 1f, 1f);	
+		if (Game.selected_item != null && Game.selected_item.getType().placeable) {
+			glColor4f(1f, 1f, 1f, 0.5f);
+			new Block(Game.selected_item.placeAs()).draw(Game.selector_x * Constants.BLOCK_SIZE, Game.selector_y * Constants.BLOCK_SIZE);
+			glColor4f(1f, 1f, 1f, 1f);
+		}
 	}
 	
 	public static void updateHUD(Nifty hud, PC pc, int tiles_drawn, World world, int fps) {

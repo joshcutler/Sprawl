@@ -20,7 +20,7 @@ import sprawl.RenderingEngine;
 import sprawl.entities.EntityDirection;
 import sprawl.entities.KeyCommand;
 import sprawl.entities.PC;
-import sprawl.world.BlockType;
+import sprawl.items.Item;
 import sprawl.world.World;
 import sprawl.world.WorldGenerator;
 import de.lessvoid.nifty.Nifty;
@@ -106,8 +106,11 @@ public class PlayState implements GameState {
 		Game.selector_y = Math.round(camera.translateY(mouse_y) / Constants.BLOCK_SIZE);
 
 		if (right_mouse_clicked) {
-			if (world.canPlace(Game.selector_x, Game.selector_y)) {
-				world.setAt(Game.selector_x, Game.selector_y, Game.selection);
+			Item item = Game.selected_item;
+			if (item != null) {
+				if (item.getType().placeable && world.canPlace(Game.selector_x, Game.selector_y)) {
+					world.setAt(Game.selector_x, Game.selector_y, item.placeAs());
+				}
 			}
 		}
 		
@@ -125,15 +128,7 @@ public class PlayState implements GameState {
 					e.printStackTrace();
 				}
 			}
-			if (Keyboard.getEventKey() == Keyboard.KEY_1) {
-				Game.selection = BlockType.STONE;
-			}
-			if (Keyboard.getEventKey() == Keyboard.KEY_2) {
-				Game.selection = BlockType.DIRT;
-			}
-			if (Keyboard.getEventKey() == Keyboard.KEY_3) {
-				Game.selection = BlockType.AIR;
-			}
+			
 			if (Keyboard.getEventKey() == Keyboard.KEY_ESCAPE && Keyboard.getEventKeyState()) {
 				game.changeState(new PauseState());
 			}

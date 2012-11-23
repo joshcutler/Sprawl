@@ -3,7 +3,9 @@ package sprawl.world;
 import org.newdawn.slick.opengl.Texture;
 
 public enum BlockType {
-	STONE("/textures/stone.png", true, 0.3f), AIR("/textures/air.png", false, 1f), DIRT("/textures/dirt.png", true, 0.3f);
+	STONE("/textures/stone.png", true, 0.3f), 
+	AIR("/textures/air.png", false, 1f), 
+	DIRT("/textures/dirt.png", true, 0.3f);
 
 	public final String texture_location;
 	public Texture texture;

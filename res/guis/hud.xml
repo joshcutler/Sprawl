@@ -9,9 +9,18 @@
   
   <screen id="hud" controller="sprawl.controllers.HUDController">
   	<layer childLayout="vertical">
-  		<panel id="header" height="100px" width="100%" childLayout="horizontal" padding="10px">
-  			<panel id="inventory" height="100%" width="50%"></panel>
-  			<panel></panel>
+  		<panel id="header" width="100%" childLayout="horizontal" padding="10px">
+  			<panel id="inventory-wrapper" height="100%" childLayout="vertical" align="left" width="580px">
+  				<text text="Inventory" style="hud-font" id="inventory-button">
+  					<interact onClick="toggleInventory()" />
+  					<effect>
+  						<onHover name="textColor" color="#f00f" />
+  					</effect>
+  				</text>
+  				<panel id="inventory" width="100%" backgroundColor="#3333" childLayout="vertical" visible="false">
+  				</panel>
+  			</panel>
+  			<panel />
   			<panel id="status" height="100%" width="150px" childLayout="vertical">
   				<panel childLayout="horizontal">
   					<text text="Health: " style="hud-font" />
@@ -23,7 +32,6 @@
   				</panel>
   			</panel>
   		</panel>
-  		<panel id="play_area"></panel>
   		<panel id="footer" height="100px" width="100%" childLayout="horizontal">
   			<panel id="updates" height="100%" width="50%"></panel>
   			<panel></panel>

@@ -1,7 +1,6 @@
 package sprawl.controllers;
 
-import sprawl.Game;
-import sprawl.entities.PC;
+import sprawl.HUD;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
@@ -14,6 +13,9 @@ public class HUDController implements ScreenController {
 	public void bind(Nifty niftyParam, Screen screenParam) {
 		this.nifty = niftyParam;
 	    this.screen = screenParam;
+	    
+	    HUD.nifty = nifty;
+	    HUD.screen = screen;
 	}
 
 	@Override
@@ -26,5 +28,9 @@ public class HUDController implements ScreenController {
 	public void onStartScreen() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void toggleInventory() {
+		HUD.toggleInventory();
 	}
 }

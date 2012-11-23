@@ -40,6 +40,7 @@ import org.newdawn.slick.opengl.TextureLoader;
 
 import sprawl.entities.Entity;
 import sprawl.entities.PC;
+import sprawl.items.ItemType;
 import sprawl.vegetation.CoverType;
 import sprawl.world.Block;
 import sprawl.world.BlockType;
@@ -180,12 +181,27 @@ public class RenderingEngine {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}	
+		}
+		
 		for (LightSource light_source : LightSource.values()) {
 			try {
 				light_source.texture = TextureLoader.getTexture("PNG",
 						RenderingEngine.class.getResourceAsStream(light_source.texture_location));
 				System.out.println("Texture Loaded: " + light_source.texture_location);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		for (ItemType item_type : ItemType.values()) {
+			try {
+				item_type.texture = TextureLoader.getTexture("PNG",
+						RenderingEngine.class.getResourceAsStream(item_type.texture_location));
+				System.out.println("Texture Loaded: " + item_type.texture_location);
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

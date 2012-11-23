@@ -1,5 +1,9 @@
 package sprawl.states;
 
+import static org.lwjgl.opengl.GL11.glLoadIdentity;
+import static org.lwjgl.opengl.GL11.glPopMatrix;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -10,12 +14,12 @@ import sprawl.Camera;
 import sprawl.Constants;
 import sprawl.Game;
 import sprawl.GameTime;
+import sprawl.HUD;
 import sprawl.PhysicsEngine;
 import sprawl.RenderingEngine;
 import sprawl.entities.EntityDirection;
 import sprawl.entities.KeyCommand;
 import sprawl.entities.PC;
-import sprawl.world.Block;
 import sprawl.world.BlockType;
 import sprawl.world.World;
 import sprawl.world.WorldGenerator;
@@ -42,7 +46,7 @@ public class PlayState implements GameState {
 		
 		nifty = new Nifty(new LwjglRenderDevice(), new OpenALSoundDevice(), new LwjglInputSystem(), new AccurateTimeProvider());
 		nifty.fromXml("guis/hud.xml", "hud");
-		//nifty.setDebugOptionPanelColors(true);
+		// nifty.setDebugOptionPanelColors(true);
 		
 		try {
 	      inputSystem = new LwjglInputSystem();
@@ -63,7 +67,11 @@ public class PlayState implements GameState {
     	RenderingEngine.drawLights(game);
     	RenderingEngine.drawSelectionBox(camera);
     	RenderingEngine.updateHUD(nifty, pc, tiles_drawn, world, game.getFPS());
+    	
+    	glPushMatrix();
+    	glLoadIdentity();
     	nifty.render(false);
+    	glPopMatrix();
 	}
 
 	@Override
@@ -136,6 +144,11 @@ public class PlayState implements GameState {
 			}
 			if (Keyboard.getEventKey() == Keyboard.KEY_M) {
 				Game.drawPhysics = Game.drawPhysics ? false : true;
+			}
+			
+			// Interact w/ HUD
+			if (Keyboard.getEventKey() == Keyboard.KEY_I && Keyboard.getEventKeyState()) {
+				HUD.toggleInventory();
 			}
 		}
 		

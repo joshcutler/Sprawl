@@ -1,7 +1,5 @@
 package sprawl.entities;
 
-import java.util.ArrayList;
-
 import sprawl.Constants;
 import sprawl.LightSource;
 import sprawl.PhysicsType;
@@ -10,7 +8,7 @@ import sprawl.items.ItemType;
 
 public class PC extends Killable{
 	private int inventorySize;
-	Item[] inventory;;
+	Item[] inventory;
 	
 	public PC() {
 		this.height = Constants.BLOCK_SIZE * 4;
@@ -69,7 +67,7 @@ public class PC extends Killable{
 	
 	public boolean removeItem(String itemHash) {
 		for (int i = 0; i < inventory.length; i++) {
-			if (inventory[i].getHash().equals(itemHash)) {
+			if (inventory[i] != null && inventory[i].getHash().equals(itemHash)) {
 				inventory[i] = null;
 				return true;
 			}

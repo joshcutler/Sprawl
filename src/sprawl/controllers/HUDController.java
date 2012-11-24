@@ -2,6 +2,7 @@ package sprawl.controllers;
 
 import java.util.List;
 
+import sprawl.Game;
 import sprawl.HUD;
 import de.lessvoid.nifty.EndNotify;
 import de.lessvoid.nifty.Nifty;
@@ -54,7 +55,8 @@ public class HUDController implements ScreenController {
 	
 	@NiftyEventSubscriber(pattern="slot.*")
 	public void onDrop(final String id, final DroppableDroppedEvent event) {
-		System.out.println("Dropped: " + event.getDraggable().getId() + " slot: " + id.substring(4));
+		System.out.println("Dropped: " + event.getDraggable().getId().substring(5) + " slot:" + id.substring(4));
+		
 		HUD.reorderItems(id.substring(4), event.getDraggable().getId().substring(5));
 		HUD.selectItem(event.getSource().getElement(), event.getDraggable().getId().substring(5));
 	}

@@ -1,7 +1,5 @@
 package sprawl;
 
-import java.util.ArrayList;
-
 import sprawl.entities.PC;
 import sprawl.items.Item;
 import de.lessvoid.nifty.Nifty;
@@ -9,6 +7,9 @@ import de.lessvoid.nifty.builder.ControlBuilder;
 import de.lessvoid.nifty.builder.ImageBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.TextBuilder;
+import de.lessvoid.nifty.controls.Draggable;
+import de.lessvoid.nifty.controls.Droppable;
+import de.lessvoid.nifty.controls.DroppableDropFilter;
 import de.lessvoid.nifty.controls.dragndrop.builder.DraggableBuilder;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.screen.Screen;
@@ -47,7 +48,10 @@ public class HUD {
 	}
 	
 	public static void selectItem(Element slot, String itemHash) {
-		//TODO: Do something in the UI to show that it is selected
+		for (int i = 0; i < Game.currentGame.getPC().getInventorySize(); i++) {
+			screen.findElementByName("slot" + i).setStyle("inventoryTile");
+		}
+		slot.setStyle("inventoryTileSelected");
 		
 		System.out.println("Searching for Item: " + itemHash);
 		Item item = Game.currentGame.getPC().getItemByHash(itemHash);
@@ -55,6 +59,7 @@ public class HUD {
 			System.out.println("Item Selected: " + item.toString());
 			Game.selected_item = item.getHash();
 		}
+		drawInventory();
 	}
 	
 	public static void drawInventory() {
@@ -65,10 +70,9 @@ public class HUD {
 		
 		Element inventory_element = nifty.getCurrentScreen().findElementByName("inventory");
 		for (Element el : inventory_element.getElements()) {
-			el.markForRemoval(null);
+			el.markForRemoval();
 		}
 		
-		// Draw inventory slots
 		for (int j = 1; j <= pc.getInventorySize() / row_length; j++) {
 			boolean lastRow = false;
 			Element p = new PanelBuilder(){{
@@ -88,32 +92,29 @@ public class HUD {
 				final String slotId = "slot" + ((j-1)*row_length + i);
 				final Item item = inventory[(j - 1)*row_length  + i];
 				
-				el = new ControlBuilder(slotId, "droppable") {{
-					width("32px");
-					height("32px");
-					marginTop("4px");
-					marginLeft("4px");
+				el = new PanelBuilder(slotId) {{
+					style("inventoryTileWrapper");
 					panel(new PanelBuilder() {{
-						backgroundColor("#3333");
-						childLayoutCenter();
+						if (item != null && item.getHash().equals(Game.selected_item)) {
+							style("inventoryTileSelected");
+						} else {
+							style("inventoryTile");
+						}
 						if (item != null) {
 							final String texture = item.getType().texture_location.substring(1);
-							
 							interactOnClick("selectItem(" + slotId + ")");
-							control(new DraggableBuilder("item-" + item.getHash()) {{
+							panel(new PanelBuilder("item-" + item.getHash()) {{
 								childLayoutAbsolute();
 								image(new ImageBuilder() {{
-									childLayoutCenter();
 									filename(texture);
+									childLayoutCenter();
 									x("0px");
 									y("0px");
 								}});
 								if (item.getQuantity() > 1) {
 									text(new TextBuilder() {{
 										text(String.valueOf(item.getQuantity()));
-										style("hud-font-10");
-										x("16px");
-										y("22px");
+										style("stackCount");
 									}});
 								}
 							}});

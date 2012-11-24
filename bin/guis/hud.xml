@@ -3,6 +3,22 @@
   <useStyles filename="nifty-default-styles.xml" />
   <useControls filename="nifty-default-controls.xml" />
   
+  <style id="inventoryTileWrapper">
+  	<attributes width="32px" height="32px" marginTop="4px" marginLeft="4px" childLayout="center" />
+  </style>
+  
+  <style id="inventoryTile">
+  	<attributes backgroundColor="#3333" childLayout="center" />
+  </style>
+  
+   <style id="inventoryTileSelected">
+  	<attributes backgroundColor="#F00F" childLayout="center"/>
+  </style>
+  
+  <style id="stackCount" base="hud-font-10">
+	<attributes x="16px" y="22px" />
+  </style>
+  
   <style id="hud-font">
     <attributes font="fonts/hobo.16.fnt" color="#ffff"/>
   </style>

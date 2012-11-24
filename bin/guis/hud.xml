@@ -7,6 +7,10 @@
     <attributes font="fonts/hobo.16.fnt" color="#ffff"/>
   </style>
   
+  <style id="hud-font-10">
+    <attributes font="fonts/hobo.10.fnt" color="#ffff"/>
+  </style>
+  
   <screen id="hud" controller="sprawl.controllers.HUDController">
   	<layer childLayout="vertical">
   		<panel id="header" width="100%" childLayout="horizontal" padding="10px">

@@ -8,6 +8,7 @@ import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.builder.ControlBuilder;
 import de.lessvoid.nifty.builder.ImageBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
+import de.lessvoid.nifty.builder.TextBuilder;
 import de.lessvoid.nifty.controls.dragndrop.builder.DraggableBuilder;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.screen.Screen;
@@ -82,11 +83,21 @@ public class HUD {
 							childLayoutCenter();
 							interactOnClick("selectItem(" + slotId + ")");
 							control(new DraggableBuilder("item-" + item.getHash()) {{
-								childLayoutCenter();
+								childLayoutAbsolute();
 								image(new ImageBuilder() {{
 									childLayoutCenter();
 									filename(texture);
+									x("0px");
+									y("0px");
 								}});
+								if (item.getQuantity() > 1) {
+									text(new TextBuilder() {{
+										text(String.valueOf(item.getQuantity()));
+										style("hud-font-10");
+										x("16px");
+										y("22px");
+									}});
+								}
 							}});
 						}});
 					}}.build(nifty, screen, p); 

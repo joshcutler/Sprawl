@@ -33,6 +33,19 @@ public class HUD {
 		inventory.setVisible(!inventory.isVisible());
 	}
 	
+	public static String reorderItems(String slotId, String itemHash) {
+		Game game = Game.currentGame;
+		PC pc = game.getPC();
+		
+		Item oldItem = null;
+		Item newItem = pc.getItemByHash(itemHash);
+		
+		pc.removeItem(itemHash);
+		pc.setItemAt(Integer.parseInt(slotId), newItem);
+		
+		return (oldItem != null) ? oldItem.getHash() : null;
+	}
+	
 	public static void selectItem(Element slot, String itemHash) {
 		//TODO: Do something in the UI to show that it is selected
 		
@@ -48,7 +61,7 @@ public class HUD {
 		Game game = Game.currentGame;
 		PC pc = game.getPC();
 		int row_length = 16;
-		ArrayList<Item> inventory  = pc.getInventory();
+		Item[] inventory  = pc.getInventory();
 		
 		Element inventory_element = nifty.getCurrentScreen().findElementByName("inventory");
 		for (Element el : inventory_element.getElements()) {
@@ -73,18 +86,19 @@ public class HUD {
 			for (int i = 0; i < slots_to_draw; i++) {
 				Element el = null;
 				final String slotId = "slot" + ((j-1)*row_length + i);
-				try {
-					final Item item = inventory.get((j-1)*row_length  + i);
-					final String texture = item.getType().texture_location.substring(1);
-					
-					el = new ControlBuilder(slotId, "droppable") {{
-						width("32px");
-						height("32px");
-						marginTop("4px");
-						marginLeft("4px");
-						panel(new PanelBuilder() {{
-							backgroundColor("#3333");
-							childLayoutCenter();
+				final Item item = inventory[(j - 1)*row_length  + i];
+				
+				el = new ControlBuilder(slotId, "droppable") {{
+					width("32px");
+					height("32px");
+					marginTop("4px");
+					marginLeft("4px");
+					panel(new PanelBuilder() {{
+						backgroundColor("#3333");
+						childLayoutCenter();
+						if (item != null) {
+							final String texture = item.getType().texture_location.substring(1);
+							
 							interactOnClick("selectItem(" + slotId + ")");
 							control(new DraggableBuilder("item-" + item.getHash()) {{
 								childLayoutAbsolute();
@@ -103,22 +117,9 @@ public class HUD {
 									}});
 								}
 							}});
-						}});
-					}}.build(nifty, screen, p); 
-					
-				} catch (IndexOutOfBoundsException e) {
-					el = new ControlBuilder(slotId, "droppable") {{
-						width("32px");
-						height("32px");
-						marginTop("4px");
-						marginLeft("4px");
-						panel(new PanelBuilder() {{
-							backgroundColor("#3333");
-							childLayoutCenter();
-							interactOnClick("selectItem(" + slotId + ")");
-						}});
-					}}.build(nifty, screen, p); 
-				}
+						}
+					}});
+				}}.build(nifty, screen, p); 
 				
 				//Special Case padding on the end
 				if (i == slots_to_draw - 1) {

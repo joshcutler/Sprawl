@@ -10,7 +10,7 @@ import sprawl.items.ItemType;
 
 public class PC extends Killable{
 	private int inventorySize;
-	ArrayList<Item> inventory = new ArrayList<Item>();
+	Item[] inventory;;
 	
 	public PC() {
 		this.height = Constants.BLOCK_SIZE * 4;
@@ -26,21 +26,22 @@ public class PC extends Killable{
 		this.maxHealth = 10;
 		this.health = 10;
 		this.inventorySize = 32;
+		this.inventory = new Item[this.inventorySize];
 		
 		this.loadTexture();
 		
 		// Initialize some basic items
-		this.inventory.add(new Item(ItemType.STONE_BLOCK));
-		((Item) this.inventory.get(0)).addToStack(100);
-		this.inventory.add(new Item(ItemType.DIRT_BLOCK));
-		((Item) this.inventory.get(1)).addToStack(100);
+		this.inventory[0] = new Item(ItemType.STONE_BLOCK);
+		this.inventory[0].addToStack(100);
+		this.inventory[1] = new Item(ItemType.DIRT_BLOCK);
+		this.inventory[1].addToStack(100);
 	}
 
 	public int getInventorySize() {
 		return inventorySize;
 	}
 
-	public ArrayList<Item> getInventory() {
+	public Item[] getInventory() {
 		return inventory;
 	}
 	
@@ -59,10 +60,24 @@ public class PC extends Killable{
 		Item item = this.getItemByHash(itemHash);
 		
 		if (item.getQuantity() == 1) {
-			this.inventory.remove(item);
+			this.removeItem(itemHash);
 		} else {
 			item.decrement(1);
 		}
 		return item;
+	}
+	
+	public boolean removeItem(String itemHash) {
+		for (int i = 0; i < inventory.length; i++) {
+			if (inventory[i].getHash().equals(itemHash)) {
+				inventory[i] = null;
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public void setItemAt(int position, Item item) {
+		this.inventory[position] = item;
 	}
 }

@@ -30,7 +30,7 @@ import de.lessvoid.nifty.sound.openal.OpenALSoundDevice;
 import de.lessvoid.nifty.spi.time.impl.AccurateTimeProvider;
 
 public class PlayState implements GameState {
-	private Nifty nifty;
+	public Nifty nifty;
 	private LwjglInputSystem inputSystem;
 	
 	public PlayState(Game game, int seed) {
@@ -55,7 +55,11 @@ public class PlayState implements GameState {
 	      e.printStackTrace();
 	    }
 	}
-
+	
+	public Nifty getNifty() {
+		return nifty;
+	}
+	
 	@Override
 	public void render(int delta, Game game) {
 		Camera camera = game.getCamera();
@@ -87,6 +91,7 @@ public class PlayState implements GameState {
     	
     	world.growPlants(delta, camera);
     	world.growGroundCover(delta, camera);
+    	
     	nifty.update();
     	game.updateFPS();
 	}

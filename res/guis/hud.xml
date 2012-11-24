@@ -11,6 +11,47 @@
     <attributes font="fonts/hobo.10.fnt" color="#ffff"/>
   </style>
   
+  <style id="hud-font-24">
+    <attributes font="fonts/hobo.24.fnt" color="#ffff"/>
+  </style>
+  
+  <style id="menu-item" base="hud-font-24">
+    <attributes align="center" textHAlign="center" color="#f" width="100%"
+                focusable="true"
+                controller="de.lessvoid.nifty.controls.MenuItemControl"
+                inputMapping="de.lessvoid.nifty.input.mapping.MenuInputMapping" />
+    <effect>
+      <onHover name="focus" />
+      <onFocus name="textColor" color="#f00f" />
+    </effect>
+  </style>
+  
+  <screen id="pause" controller="sprawl.controllers.PauseController">
+  	<layer childLayout="vertical">
+  		<panel />
+  		<panel childLayout="center" width="100%">
+  		 	<panel childLayout="horizontal" width="100%" height="100%">
+		  		<control id="pauseMenuScrollPanel" name="scrollPanel" horizontal="false" vertical="false" stepSizeY="30" height="100%" width="100%">
+			  		<panel childLayout="center" width="100%" padding="30px,40px,0px,40px" align="center">
+               			<panel childLayout="vertical" align="center" width="100px">
+				  			<text style="menu-item" text="Resume" align="center">
+				  				<interact onClick="resume()" />
+				  			</text>
+				  			<text style="menu-item" text="Main Menu" align="center">
+				  				<interact onClick="mainMenu()" />
+				  			</text>
+				  			<text style="menu-item" text="Quit" align="center">
+				  				<interact onClick="quit()" />
+				  			</text>
+				  		</panel>
+			  		</panel>
+			  	</control>
+		  	</panel>
+	  	</panel>
+	  	<panel />
+  	</layer>
+  </screen>
+  
   <screen id="hud" controller="sprawl.controllers.HUDController">
   	<layer childLayout="vertical">
   		<panel id="header" width="100%" childLayout="horizontal" padding="10px">

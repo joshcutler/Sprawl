@@ -10,12 +10,18 @@ import de.lessvoid.nifty.spi.time.impl.AccurateTimeProvider;
 public class MainMenuState implements GameState {
 	
 	private Nifty nifty;
-	private LwjglInputSystem inputSystem; 
+	private LwjglInputSystem inputSystem;
+	private static boolean showIntro = true;
 	
 	public MainMenuState() {
 		nifty = new Nifty(new LwjglRenderDevice(), new OpenALSoundDevice(), new LwjglInputSystem(), new AccurateTimeProvider());
-		nifty.fromXml("guis/mainmenu.xml", "start");
+		nifty.fromXml("guis/mainmenu.xml", (!MainMenuState.showIntro || Game.debug ? "menu" : "start"));
+		MainMenuState.showIntro = false;
 		//nifty.setDebugOptionPanelColors(true);
+		
+		if (Game.currentGame != null) {
+			Game.currentGame.reset();
+		}
 		
 		try {
 	      inputSystem = new LwjglInputSystem();
@@ -40,6 +46,10 @@ public class MainMenuState implements GameState {
 	@Override
 	public void handleInput(Game game) {
 		
+	}
+	
+	public Nifty getNifty() {
+		return nifty;
 	}
 
 }

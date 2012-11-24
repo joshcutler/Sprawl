@@ -19,6 +19,10 @@ public class HUD {
 	public static Screen screen;
 	private static boolean HUDDrawn = false;
 	
+	public static void reset() {
+		HUD.HUDDrawn = false;
+	}
+	
 	public static void toggleInventory() {
 	    if (!HUD.HUDDrawn) {
 	    	HUD.drawInventory();

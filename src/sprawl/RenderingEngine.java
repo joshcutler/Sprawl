@@ -455,7 +455,7 @@ public class RenderingEngine {
 	}
 	
 	public static void updateHUD(Nifty hud, PC pc, int tiles_drawn, World world, int fps) {
-		if (hud != null) {
+		if (hud != null && hud.getCurrentScreen().getScreenId().equals("hud")) {
 			// Update Health
 			Element health_meter = hud.getCurrentScreen().findElementByName("health");
 			health_meter.getRenderer(TextRenderer.class).setText(pc.getHealth() + "/" + pc.getMaxHealth());

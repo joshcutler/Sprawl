@@ -17,7 +17,6 @@ import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
 
 import sprawl.entities.PC;
-import sprawl.items.Item;
 import sprawl.states.GameState;
 import sprawl.states.MainMenuState;
 import sprawl.states.PlayState;
@@ -200,5 +199,9 @@ public class Game {
 
 	public int getFPS() {
 		return last_fps;
+	}
+	
+	public void reset() {
+		HUD.reset();
 	}
 }

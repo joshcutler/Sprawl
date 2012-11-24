@@ -42,7 +42,7 @@ public class Game {
 	private PC pc;
 	private PhysicsEngine physics;
 	private Camera camera;
-	public static Item selected_item;
+	public static String selected_item;
 	public static int selector_x = 0;
 	public static int selector_y = 0;
 	

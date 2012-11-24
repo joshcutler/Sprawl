@@ -54,4 +54,15 @@ public class PC extends Killable{
 		}
 		return null;
 	}
+	
+	public Item removeItemInstance(String itemHash) {
+		Item item = this.getItemByHash(itemHash);
+		
+		if (item.getQuantity() == 1) {
+			this.inventory.remove(item);
+		} else {
+			item.decrement(1);
+		}
+		return item;
+	}
 }

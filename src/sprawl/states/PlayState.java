@@ -106,9 +106,11 @@ public class PlayState implements GameState {
 		Game.selector_y = Math.round(camera.translateY(mouse_y) / Constants.BLOCK_SIZE);
 
 		if (right_mouse_clicked) {
-			Item item = Game.selected_item;
+			Item item = pc.getItemByHash(Game.selected_item);
 			if (item != null) {
 				if (item.getType().placeable && world.canPlace(Game.selector_x, Game.selector_y)) {
+					item = pc.removeItemInstance(item.getHash());
+					HUD.drawInventory();
 					world.setAt(Game.selector_x, Game.selector_y, item.placeAs());
 				}
 			}

@@ -36,7 +36,7 @@ public class HUD {
 		Item item = Game.currentGame.getPC().getItemByHash(itemHash);
 		if (item != null) {
 			System.out.println("Item Selected: " + item.toString());
-			Game.selected_item = item;
+			Game.selected_item = item.getHash();
 		}
 	}
 	

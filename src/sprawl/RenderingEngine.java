@@ -40,6 +40,7 @@ import org.newdawn.slick.opengl.TextureLoader;
 
 import sprawl.entities.Entity;
 import sprawl.entities.PC;
+import sprawl.items.Item;
 import sprawl.items.ItemType;
 import sprawl.vegetation.CoverType;
 import sprawl.world.Block;
@@ -445,9 +446,10 @@ public class RenderingEngine {
 //	}
 	
 	public static void drawSelectionBox(Camera camera) {
-		if (Game.selected_item != null && Game.selected_item.getType().placeable) {
+		Item item = Game.currentGame.getPC().getItemByHash(Game.selected_item);
+		if (item != null && item.getType().placeable) {
 			glColor4f(1f, 1f, 1f, 0.5f);
-			new Block(Game.selected_item.placeAs()).draw(Game.selector_x * Constants.BLOCK_SIZE, Game.selector_y * Constants.BLOCK_SIZE);
+			new Block(item.placeAs()).draw(Game.selector_x * Constants.BLOCK_SIZE, Game.selector_y * Constants.BLOCK_SIZE);
 			glColor4f(1f, 1f, 1f, 1f);
 		}
 	}

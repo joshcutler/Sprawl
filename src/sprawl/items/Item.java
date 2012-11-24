@@ -45,4 +45,9 @@ public class Item {
 	public String getHash() {
 		return hash;
 	}
+	
+	public boolean decrement(int count) {
+		this.quantity -= count;
+		return(this.quantity >= 0);
+	}
 }

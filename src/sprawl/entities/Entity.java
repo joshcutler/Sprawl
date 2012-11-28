@@ -17,7 +17,7 @@ import sprawl.Vec2;
 
 public abstract class Entity {
 	protected float acceleration;
-	protected EntityDirection direction;
+	protected EntityDirection direction = EntityDirection.RIGHT;
 	protected int height;
 	protected float jumpSpeed;
 	

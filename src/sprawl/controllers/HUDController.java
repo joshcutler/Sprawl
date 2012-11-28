@@ -42,6 +42,10 @@ public class HUDController implements ScreenController {
 		HUD.toggleInventory();
 	}
 	
+	public void beginDragCheck(int x, int y) {
+		System.out.println("beginDragCheckWithCoords() clicked at: " + x + ", " + y);
+	}
+	
 	public void selectItem(String slotId) {
 		Element slot = screen.findElementByName(slotId);
 		

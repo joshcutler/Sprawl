@@ -91,10 +91,6 @@ public class Game {
         }
         System.setProperty("org.lwjgl.librarypath", nativeDir);
         
-        //Fix Nifty Logging
-        Logger.getLogger("de.lessvoid.nifty").setLevel(Level.SEVERE); 
-        Logger.getLogger("NiftyInputEventHandlingLog").setLevel(Level.SEVERE);
-        
         RenderingEngine.initOpenGL();
 		getDelta();
         lastFPS = getTime();

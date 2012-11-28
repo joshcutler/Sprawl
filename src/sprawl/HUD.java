@@ -103,6 +103,7 @@ public class HUD {
 						if (item != null) {
 							final String texture = item.getType().texture_location.substring(1);
 							interactOnClick("selectItem(" + slotId + ")");
+							interactOnClickMouseMove("beginDragCheck()");
 							panel(new PanelBuilder("item-" + item.getHash()) {{
 								childLayoutAbsolute();
 								image(new ImageBuilder() {{

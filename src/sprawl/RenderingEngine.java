@@ -226,9 +226,9 @@ public class RenderingEngine {
         }
     }
 	
-	public static void drawEntities(Camera camera, World world) {
+	public static void drawEntities(Camera camera, World world, int delta) {
 		for (Entity e : world.getEntities()) {
-			e.draw();
+			e.draw(delta);
 		}
 	}
 	

@@ -1,21 +1,9 @@
 package sprawl.entities;
 
-import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glEnd;
-import static org.lwjgl.opengl.GL11.glTexCoord2f;
-import static org.lwjgl.opengl.GL11.glVertex2f;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureLoader;
-
+import sprawl.Animation;
 import sprawl.Constants;
 import sprawl.LightSource;
 import sprawl.PhysicsType;
-import sprawl.RenderingEngine;
 import sprawl.items.Item;
 import sprawl.items.ItemType;
 
@@ -23,12 +11,10 @@ public class PC extends Killable{
 	private int inventorySize;
 	Item[] inventory;
 	
-	protected Texture headTexture;
-	protected String headTextureLocation;
-	protected Texture torsoTexture;
-	protected String torsoTextureLocation;
-	protected Texture legsTexture;
-	protected String legsTextureLocation;
+	protected Animation headAnimation;
+	protected Animation torsoAnimation;
+	protected Animation legsAnimation;
+	protected PCLegsState legsState;
 	
 	public PC() {
 		this.height = Constants.BLOCK_SIZE * 4;
@@ -44,9 +30,10 @@ public class PC extends Killable{
 		this.health = 10;
 		this.inventorySize = 32;
 		this.inventory = new Item[this.inventorySize];
-		this.headTextureLocation = "/textures/pc-head.png";
-		this.torsoTextureLocation = "/textures/pc-torso.png";
-		this.legsTextureLocation = "/textures/pc-legs.png";
+		
+		this.headAnimation = new Animation("/textures/pc-head.png", 32, 32, 0, 0, 1f);
+		this.torsoAnimation = new Animation("/textures/pc-torso.png", 32, 32, 0, 0, 1f);
+		this.legsAnimation = new Animation("/textures/pc-legs.png", 32, 32, 0, 3, 1f);
 		
 		this.loadTexture();
 		
@@ -55,6 +42,8 @@ public class PC extends Killable{
 		this.inventory[0].addToStack(100);
 		this.inventory[1] = new Item(ItemType.DIRT_BLOCK);
 		this.inventory[1].addToStack(100);
+		
+		this.legsState = PCLegsState.STANDING;
 	}
 
 	public int getInventorySize() {
@@ -102,132 +91,25 @@ public class PC extends Killable{
 	}
 	
 	protected void loadTexture() {
-		try {
-			this.headTexture = TextureLoader.getTexture("PNG",
-					RenderingEngine.class.getResourceAsStream(this.headTextureLocation));
-			System.out.println("Texture Loaded: " + this.headTextureLocation);
-			this.torsoTexture = TextureLoader.getTexture("PNG",
-					RenderingEngine.class.getResourceAsStream(this.torsoTextureLocation));
-			System.out.println("Texture Loaded: " + this.torsoTextureLocation);
-			this.legsTexture = TextureLoader.getTexture("PNG",
-					RenderingEngine.class.getResourceAsStream(this.legsTextureLocation));
-			System.out.println("Texture Loaded: " + this.legsTextureLocation);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		this.headAnimation.init();
+		this.torsoAnimation.init();
+		this.legsAnimation.init();
 	}
 	
-	public void draw() {
+	public void draw(int delta) {
 		int bumpDown = 4;
-		drawLegs(bumpDown);
-		drawTorso(bumpDown);
-		drawHead(bumpDown);
+		int dX = Math.round(x);
+		int dY = Math.round(y);
+		boolean flipped = (this.direction == EntityDirection.LEFT);
+		legsAnimation.draw(dX, dY + bumpDown + 39, flipped, delta);
+		torsoAnimation.draw(dX, dY + bumpDown + 15, flipped, delta);
+		headAnimation.draw(dX, dY + bumpDown, flipped, delta);
 	}
 	
-	private void drawLegs(int bumpDown) {
-		int legsHeight = 32, legsWidth = 32, legsSprites = 16;
-		int legsY = Math.round(y) + 39 + bumpDown;
-		try {
-			this.legsTexture.bind();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		if (this.direction == EntityDirection.LEFT) {
-			int legsX = Math.round(x) - 4;
-	    	glBegin(GL_QUADS);
-	    		glTexCoord2f(1, 0);
-		    	glVertex2f(legsX, legsY);
-		    	glTexCoord2f(0, 0);
-		    	glVertex2f(legsWidth + legsX, legsY);
-		    	glTexCoord2f(0, 1f/legsSprites);
-		    	glVertex2f(legsWidth + legsX, legsHeight + legsY);
-		    	glTexCoord2f(1, 1f/legsSprites);
-		    	glVertex2f(legsX, legsHeight + legsY);
-		    glEnd();
-		} else if (this.direction == EntityDirection.RIGHT) {
-			glBegin(GL_QUADS);
-				int legsX = Math.round(x) + 4;
-	    		glTexCoord2f(0, 0);
-		    	glVertex2f(legsX, legsY);
-		    	glTexCoord2f(1, 0);
-		    	glVertex2f(legsWidth + legsX, legsY);
-		    	glTexCoord2f(1, 1f/legsSprites);
-		    	glVertex2f(legsWidth + legsX, legsHeight + legsY);
-		    	glTexCoord2f(0, 1f/legsSprites);
-		    	glVertex2f(legsX, legsHeight + legsY);
-		    glEnd();
-		}
-	}
-	
-	private void drawTorso(int bumpDown) {
-		int torsoHeight = 32, torsoWidth = 32, torsoSprites = 16;
-		int torsoY = Math.round(y) + 15 + bumpDown;
-		int torsoX = Math.round(x);
-		try {
-			this.torsoTexture.bind();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		if (this.direction == EntityDirection.LEFT) { 
-	    	glBegin(GL_QUADS);
-	    		glTexCoord2f(1, 0);
-		    	glVertex2f(torsoX, torsoY);
-		    	glTexCoord2f(0, 0);
-		    	glVertex2f(torsoWidth + torsoX, torsoY);
-		    	glTexCoord2f(0, 1f/torsoSprites);
-		    	glVertex2f(torsoWidth + torsoX, torsoHeight + torsoY);
-		    	glTexCoord2f(1, 1f/torsoSprites);
-		    	glVertex2f(torsoX, torsoHeight + torsoY);
-		    glEnd();
-		} else if (this.direction == EntityDirection.RIGHT) {
-			glBegin(GL_QUADS);
-	    		glTexCoord2f(0, 0);
-		    	glVertex2f(torsoX, torsoY);
-		    	glTexCoord2f(1, 0);
-		    	glVertex2f(torsoWidth + torsoX, torsoY);
-		    	glTexCoord2f(1, 1f/torsoSprites);
-		    	glVertex2f(torsoWidth + torsoX, torsoHeight + torsoY);
-		    	glTexCoord2f(0, 1f/torsoSprites);
-		    	glVertex2f(torsoX, torsoHeight + torsoY);
-		    glEnd();
-		}
-	}
-	
-	private void drawHead(int bumpDown) {
-		int headHeight = 32, headWidth = 32, headSprites = 16;
-		int headY = Math.round(y) + bumpDown;
-		int headX = Math.round(x);
-		try {
-			this.headTexture.bind();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		if (this.direction == EntityDirection.LEFT) { 
-	    	glBegin(GL_QUADS);
-	    		glTexCoord2f(1, 0);
-		    	glVertex2f(headX, headY);
-		    	glTexCoord2f(0, 0);
-		    	glVertex2f(headWidth + headX, headY);
-		    	glTexCoord2f(0, 1f/headSprites);
-		    	glVertex2f(headWidth + headX, headHeight + headY);
-		    	glTexCoord2f(1, 1f/headSprites);
-		    	glVertex2f(headX, headHeight + headY);
-		    glEnd();
-		} else if (this.direction == EntityDirection.RIGHT) {
-			glBegin(GL_QUADS);
-	    		glTexCoord2f(0, 0);
-		    	glVertex2f(headX, headY);
-		    	glTexCoord2f(1, 0);
-		    	glVertex2f(headWidth + headX, headY);
-		    	glTexCoord2f(1, 1f/headSprites);
-		    	glVertex2f(headWidth + headX, headHeight + headY);
-		    	glTexCoord2f(0, 1f/headSprites);
-		    	glVertex2f(headX, headHeight + headY);
-		    glEnd();
+	public void setLegsState(PCLegsState newState) {
+		if (newState != legsState) {
+			this.legsState = newState;
+			this.legsAnimation.setFrames(newState.startFrame, newState.stopFrame);
 		}
 	}
 }

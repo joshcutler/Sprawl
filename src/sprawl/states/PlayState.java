@@ -20,6 +20,7 @@ import sprawl.RenderingEngine;
 import sprawl.entities.EntityDirection;
 import sprawl.entities.KeyCommand;
 import sprawl.entities.PC;
+import sprawl.entities.PCLegsState;
 import sprawl.items.Item;
 import sprawl.world.World;
 import sprawl.world.WorldGenerator;
@@ -67,7 +68,7 @@ public class PlayState implements GameState {
 		PC pc = game.getPC();
 		
 		int tiles_drawn = world.draw(camera);
-    	RenderingEngine.drawEntities(camera, world);
+    	RenderingEngine.drawEntities(camera, world, delta);
     	RenderingEngine.drawLights(game);
     	RenderingEngine.drawSelectionBox(camera);
     	RenderingEngine.updateHUD(nifty, pc, tiles_drawn, world, game.getFPS());
@@ -158,6 +159,7 @@ public class PlayState implements GameState {
 		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE) && pc.onSolidGround()) {
 			if (KeyCommand.JUMP.isArmed()) {
 				pc.setVelocityY(pc.getJumpSpeed());
+				pc.setLegsState(PCLegsState.STANDING);
 				KeyCommand.JUMP.resetArmed();
 			}
 		}
@@ -172,18 +174,21 @@ public class PlayState implements GameState {
 			if (KeyCommand.MOVE_RIGHT.isArmed()) {
 				pc.accelerateX(pc.getAcceleration(), walking);
 				pc.changeDirection(EntityDirection.RIGHT);
+				pc.setLegsState(PCLegsState.WALKING);
 				KeyCommand.MOVE_RIGHT.resetArmed();
 			}
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
 			if (KeyCommand.MOVE_LEFT.isArmed()) {
 				pc.accelerateX(-pc.getAcceleration(), walking);
 				pc.changeDirection(EntityDirection.LEFT);
+				pc.setLegsState(PCLegsState.WALKING);
 				KeyCommand.MOVE_LEFT.resetArmed();
 			}
 		} else {
 			// Stop the dude from sliding
 			if (pc.onSolidGround()) {
 				pc.setVelocityX(0);
+				pc.setLegsState(PCLegsState.STANDING);
 			}
 		}
 		KeyCommand.MOVE_RIGHT.updatePressed(Keyboard.isKeyDown(Keyboard.KEY_D));

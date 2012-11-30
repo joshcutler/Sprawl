@@ -63,7 +63,7 @@ public abstract class Entity {
 		}
 	}
 	
-	public void draw() {
+	public void draw(int delta) {
 		try {
 			this.bind();
 		} catch (Exception e) {

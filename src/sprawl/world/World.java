@@ -1,6 +1,11 @@
 package sprawl.world;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_QUADS;
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glColor3f;
+import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glTexCoord2f;
+import static org.lwjgl.opengl.GL11.glVertex2f;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,6 +22,7 @@ import org.jdom2.output.XMLOutputter;
 
 import sprawl.Camera;
 import sprawl.Constants;
+import sprawl.PhysicsEngine;
 import sprawl.Vec2;
 import sprawl.entities.Entity;
 import sprawl.vegetation.CoverType;
@@ -84,7 +90,14 @@ public class World {
 	}
 	
 	public boolean canPlace(int x, int y) {
+		// Make sure it is air blocks
 		if (blocks[x][y].getType() == BlockType.AIR && blocks[x][y].getForeGround() == null) {
+			// Make sure that you are not placing on a person
+			for (Entity e : entities) {
+				if (PhysicsEngine.collidesWithBlock(x, y, e)) {
+					return false;
+				}
+			}
 			return true;
 		}
 		return false;

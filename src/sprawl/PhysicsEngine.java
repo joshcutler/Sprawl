@@ -172,4 +172,21 @@ public class PhysicsEngine {
 			dynamic_entities.add(e);
 		}
 	}
+	
+	public static boolean collidesWithBlock(int x, int y, Entity e) {
+		Vec2 blockCoords = World.getBlockCoordinates(x, y);
+		boolean xCollision = false, yCollision = false;
+		if ((e.getX() >= blockCoords.x && e.getX() <= (blockCoords.x + Constants.BLOCK_SIZE)) || // Left side is in area
+			((e.getX() + e.getWidth()) >= blockCoords.x && (e.getX() + e.getWidth()) <= (blockCoords.x + Constants.BLOCK_SIZE)) || // Right side is in area
+			(e.getX() <= blockCoords.x && (e.getX() + e.getWidth()) >= (blockCoords.x + Constants.BLOCK_SIZE))) { // Spans area
+			 	xCollision = true;
+		}
+		if ((e.getY() >= blockCoords.y && e.getY() <= (blockCoords.y + Constants.BLOCK_SIZE)) || // top side is in area
+			((e.getY() + e.getHeight()) >= blockCoords.y && (e.getY() + e.getHeight()) <= (blockCoords.y + Constants.BLOCK_SIZE)) || // Bottom side is in area
+			(e.getY() <= blockCoords.y && (e.getY() + e.getHeight()) >= (blockCoords.y + Constants.BLOCK_SIZE))) { // Spans area
+				yCollision = true;
+		}
+		
+		return (xCollision && yCollision);
+	}
 }

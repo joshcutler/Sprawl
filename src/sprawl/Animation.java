@@ -27,8 +27,7 @@ public class Animation {
 	
 	public Animation(String textureLocation, int height, int width, int startFrame, int stopFrame, float duration) {
 		this.textureLocation = textureLocation;
-		this.setFrames(startFrame, stopFrame);
-		this.duration = duration;
+		this.setFrames(startFrame, stopFrame, duration);
 		this.height = height;
 		this.width = width;
 		
@@ -47,12 +46,13 @@ public class Animation {
 		System.out.println("Texture Loaded: " + this.textureLocation);
 	}
 	
-	public void draw(float x, float y, boolean flipped, int delta) {
+	public boolean draw(float x, float y, boolean flipped, int delta) {
 		//Update frame
 		timer += delta;
+		boolean cycled = (timer >= 1000 * duration);
 		timer = (int) (timer % (1000 * duration));
 		currentFrame = (int) Math.floor (timer / ((1000 * duration) / frames));
-		
+			
 		try {
 			this.texture.bind();
 			int rows = this.texture.getTextureWidth() / this.width;
@@ -87,6 +87,7 @@ public class Animation {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return cycled;
 	}
 	
 	public void resetAnimation() {
@@ -94,9 +95,11 @@ public class Animation {
 		this.timer = 0;
 	}
 	
-	public void setFrames(int startFrame, int stopFrame) {
+	public void setFrames(int startFrame, int stopFrame, float duration) {
+		this.resetAnimation();
 		this.startFrame = startFrame;
 		this.stopFrame = stopFrame;
 		this.frames = stopFrame - startFrame + 1;
+		this.duration = duration;
 	}
 }

@@ -13,7 +13,8 @@ public class Block {
     private Vegetation vegetation;
     private CoverType coverType;
     private ForeGroundType foreGround;
-	
+    private int digHealth;
+    
     public CoverType getCoverType() {
 		return coverType;
 	}
@@ -33,7 +34,7 @@ public class Block {
 
 	public Block(BlockType type) {
 		super();
-		this.type = type;
+		setType(type);
 		this.light = 0;
 	}
     
@@ -96,6 +97,7 @@ public class Block {
 
 	public void setType(BlockType type) {
 		this.type = type;
+		this.digHealth = type.digHealth;
 	}
 	
 	public void setTempType(BlockType type) {
@@ -116,5 +118,10 @@ public class Block {
 
 	public void setForeGround(ForeGroundType foreGround) {
 		this.foreGround = foreGround;
+	}
+	
+	public int setDigDamage(int dmg) {
+		this.digHealth -= dmg;
+		return digHealth;
 	}
 }

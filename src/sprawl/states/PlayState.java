@@ -20,8 +20,11 @@ import sprawl.RenderingEngine;
 import sprawl.entities.EntityDirection;
 import sprawl.entities.KeyCommand;
 import sprawl.entities.PC;
+import sprawl.entities.PCArmsState;
 import sprawl.entities.PCLegsState;
 import sprawl.items.Item;
+import sprawl.world.Block;
+import sprawl.world.BlockType;
 import sprawl.world.World;
 import sprawl.world.WorldGenerator;
 import de.lessvoid.nifty.Nifty;
@@ -98,7 +101,7 @@ public class PlayState implements GameState {
 	}
 
 	@Override
-	public void handleInput(Game game) {
+	public void handleInput(int delta, Game game) {
 		Camera camera = game.getCamera();
 		PC pc = game.getPC();
 		World world = game.getWorld();
@@ -121,6 +124,24 @@ public class PlayState implements GameState {
 				}
 			}
 		}
+		
+		if (left_mouse_clicked) {
+			Block b = world.getAt(Game.selector_x, Game.selector_y);
+			if (b.getType().isDiggable) {
+				pc.setArmsState(PCArmsState.SWINGING);
+				if (KeyCommand.DIG.isArmed()) {
+					if (b.setDigDamage(pc.getDigStrength()) <= 0) {
+						world.setAt(Game.selector_x, Game.selector_y, BlockType.AIR);
+						if (pc.addItem(new Item(b.getType().itemType))) {
+							HUD.drawInventory();
+						}
+					}
+					KeyCommand.DIG.resetArmed();
+				}
+			}
+			KeyCommand.DIG.updateTime(delta);
+		}
+
 		
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKey() == Keyboard.KEY_P && Keyboard.getEventKeyState()) {
@@ -163,7 +184,7 @@ public class PlayState implements GameState {
 				KeyCommand.JUMP.resetArmed();
 			}
 		}
-		KeyCommand.JUMP.updatePressed(Keyboard.isKeyDown(Keyboard.KEY_SPACE));
+		KeyCommand.JUMP.updateTime(delta);
 		
 		boolean walking = false;
 		if (Keyboard.isKeyDown(Keyboard.KEY_CAPITAL)) {
@@ -191,7 +212,7 @@ public class PlayState implements GameState {
 				pc.setLegsState(PCLegsState.STANDING);
 			}
 		}
-		KeyCommand.MOVE_RIGHT.updatePressed(Keyboard.isKeyDown(Keyboard.KEY_D));
-		KeyCommand.MOVE_LEFT.updatePressed(Keyboard.isKeyDown(Keyboard.KEY_A));
+		KeyCommand.MOVE_RIGHT.updateTime(delta);
+		KeyCommand.MOVE_LEFT.updateTime(delta);
 	}
 }

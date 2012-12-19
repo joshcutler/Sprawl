@@ -15,6 +15,11 @@ public class PC extends Killable{
 	protected Animation torsoAnimation;
 	protected Animation legsAnimation;
 	protected PCLegsState legsState;
+	protected PCArmsState armsState;
+	protected PCLegsState baseLegsState;
+	protected PCArmsState baseArmsState;
+	
+	protected int digStrength = 1;
 	
 	public PC() {
 		this.height = Constants.BLOCK_SIZE * 4;
@@ -33,7 +38,7 @@ public class PC extends Killable{
 		
 		this.headAnimation = new Animation("/textures/pc-head.png", 32, 32, 0, 0, 1f);
 		this.torsoAnimation = new Animation("/textures/pc-torso.png", 32, 32, 0, 0, 1f);
-		this.legsAnimation = new Animation("/textures/pc-legs.png", 32, 32, 0, 3, 1f);
+		this.legsAnimation = new Animation("/textures/pc-legs.png", 32, 32, 0, 0, 1f);
 		
 		this.loadTexture();
 		
@@ -43,7 +48,10 @@ public class PC extends Killable{
 		this.inventory[1] = new Item(ItemType.DIRT_BLOCK);
 		this.inventory[1].addToStack(100);
 		
-		this.legsState = PCLegsState.STANDING;
+		setLegsState(PCLegsState.STANDING);
+		setArmsState(PCArmsState.STANDING);
+		this.baseLegsState = PCLegsState.STANDING;
+		this.baseArmsState = PCArmsState.STANDING;
 	}
 
 	public int getInventorySize() {
@@ -102,14 +110,42 @@ public class PC extends Killable{
 		int dY = Math.round(y);
 		boolean flipped = (this.direction == EntityDirection.LEFT);
 		legsAnimation.draw(dX, dY + bumpDown + 39, flipped, delta);
-		torsoAnimation.draw(dX, dY + bumpDown + 15, flipped, delta);
 		headAnimation.draw(dX, dY + bumpDown, flipped, delta);
+		
+		if (torsoAnimation.draw(dX, dY + bumpDown + 15, flipped, delta) && armsState.single) {
+			this.setArmsState(baseArmsState);
+		}
 	}
 	
 	public void setLegsState(PCLegsState newState) {
 		if (newState != legsState) {
 			this.legsState = newState;
-			this.legsAnimation.setFrames(newState.startFrame, newState.stopFrame);
+			this.legsAnimation.setFrames(newState.startFrame, newState.stopFrame, newState.duration);
 		}
+	}
+	
+	public void setArmsState(PCArmsState newState) {
+		if (newState != armsState) {
+			this.armsState = newState;
+			this.torsoAnimation.setFrames(newState.startFrame, newState.stopFrame, newState.duration);
+		}
+	}
+
+	public int getDigStrength() {
+		return digStrength;
+	}
+	
+	public boolean addItem(Item item) {
+		for (int i = 0; i < inventorySize; i++) {
+			Item cItem = inventory[i];
+			if (cItem != null && cItem.getType() == item.getType() && cItem.getType().stackable) {
+				cItem.addToStack(item.getQuantity());
+				return true;
+			} else if (cItem == null) {
+				inventory[i] = item;
+				return true;
+			}
+		}
+		return false;
 	}
 }

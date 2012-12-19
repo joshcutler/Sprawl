@@ -135,7 +135,7 @@ public class Game {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 			glPushMatrix();
 			
-			currentState.handleInput(this);
+			currentState.handleInput(delta, this);
 			currentState.update(delta, this);
         	currentState.render(delta, this);
         	

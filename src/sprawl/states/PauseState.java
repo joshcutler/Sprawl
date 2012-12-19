@@ -41,7 +41,7 @@ public class PauseState implements GameState{
 	}
 	
 	@Override
-	public void handleInput(Game game) {
+	public void handleInput(int delta, Game game) {
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKey() == Keyboard.KEY_ESCAPE && Keyboard.getEventKeyState()) {
 				nifty.gotoScreen("hud");

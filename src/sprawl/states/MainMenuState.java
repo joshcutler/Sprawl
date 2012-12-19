@@ -44,7 +44,7 @@ public class MainMenuState implements GameState {
 	}
 
 	@Override
-	public void handleInput(Game game) {
+	public void handleInput(int delta, Game game) {
 		
 	}
 	

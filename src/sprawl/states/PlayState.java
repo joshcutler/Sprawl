@@ -44,7 +44,7 @@ public class PlayState implements GameState {
 		GameTime.reset(0, 12, 0);
 		game.setPC(new PC());
         
-		game.getPC().moveTo(16, 16);
+		game.getPC().moveTo(4, game.getWorld().getSeaLevel() - 4);
 		game.getPhysics().registerObject(game.getPC());
 		game.getWorld().addEntity(game.getPC());
 		
@@ -138,8 +138,21 @@ public class PlayState implements GameState {
 					}
 					KeyCommand.DIG.resetArmed();
 				}
+			} else if (b.getForeGround() != null && b.getForeGround().isChoppable) {
+				pc.setArmsState(PCArmsState.SWINGING);
+				if (KeyCommand.CHOP.isArmed()) {
+					
+					if (b.setChopDamage(pc.getChopStrength()) <= 0) {
+						world.setAt(Game.selector_x, Game.selector_y, BlockType.AIR);
+						if (pc.addItem(new Item(b.getForeGround().itemType))) {
+							HUD.drawInventory();
+						}
+					}
+					KeyCommand.CHOP.resetArmed();
+				}
 			}
 			KeyCommand.DIG.updateTime(delta);
+			KeyCommand.CHOP.updateTime(delta);
 		}
 
 		

@@ -20,6 +20,7 @@ public class PC extends Killable{
 	protected PCArmsState baseArmsState;
 	
 	protected int digStrength = 1;
+	protected int chopStrength = 1;
 	
 	public PC() {
 		this.height = Constants.BLOCK_SIZE * 4;
@@ -133,6 +134,10 @@ public class PC extends Killable{
 
 	public int getDigStrength() {
 		return digStrength;
+	}
+	
+	public int getChopStrength() {
+		return chopStrength;
 	}
 	
 	public boolean addItem(Item item) {

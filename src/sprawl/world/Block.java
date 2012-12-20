@@ -14,6 +14,7 @@ public class Block {
     private CoverType coverType;
     private ForeGroundType foreGround;
     private int digHealth;
+    private int chopHealth;
     
     public CoverType getCoverType() {
 		return coverType;
@@ -97,7 +98,9 @@ public class Block {
 
 	public void setType(BlockType type) {
 		this.type = type;
-		this.digHealth = type.digHealth;
+		if (type != null) {
+			this.digHealth = type.digHealth;
+		}
 	}
 	
 	public void setTempType(BlockType type) {
@@ -117,11 +120,21 @@ public class Block {
 	}
 
 	public void setForeGround(ForeGroundType foreGround) {
+		this.chopHealth = foreGround.chopHealth;
 		this.foreGround = foreGround;
 	}
 	
 	public int setDigDamage(int dmg) {
 		this.digHealth -= dmg;
 		return digHealth;
+	}
+	
+	public int setChopDamage(int dmg) {
+		this.chopHealth -= dmg;
+		return chopHealth;
+	}
+	
+	public int getChopHealth() {
+		return this.chopHealth;
 	}
 }

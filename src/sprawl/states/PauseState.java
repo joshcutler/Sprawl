@@ -2,21 +2,12 @@ package sprawl.states;
 
 import org.lwjgl.input.Keyboard;
 
-import sprawl.Camera;
-import sprawl.Constants;
 import sprawl.Game;
-import sprawl.GameTime;
-import sprawl.PhysicsEngine;
-import sprawl.entities.KeyCommand;
-import sprawl.entities.PC;
-import sprawl.world.World;
-import sprawl.world.WorldGenerator;
 import de.lessvoid.nifty.Nifty;
 
 public class PauseState implements GameState{
 	Nifty nifty;
 	
-	@SuppressWarnings("unchecked")
 	public PauseState() {
 	}
 	

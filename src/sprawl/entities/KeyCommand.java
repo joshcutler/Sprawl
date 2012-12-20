@@ -2,7 +2,7 @@ package sprawl.entities;
 
 public enum KeyCommand {
 
-    MOVE_LEFT(10), MOVE_RIGHT(10), JUMP(30), DIG(100);
+    MOVE_LEFT(10), MOVE_RIGHT(10), JUMP(30), DIG(100), CHOP(100);
     private final int repeat;
     private int countDown;
     private boolean armed;

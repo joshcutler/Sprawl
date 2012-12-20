@@ -10,8 +10,6 @@ import static org.lwjgl.opengl.GL11.glPushMatrix;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;

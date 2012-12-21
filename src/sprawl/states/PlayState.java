@@ -19,6 +19,8 @@ import sprawl.PhysicsEngine;
 import sprawl.RenderingEngine;
 import sprawl.entities.EntityDirection;
 import sprawl.entities.KeyCommand;
+import sprawl.entities.MOBEntity;
+import sprawl.entities.MOBType;
 import sprawl.entities.PC;
 import sprawl.entities.PCArmsState;
 import sprawl.entities.PCLegsState;
@@ -90,6 +92,7 @@ public class PlayState implements GameState {
 		physics.update(delta, world);
     	camera.update(pc, world);
     	
+    	world.updateEntities(delta, camera, pc);
     	world.growPlants(delta, camera);
     	world.growGroundCover(delta, camera);
     	
@@ -177,13 +180,17 @@ public class PlayState implements GameState {
 			if (Keyboard.getEventKey() == Keyboard.KEY_I && Keyboard.getEventKeyState()) {
 				HUD.toggleInventory();
 			}
+			
+			// Drop MOB
+			if (Keyboard.getEventKey() == Keyboard.KEY_M && Keyboard.getEventKeyState()) {
+				world.dropEntity(Game.selector_x * Constants.BLOCK_SIZE, Game.selector_y * Constants.BLOCK_SIZE, new MOBEntity(MOBType.DORK));
+			}
 		}
 		
 		// Handle movement
-		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE) && pc.onSolidGround()) {
+		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
 			if (KeyCommand.JUMP.isArmed()) {
-				pc.setVelocityY(pc.getJumpSpeed());
-				pc.setLegsState(PCLegsState.STANDING);
+				pc.jump();
 				KeyCommand.JUMP.resetArmed();
 			}
 		}

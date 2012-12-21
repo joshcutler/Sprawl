@@ -145,12 +145,15 @@ public class PhysicsEngine {
 			if (leftCollisionBlock != null) {
 				newVelocity.x = 0;
 				newX = leftX + Constants.BLOCK_SIZE + 1;
-			}
-			if (rightCollisionBlock != null) {
+				e.setFacingWall(true);
+			} else if (rightCollisionBlock != null) {
+				e.setFacingWall(true);
 				newVelocity.x = 0;
 				newX = rightX - (e.getWidth() + 1);
+			} else {
+				e.setFacingWall(false);
 			}
-			
+				
 			//Special Case the ground
 			if (downCollisionBlock != null) {
 				e.onSolidGround(true);

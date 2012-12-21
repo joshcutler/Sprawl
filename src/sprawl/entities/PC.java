@@ -6,6 +6,7 @@ import sprawl.LightSource;
 import sprawl.PhysicsType;
 import sprawl.items.Item;
 import sprawl.items.ItemType;
+import sprawl.world.World;
 
 public class PC extends Killable{
 	protected Animation headAnimation;
@@ -140,5 +141,16 @@ public class PC extends Killable{
 	
 	public boolean hasInventory() {
 		return true;
+	}
+
+	@Override
+	public void collidedWith(World world, Entity e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void jump() {
+		super.jump();
+		setLegsState(PCLegsState.STANDING);
 	}
 }

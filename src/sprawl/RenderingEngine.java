@@ -41,6 +41,7 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
 import sprawl.entities.Entity;
+import sprawl.entities.MOBType;
 import sprawl.entities.PC;
 import sprawl.items.Item;
 import sprawl.items.ItemType;
@@ -201,6 +202,19 @@ public class RenderingEngine {
 			try {
 				registerTexture(item_type.texture_location, TextureLoader.getTexture("PNG",
 						RenderingEngine.class.getResourceAsStream(item_type.texture_location)));
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		for (MOBType mob_type : MOBType.values()) {
+			try {
+				registerTexture(mob_type.texture_location, TextureLoader.getTexture("PNG",
+						RenderingEngine.class.getResourceAsStream(mob_type.texture_location)));
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

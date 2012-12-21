@@ -34,6 +34,7 @@ public abstract class Entity {
 
 	protected float mass = 1;
 	protected boolean onSolidground = false;
+	protected boolean facingWall = false;
 	protected PhysicsType physicsType;
 	protected float speed;
 	protected float walkSpeed;
@@ -242,11 +243,19 @@ public abstract class Entity {
 		return (int) Math.ceil((float)this.width / Constants.BLOCK_SIZE);
 	}
 	
-	public void collidedWith(World world, Entity e) {
-		
+	public abstract void collidedWith(World world, Entity e);
+	
+	public void jump() {
+		if (onSolidground) {
+			setVelocityY(jumpSpeed);
+		}		
 	}
 	
 	public boolean hasInventory() {
+		return false;
+	}
+	
+	public boolean isMOB() {
 		return false;
 	}
 	
@@ -262,5 +271,13 @@ public abstract class Entity {
 			}
 		}
 		return false;
+	}
+	
+	public boolean getFacingWall() {
+		return facingWall;
+	}
+	
+	public void setFacingWall(boolean fw) {
+		this.facingWall = fw;
 	}
 }

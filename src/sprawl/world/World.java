@@ -27,6 +27,8 @@ import sprawl.RenderingEngine;
 import sprawl.Vec2;
 import sprawl.entities.Entity;
 import sprawl.entities.ItemEntity;
+import sprawl.entities.MOBEntity;
+import sprawl.entities.PC;
 import sprawl.items.Item;
 import sprawl.items.ItemType;
 import sprawl.vegetation.CoverType;
@@ -261,6 +263,23 @@ public class World {
 	
 	public int getHeightInPixels() {
 		return (blocks[0].length - 1) * Constants.BLOCK_SIZE;
+	}
+	
+	public void updateEntities(int delta, Camera camera, PC pc) {
+		for (Entity e : entities) {
+			if (e.isMOB()) {
+				e = (MOBEntity) e;
+				
+				// Move X
+				int sign = (pc.getX() < e.getX()) ? -1 : 1;
+				e.accelerateX(e.getAcceleration() * sign, false);
+				
+				// Jump if needed
+				if (e.getFacingWall()) {
+					e.jump();
+				}
+			}
+		}
 	}
 	
 	public void growPlants(int delta, Camera camera) {

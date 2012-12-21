@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import sprawl.Constants;
+import sprawl.PhysicsEngine;
 import sprawl.vegetation.CoverType;
 import sprawl.vegetation.Tree;
 
 public class WorldGenerator {
-	public static World generate(int seed) {
+	public static World generate(int seed, PhysicsEngine physics) {
 		Random gen = new Random(seed);
-		World world = new World();
+		World world = new World(physics);
 		
 		int seaLevel = (int) ((int) Constants.WORLD_HEIGHT * 0.10);
 		int crustLevel = (int) ((int) Constants.WORLD_HEIGHT * 0.10) + seaLevel;

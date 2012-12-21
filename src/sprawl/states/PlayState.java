@@ -18,6 +18,7 @@ import sprawl.HUD;
 import sprawl.PhysicsEngine;
 import sprawl.RenderingEngine;
 import sprawl.entities.EntityDirection;
+import sprawl.entities.ItemEntity;
 import sprawl.entities.KeyCommand;
 import sprawl.entities.PC;
 import sprawl.entities.PCArmsState;
@@ -40,13 +41,11 @@ public class PlayState implements GameState {
 	public PlayState(Game game, int seed) {
 		game.setCamera(new Camera());
 		game.setPhysics(new PhysicsEngine());
-		game.setWorld(WorldGenerator.generate(seed));
+		game.setWorld(WorldGenerator.generate(seed, game.getPhysics()));
 		GameTime.reset(0, 12, 0);
 		game.setPC(new PC());
         
-		game.getPC().moveTo(4, game.getWorld().getSeaLevel() - 4);
-		game.getPhysics().registerObject(game.getPC());
-		game.getWorld().addEntity(game.getPC());
+		game.getWorld().addEntity(4, game.getWorld().getSeaLevel() - 4, game.getPC());
 		
 		nifty = new Nifty(new LwjglRenderDevice(), new OpenALSoundDevice(), new LwjglInputSystem(), new AccurateTimeProvider());
 		nifty.fromXml("guis/hud.xml", "hud");
@@ -132,9 +131,7 @@ public class PlayState implements GameState {
 				if (KeyCommand.DIG.isArmed()) {
 					if (b.setDigDamage(pc.getDigStrength()) <= 0) {
 						world.setAt(Game.selector_x, Game.selector_y, BlockType.AIR);
-						if (pc.addItem(new Item(b.getType().itemType))) {
-							HUD.drawInventory();
-						}
+						world.dropEntity(Game.selector_x * Constants.BLOCK_SIZE, Game.selector_y * Constants.BLOCK_SIZE, new ItemEntity(new Item(b.getType().itemType)));
 					}
 					KeyCommand.DIG.resetArmed();
 				}
@@ -144,9 +141,8 @@ public class PlayState implements GameState {
 					
 					if (b.setChopDamage(pc.getChopStrength()) <= 0) {
 						world.setAt(Game.selector_x, Game.selector_y, BlockType.AIR);
-						if (pc.addItem(new Item(b.getForeGround().itemType))) {
-							HUD.drawInventory();
-						}
+						world.dropEntity(Game.selector_x * Constants.BLOCK_SIZE, Game.selector_y * Constants.BLOCK_SIZE, new ItemEntity(new Item(b.getForeGround().itemType)));
+
 					}
 					KeyCommand.CHOP.resetArmed();
 				}

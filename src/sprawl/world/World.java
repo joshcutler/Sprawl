@@ -25,6 +25,8 @@ import sprawl.Constants;
 import sprawl.PhysicsEngine;
 import sprawl.Vec2;
 import sprawl.entities.Entity;
+import sprawl.entities.ItemEntity;
+import sprawl.items.Item;
 import sprawl.vegetation.CoverType;
 import sprawl.vegetation.Vegetation;
 
@@ -33,8 +35,11 @@ public class World {
 	private List<Entity> entities = new ArrayList<Entity>();
 	private int seaLevel, crustLevel;
 	private List<Biome> biomes = new ArrayList<Biome>();
+	private PhysicsEngine physics;
 	
-	public World() {}
+	public World(PhysicsEngine physics) {
+		this.physics = physics;
+	}
 	
 	public World(File load_file) {
 		try {
@@ -52,7 +57,9 @@ public class World {
 		}
 	}
 	
-	public void addEntity(Entity e) {
+	public void addEntity(int x, int y, Entity e) {
+		e.moveTo(x, y);
+		physics.registerObject(e);
 		entities.add(e);
 	}
 	
@@ -306,5 +313,12 @@ public class World {
 		}
 		
 		return null;
+	}
+	
+	public void dropEntity(int x, int y, Entity e) {
+		this.addEntity(x, y, e);
+		int sign = (Math.random() > 0.5) ? 1 : -1;
+		double horizontal = Math.random() * 5;
+		e.setLinearVelocity(new Vec2((int)(sign*horizontal), 12));
 	}
 }

@@ -152,6 +152,9 @@ public class PhysicsEngine {
 			//Special Case the ground
 			if (downCollisionBlock != null) {
 				e.onSolidGround(true);
+				if (e.preventSlide) {
+					newVelocity.x = 0;
+				}
 			} else {
 				e.onSolidGround(false);
 			}

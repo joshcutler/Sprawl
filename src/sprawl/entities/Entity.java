@@ -18,11 +18,9 @@ import sprawl.Vec2;
 public abstract class Entity {
 	protected float acceleration;
 	protected EntityDirection direction = EntityDirection.RIGHT;
-	protected int height;
 	protected float jumpSpeed;
 	
 	protected LightSource lightSource;
-
 	protected Vec2 linearVelocity;
 
 	protected float mass = 1;
@@ -30,14 +28,14 @@ public abstract class Entity {
 	protected PhysicsType physicsType;
 	protected float speed;
 	protected float walkSpeed;
+	public boolean preventSlide = false;
 	public Texture texture;
 
 	public String texture_location;
 
 	protected int width;
-
+	protected int height;
 	protected float x;
-	
 	protected float y;
 	
 	public void accelerateX(float x, boolean isWalking) {

@@ -1,6 +1,10 @@
 package sprawl.entities;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_QUADS;
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glTexCoord2f;
+import static org.lwjgl.opengl.GL11.glVertex2f;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,8 +18,13 @@ import sprawl.PhysicsEngine;
 import sprawl.PhysicsType;
 import sprawl.RenderingEngine;
 import sprawl.Vec2;
+import sprawl.items.Item;
+import sprawl.world.World;
 
 public abstract class Entity {
+	protected int inventorySize;
+	protected Item[] inventory;
+	
 	protected float acceleration;
 	protected EntityDirection direction = EntityDirection.RIGHT;
 	protected float jumpSpeed;
@@ -246,5 +255,27 @@ public abstract class Entity {
 	
 	public int widthInBlocks() {
 		return (int) Math.ceil((float)this.width / Constants.BLOCK_SIZE);
+	}
+	
+	public void collidedWith(World world, Entity e) {
+		
+	}
+	
+	public boolean hasInventory() {
+		return false;
+	}
+	
+	public boolean addItem(Item item) {
+		for (int i = 0; i < inventorySize; i++) {
+			Item cItem = inventory[i];
+			if (cItem != null && cItem.getType() == item.getType() && cItem.getType().stackable) {
+				cItem.addToStack(item.getQuantity());
+				return true;
+			} else if (cItem == null) {
+				inventory[i] = item;
+				return true;
+			}
+		}
+		return false;
 	}
 }

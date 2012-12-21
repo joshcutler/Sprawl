@@ -8,9 +8,6 @@ import sprawl.items.Item;
 import sprawl.items.ItemType;
 
 public class PC extends Killable{
-	private int inventorySize;
-	Item[] inventory;
-	
 	protected Animation headAnimation;
 	protected Animation torsoAnimation;
 	protected Animation legsAnimation;
@@ -31,7 +28,8 @@ public class PC extends Killable{
 		this.jumpSpeed = 25f;
 		this.direction = EntityDirection.RIGHT;
 		this.lightSource = LightSource.Entity;
-		this.physicsType = PhysicsType.DYNAMIC;
+		this.physicsType = PhysicsType.DYNAMIC_COLLISION;
+
 		this.maxHealth = 10;
 		this.health = 10;
 		this.inventorySize = 32;
@@ -140,17 +138,7 @@ public class PC extends Killable{
 		return chopStrength;
 	}
 	
-	public boolean addItem(Item item) {
-		for (int i = 0; i < inventorySize; i++) {
-			Item cItem = inventory[i];
-			if (cItem != null && cItem.getType() == item.getType() && cItem.getType().stackable) {
-				cItem.addToStack(item.getQuantity());
-				return true;
-			} else if (cItem == null) {
-				inventory[i] = item;
-				return true;
-			}
-		}
-		return false;
+	public boolean hasInventory() {
+		return true;
 	}
 }

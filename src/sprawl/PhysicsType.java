@@ -1,5 +1,5 @@
 package sprawl;
 
 public enum PhysicsType {
-	STATIC, DYNAMIC, FOREGROUND
+	STATIC, DYNAMIC, DYNAMIC_COLLISION, FOREGROUND
 }

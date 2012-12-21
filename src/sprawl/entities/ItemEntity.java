@@ -1,9 +1,11 @@
 package sprawl.entities;
 
 import sprawl.Constants;
+import sprawl.HUD;
 import sprawl.LightSource;
 import sprawl.PhysicsType;
 import sprawl.items.Item;
+import sprawl.world.World;
 
 public class ItemEntity extends Entity {
 	private Item item;
@@ -20,5 +22,14 @@ public class ItemEntity extends Entity {
 		
 		this.texture_location = i.getType().texture_location;
 		this.loadTexture();
+	}
+	
+	public void collidedWith(World world, Entity e) {
+		if (e.hasInventory()) {
+			if (e.addItem(item)) {
+				world.removeEntity(this);
+				HUD.drawInventory();
+			}
+		}
 	}
 }

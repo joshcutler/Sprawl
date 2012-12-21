@@ -65,6 +65,11 @@ public class World {
 		entities.add(e);
 	}
 	
+	public void removeEntity(Entity e) {
+		physics.markForRemoval(e);
+		entities.remove(e);
+	}
+	
 	public List<Entity> getEntities() {
 		return this.entities;
 	}

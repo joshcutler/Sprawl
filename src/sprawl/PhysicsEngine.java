@@ -12,6 +12,8 @@ public class PhysicsEngine {
 	public static final int pixels_per_meter = 16;
 	private static final float gravity = -60f;
 	private static Set<Entity> dynamic_entities = new HashSet<Entity>();
+	private static Set<Entity> collision_entities = new HashSet<Entity>();
+	private static Set<Entity> remove_entities = new HashSet<Entity>();
 
 	public PhysicsEngine() {
 	}
@@ -163,6 +165,20 @@ public class PhysicsEngine {
 			e.setX(newX);
 			e.setY(newY);
 		}
+		
+		for (Entity collider : collision_entities) {
+			for (Entity target : dynamic_entities) {
+				if (collider != target && collidesWithEntity(collider, target)) {
+					target.collidedWith(world, collider);
+				}
+			}
+		}
+		
+		for (Entity e : remove_entities) {
+			dynamic_entities.remove(e);
+			collision_entities.remove(e);
+		}
+		remove_entities.clear();
 	}
 	
 	public static int numberOfBlocks(float x) {
@@ -174,6 +190,15 @@ public class PhysicsEngine {
 			e.setLinearVelocity(new Vec2(0, 0));
 			dynamic_entities.add(e);
 		}
+		if (e.getPhysicsType() == PhysicsType.DYNAMIC_COLLISION) {
+			e.setLinearVelocity(new Vec2(0, 0));
+			dynamic_entities.add(e);
+			collision_entities.add(e);
+		}
+	}
+	
+	public void markForRemoval(Entity e) {
+		remove_entities.add(e);
 	}
 	
 	public static boolean collidesWithBlock(int x, int y, Entity e) {
@@ -190,6 +215,22 @@ public class PhysicsEngine {
 				yCollision = true;
 		}
 		
+		return (xCollision && yCollision);
+	}
+	
+	public static boolean collidesWithEntity(Entity collider, Entity target) {
+		boolean xCollision = false, yCollision = false;
+		
+		if ((collider.getX() >= target.getX() && collider.getX() <= (target.getX() + target.getWidth())) || // Left side is in area
+			((collider.getX() + collider.getWidth()) >= target.getX() && (collider.getX() + collider.getWidth()) <= (target.getX() + target.getWidth())) || // Right side is in area
+			(collider.getX() <= target.getX() && (collider.getX() + collider.getWidth()) >= (target.getX() + target.getWidth()))) { // Spans area
+			 	xCollision = true;
+		}
+		if ((collider.getY() >= target.getY() && collider.getY() <= (target.getY() + target.getHeight())) || // top side is in area
+			((collider.getY() + collider.getHeight()) >= target.getY() && (collider.getY() + collider.getHeight()) <= (target.getY() + target.getHeight())) || // Bottom side is in area
+			(collider.getY() <= target.getY() && (collider.getY() + collider.getHeight()) >= (target.getY() + target.getHeight()))) { // Spans area
+				yCollision = true;
+		}
 		return (xCollision && yCollision);
 	}
 }

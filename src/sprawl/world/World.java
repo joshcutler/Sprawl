@@ -77,10 +77,65 @@ public class World {
 	public void setAt(int x, int y, BlockType b) {
 		Block block = new Block(b);
 		blocks[x][y] = block;
+		
+		// Set the block tile types
+		setBlockType(x, y);
+		setBlockType(x, y - 1);
+		setBlockType(x + 1, y);
+		setBlockType(x, y + 1);
+		setBlockType(x - 1, y);
+	}
+	
+	private void setBlockType(int x, int y) {
+		Block current = getAt(x, y);
+		Block top = getAt(x, y - 1);
+		Block bottom = getAt(x, y + 1);
+		Block left = getAt(x - 1, y);
+		Block right = getAt(x + 1, y);
+		
+		if (current != null) {
+			if (top != null && top.getType() == current.getType()) {
+				if (left != null && left.getType() == current.getType()) {
+					if (right != null && right.getType() == current.getType()) {
+						if (bottom != null && bottom.getType() == current.getType()) {
+							current.setBlockTile(BlockTile.CROSS);
+						} else {
+							current.setBlockTile(BlockTile.TTOP);
+						}
+					} else if (bottom != null && bottom.getType() == current.getType()) {
+						current.setBlockTile(BlockTile.TLEFT);
+					} else {
+						current.setBlockTile(BlockTile.CORNERBR);
+					}
+				} else if (right != null && right.getType() == current.getType()) {
+					if (bottom != null && bottom.getType() == current.getType()) {
+						current.setBlockTile(BlockTile.TRIGHT);
+					} else {
+						current.setBlockTile(BlockTile.CORNERBL);
+					}
+				} else {
+					current.setBlockTile(BlockTile.VERTICAL);
+				}
+			} else if (bottom != null && bottom.getType() == current.getType()) {
+				if (right != null && right.getType() == current.getType()) {
+					if (left != null && left.getType() == current.getType()) {
+						current.setBlockTile(BlockTile.TBOTTOM);
+					} else {
+						current.setBlockTile(BlockTile.CORNERTL);
+					}
+				} else if (left != null && left.getType() == current.getType()) {
+					current.setBlockTile(BlockTile.CORNERTR);
+				}
+			} else if ((right != null && right.getType() == current.getType()) || left != null && left.getType() == current.getType()) {
+				current.setBlockTile(BlockTile.HORIZONTAL);
+			} else {
+				current.setBlockTile(BlockTile.VERTICAL);
+			}
+		}
 	}
 	
 	public Block getAt(int x, int y) {
-		if (x < Constants.WORLD_WIDTH && y < Constants.WORLD_HEIGHT) {
+		if (x >= 0 && x < Constants.WORLD_WIDTH && y >= 0 && y < Constants.WORLD_HEIGHT) {
 			return blocks[x][y];
 		}
 		return null;

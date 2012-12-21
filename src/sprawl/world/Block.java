@@ -15,6 +15,7 @@ public class Block {
     private ForeGroundType foreGround;
     private int digHealth;
     private int chopHealth;
+    private BlockTile blockTile = BlockTile.VERTICAL;
     
     public CoverType getCoverType() {
 		return coverType;
@@ -40,16 +41,20 @@ public class Block {
 	}
     
     public void draw(float x, float y) {
+    	int numTiles = 32;
+    	float tileSize = 1f / numTiles;
+    	float hOffset = 0;
+    	float vOffset = blockTile.ordinal() * tileSize;
     	if (this.type != BlockType.AIR) {
 	    	this.bind();
 	    	glBegin(GL_QUADS);
-	    		glTexCoord2f(0, 0);
+	    		glTexCoord2f(hOffset, vOffset);
 		    	glVertex2f(0 + x, 0 + y);
-		    	glTexCoord2f(1, 0);
+		    	glTexCoord2f(hOffset + tileSize, vOffset);
 		    	glVertex2f(Constants.BLOCK_SIZE + x, 0 + y);
-		    	glTexCoord2f(1, 1);
+		    	glTexCoord2f(hOffset + tileSize, vOffset + tileSize);
 		    	glVertex2f(Constants.BLOCK_SIZE + x, Constants.BLOCK_SIZE + y);
-		    	glTexCoord2f(0, 1);
+		    	glTexCoord2f(hOffset, vOffset + tileSize);
 		    	glVertex2f(0 + x, Constants.BLOCK_SIZE + y);
 		    glEnd();
 		    
@@ -136,5 +141,13 @@ public class Block {
 	
 	public int getChopHealth() {
 		return this.chopHealth;
+	}
+	
+	public void setBlockTile(BlockTile bTile) {
+		this.blockTile = bTile;
+	}
+	
+	public BlockTile getBlockTile() {
+		return this.blockTile;
 	}
 }

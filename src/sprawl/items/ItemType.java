@@ -6,7 +6,6 @@ public enum ItemType {
 	STONE_BLOCK("/textures/stone.png", true, true), 
 	AIR_BLOCK("/textures/air.png", true, true), 
 	DIRT_BLOCK("/textures/dirt.png", true, true),
-	
 	WOOD_BLOCK("/textures/item_wood_block.png", true, true);
 
 	public final String texture_location;

@@ -33,6 +33,8 @@ public class Item {
 				return BlockType.DIRT;
 			} else if (this.type == ItemType.STONE_BLOCK) {
 				return BlockType.STONE;
+			} else if (this.type == ItemType.WOOD_BLOCK) {
+				return BlockType.WOOD;
 			}
 		}
 		return null;

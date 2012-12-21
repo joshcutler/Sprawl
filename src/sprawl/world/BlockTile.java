@@ -1,0 +1,5 @@
+package sprawl.world;
+
+public enum BlockTile {
+	VERTICAL, HORIZONTAL, CROSS, TLEFT, TRIGHT, TTOP, TBOTTOM, CORNERTL, CORNERTR, CORNERBL, CORNERBR;
+}

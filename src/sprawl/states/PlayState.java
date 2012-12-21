@@ -130,19 +130,15 @@ public class PlayState implements GameState {
 				pc.setArmsState(PCArmsState.SWINGING);
 				if (KeyCommand.DIG.isArmed()) {
 					if (b.setDigDamage(pc.getDigStrength()) <= 0) {
-						world.setAt(Game.selector_x, Game.selector_y, BlockType.AIR);
-						world.dropEntity(Game.selector_x * Constants.BLOCK_SIZE, Game.selector_y * Constants.BLOCK_SIZE, new ItemEntity(new Item(b.getType().itemType)));
+						world.harvestBlock(Game.selector_x,  Game.selector_y, b.getType().itemType);
 					}
 					KeyCommand.DIG.resetArmed();
 				}
 			} else if (b.getForeGround() != null && b.getForeGround().isChoppable) {
 				pc.setArmsState(PCArmsState.SWINGING);
 				if (KeyCommand.CHOP.isArmed()) {
-					
 					if (b.setChopDamage(pc.getChopStrength()) <= 0) {
-						world.setAt(Game.selector_x, Game.selector_y, BlockType.AIR);
-						world.dropEntity(Game.selector_x * Constants.BLOCK_SIZE, Game.selector_y * Constants.BLOCK_SIZE, new ItemEntity(new Item(b.getForeGround().itemType)));
-
+						world.harvestBlock(Game.selector_x, Game.selector_y, b.getForeGround().itemType);
 					}
 					KeyCommand.CHOP.resetArmed();
 				}

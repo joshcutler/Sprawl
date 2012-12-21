@@ -22,11 +22,13 @@ import org.jdom2.output.XMLOutputter;
 
 import sprawl.Camera;
 import sprawl.Constants;
+import sprawl.Game;
 import sprawl.PhysicsEngine;
 import sprawl.Vec2;
 import sprawl.entities.Entity;
 import sprawl.entities.ItemEntity;
 import sprawl.items.Item;
+import sprawl.items.ItemType;
 import sprawl.vegetation.CoverType;
 import sprawl.vegetation.Vegetation;
 
@@ -318,7 +320,23 @@ public class World {
 	public void dropEntity(int x, int y, Entity e) {
 		this.addEntity(x, y, e);
 		int sign = (Math.random() > 0.5) ? 1 : -1;
-		double horizontal = Math.random() * 5;
-		e.setLinearVelocity(new Vec2((int)(sign*horizontal), 12));
+		double horizontal = Math.random() * 3;
+		e.setLinearVelocity(new Vec2((int)(sign*horizontal), 10));
+	}
+	
+	public void harvestBlock(int x, int y, ItemType itemType) {
+		if (this.getAt(x, y).getForeGround() == ForeGroundType.TREE_TRUNK) {
+			while (this.getAt(x, y).getForeGround() == ForeGroundType.TREE_TRUNK) {
+				dropItem(x, y, itemType);
+				y -= 1;
+			}
+		} else {
+			dropItem(x, y, itemType);
+		}
+	}
+	
+	public void dropItem(int x, int y, ItemType itemType) {
+		this.setAt(x, y, BlockType.AIR);
+		this.dropEntity(x * Constants.BLOCK_SIZE, y * Constants.BLOCK_SIZE, new ItemEntity(new Item(itemType)));
 	}
 }

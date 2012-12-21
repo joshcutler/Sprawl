@@ -482,7 +482,7 @@ public class RenderingEngine {
 				// Update Target
 				Block b = world.getAt(Game.selector_x, Game.selector_y);
 				Element target_text = hud.getCurrentScreen().findElementByName("target");
-				target_text.getRenderer(TextRenderer.class).setText(b.getType().name() + "-" + b.getBlockTile().ordinal() +  ((b.getCoverType() != null) ? ", " + b.getCoverType().name() : "") + ((b.getForeGround() != null) ? ", " + b.getForeGround().name() : "") + ((b.getVegetation() != null) ? ", " + b.getVegetation().getName() : ""));
+				target_text.getRenderer(TextRenderer.class).setText(b.getType().name() + "-" + b.getBlockTile().ordinal() +  ((b.getCoverType() != null) ? ", " + b.getCoverType().name() : "") + ((b.getForeGround() != null) ? ", " + b.getForeGround().name() : "") + ((b.getVegetation() != null) ? ", " + b.getVegetation().debugInfo() : ""));
 			} else {
 				debug.setVisible(false);
 			}

@@ -26,4 +26,8 @@ public class Tree extends Vegetation {
 			world.getAt(x, y - i).setForeGround(ForeGroundType.TREE_TRUNK);
 		}
 	}
+	
+	public String debugInfo() {
+		return getName() + "-" + this.height;
+	}
 }

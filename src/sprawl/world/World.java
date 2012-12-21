@@ -22,7 +22,6 @@ import org.jdom2.output.XMLOutputter;
 
 import sprawl.Camera;
 import sprawl.Constants;
-import sprawl.Game;
 import sprawl.PhysicsEngine;
 import sprawl.Vec2;
 import sprawl.entities.Entity;
@@ -30,6 +29,7 @@ import sprawl.entities.ItemEntity;
 import sprawl.items.Item;
 import sprawl.items.ItemType;
 import sprawl.vegetation.CoverType;
+import sprawl.vegetation.Tree;
 import sprawl.vegetation.Vegetation;
 
 public class World {
@@ -386,9 +386,24 @@ public class World {
 	
 	public void harvestBlock(int x, int y, ItemType itemType) {
 		if (this.getAt(x, y).getForeGround() == ForeGroundType.TREE_TRUNK) {
-			while (this.getAt(x, y).getForeGround() == ForeGroundType.TREE_TRUNK) {
-				dropItem(x, y, itemType);
-				y -= 1;
+			// Drop the tree above this point
+			int yUp = y;
+			while (this.getAt(x, yUp).getForeGround() == ForeGroundType.TREE_TRUNK) {
+				dropItem(x, yUp, itemType);
+				yUp -= 1;
+			}
+			
+			// Update the tree height
+			int yDown = y;
+			while (this.getAt(x, yDown).getVegetation() == null) {
+				yDown += 1;
+			}
+			Tree thisTree = (Tree)this.getAt(x, yDown).getVegetation();
+			int newHeight = yDown - y - 1;
+			if (newHeight == 0) {
+				this.getAt(x, yDown).setVegetation(null);
+			} else {
+				thisTree.setHeight(newHeight);
 			}
 		} else {
 			dropItem(x, y, itemType);

@@ -60,5 +60,9 @@ public abstract class Vegetation {
 		return classname.substring(classname.lastIndexOf(".") + 1);
 	}
 	
+	public String debugInfo() {
+		return getName();
+	}
+	
 	public abstract void updateForegroundBlocks(int x, int y, World world);
 }

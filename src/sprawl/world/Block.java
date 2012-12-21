@@ -31,7 +31,9 @@ public class Block {
 
 	public void setVegetation(Vegetation vegetation) {
 		this.vegetation = vegetation;
-		vegetation.setBlock(this);
+		if (vegetation != null) {
+			vegetation.setBlock(this);
+		}
 	}
 
 	public Block(BlockType type) {

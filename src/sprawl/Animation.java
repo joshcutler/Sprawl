@@ -12,7 +12,6 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
 public class Animation {
-	protected Texture texture;
 	protected String textureLocation;
 	protected int frames = 0;
 	protected int startFrame = 0;
@@ -37,13 +36,12 @@ public class Animation {
 	
 	public void init() {
 		try {
-			this.texture = TextureLoader.getTexture("PNG",
-					RenderingEngine.class.getResourceAsStream(this.textureLocation));
+			RenderingEngine.registerTexture(this.textureLocation, TextureLoader.getTexture("PNG",
+					RenderingEngine.class.getResourceAsStream(this.textureLocation)));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Texture Loaded: " + this.textureLocation);
 	}
 	
 	public boolean draw(float x, float y, boolean flipped, int delta) {
@@ -54,9 +52,10 @@ public class Animation {
 		currentFrame = (int) Math.floor (timer / ((1000 * duration) / frames));
 			
 		try {
-			this.texture.bind();
-			int rows = this.texture.getTextureWidth() / this.width;
-			int columns = this.texture.getTextureHeight() / this.height;
+			Texture texture = RenderingEngine.getTexture(this.textureLocation);
+			texture.bind();
+			int rows = texture.getTextureWidth() / this.width;
+			int columns = texture.getTextureHeight() / this.height;
 			
 			float frameSize = 1f / columns;
 			float vTextureOffset = (startFrame + currentFrame) * frameSize;

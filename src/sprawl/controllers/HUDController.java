@@ -2,13 +2,10 @@ package sprawl.controllers;
 
 import java.util.List;
 
-import sprawl.Game;
 import sprawl.HUD;
-import de.lessvoid.nifty.EndNotify;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.DroppableDroppedEvent;
-import de.lessvoid.nifty.effects.EffectEventId;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;

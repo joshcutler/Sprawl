@@ -2,8 +2,6 @@ package sprawl.controllers;
 
 import org.lwjgl.opengl.Display;
 
-import sprawl.RenderingEngine;
-
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;

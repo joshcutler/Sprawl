@@ -6,7 +6,6 @@ public enum CoverType {
 	GRASS("/textures/grass.png", 0.1f);
 
 	public final String texture_location;
-	public Texture texture;
 	public final float growthRate;
 
 	CoverType(String texture_location, float g) {

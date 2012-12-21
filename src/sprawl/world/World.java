@@ -23,6 +23,7 @@ import org.jdom2.output.XMLOutputter;
 import sprawl.Camera;
 import sprawl.Constants;
 import sprawl.PhysicsEngine;
+import sprawl.RenderingEngine;
 import sprawl.Vec2;
 import sprawl.entities.Entity;
 import sprawl.entities.ItemEntity;
@@ -175,7 +176,7 @@ public class World {
 	public int draw(Camera camera) {
 		//Draw Skybox
 		glColor3f(1f, 1f, 1f);
-		BlockType.AIR.texture.bind();
+		RenderingEngine.getTexture(BlockType.AIR.texture_location).bind();
 		glBegin(GL_QUADS);
 			glTexCoord2f(0, 0);
 			glVertex2f(-camera.getX(), -camera.getY());

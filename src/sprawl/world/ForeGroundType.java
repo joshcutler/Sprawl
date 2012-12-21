@@ -8,7 +8,6 @@ public enum ForeGroundType {
 	TREE_TRUNK("/textures/tree.png", true, true, 10, ItemType.WOOD_BLOCK);
 
 	public final String texture_location;
-	public Texture texture;
 	public final boolean takesSpace;
 	public boolean isChoppable;
 	public final int chopHealth;

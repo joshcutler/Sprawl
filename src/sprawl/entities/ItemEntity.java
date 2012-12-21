@@ -21,7 +21,6 @@ public class ItemEntity extends Entity {
 		this.preventSlide = true;
 		
 		this.texture_location = i.getType().texture_location;
-		this.loadTexture();
 	}
 	
 	public void collidedWith(World world, Entity e) {

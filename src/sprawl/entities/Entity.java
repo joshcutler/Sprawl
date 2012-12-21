@@ -38,8 +38,7 @@ public abstract class Entity {
 	protected float speed;
 	protected float walkSpeed;
 	public boolean preventSlide = false;
-	public Texture texture;
-
+	
 	public String texture_location;
 
 	protected int width;
@@ -61,7 +60,7 @@ public abstract class Entity {
 		this.linearVelocity.y += y;
 	}
 	public void bind() throws Exception {
-		this.texture.bind();
+		RenderingEngine.getTexture(this.texture_location).bind();
 	}
 	
 	public void changeDirection(EntityDirection dir) {
@@ -188,20 +187,6 @@ public abstract class Entity {
 
 	public int heightInBlocks() {
 		return (int) Math.ceil((float)this.height / Constants.BLOCK_SIZE);
-	}
-	
-	protected void loadTexture() {
-		try {
-			this.texture = TextureLoader.getTexture("PNG",
-					RenderingEngine.class.getResourceAsStream(this.texture_location));
-			System.out.println("Texture Loaded: " + this.texture_location);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	
 	public void moveTo(int x, int y) {

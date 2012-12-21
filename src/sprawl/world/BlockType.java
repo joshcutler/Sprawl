@@ -11,7 +11,6 @@ public enum BlockType {
 	WOOD("/textures/block_wood.png", true, 0.3f, false, 0, ItemType.WOOD_BLOCK);
 
 	public final String texture_location;
-	public Texture texture;
 	public final boolean has_physics;
 	public float light_attenuation;
 	public final boolean isDiggable;

@@ -1,10 +1,14 @@
 package sprawl.world;
 
+import static org.lwjgl.opengl.GL11.GL_QUADS;
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glTexCoord2f;
+import static org.lwjgl.opengl.GL11.glVertex2f;
 import sprawl.Constants;
+import sprawl.RenderingEngine;
 import sprawl.vegetation.CoverType;
 import sprawl.vegetation.Vegetation;
-
-import static org.lwjgl.opengl.GL11.*;
 
 public class Block {
 	private BlockType type = BlockType.AIR;
@@ -61,7 +65,7 @@ public class Block {
 		    glEnd();
 		    
 		    if (this.coverType != null) {
-		    	this.coverType.texture.bind();
+		    	RenderingEngine.getTexture(this.coverType.texture_location).bind();
 		    	glBegin(GL_QUADS);
 		    		glTexCoord2f(0, 0);
 			    	glVertex2f(0 + x, 0 + y);
@@ -76,7 +80,7 @@ public class Block {
     	}
 	    
 	    if (this.foreGround != null) {
-	    	this.foreGround.texture.bind();
+	    	RenderingEngine.getTexture(this.foreGround.texture_location).bind();
 	    	glBegin(GL_QUADS);
 	    		glTexCoord2f(0, 0);
 		    	glVertex2f(0 + x, 0 + y);
@@ -92,10 +96,10 @@ public class Block {
     
     public void bind() {
     	if (this.tempType != null) {
-    		this.tempType.texture.bind();
+    		RenderingEngine.getTexture(this.tempType.texture_location).bind();
     		this.tempType = null;
     	} else {
-    		this.type.texture.bind();
+    		RenderingEngine.getTexture(this.type.texture_location).bind();
     	}
     }
     

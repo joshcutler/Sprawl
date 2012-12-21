@@ -28,6 +28,7 @@ import static org.lwjgl.opengl.GL14.glBlendEquation;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Hashtable;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
@@ -36,6 +37,7 @@ import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
+import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
 import sprawl.entities.Entity;
@@ -54,6 +56,7 @@ import de.lessvoid.nifty.elements.render.TextRenderer;
 public class RenderingEngine {
 	public static int VBO_id;
 	public static UnicodeFont font;
+	private static Hashtable<String, Texture> textures = new Hashtable<String, Texture>();
 	
 	public static void initOpenGL() {
 		try {
@@ -146,9 +149,8 @@ public class RenderingEngine {
 	public static void initTextures() {
 		for (BlockType block_type : BlockType.values()) {
 			try {
-				block_type.texture = TextureLoader.getTexture("PNG",
-						RenderingEngine.class.getResourceAsStream(block_type.texture_location));
-				System.out.println("Texture Loaded: " + block_type.texture_location);
+				registerTexture(block_type.texture_location, TextureLoader.getTexture("PNG",
+						RenderingEngine.class.getResourceAsStream(block_type.texture_location)));
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -159,9 +161,8 @@ public class RenderingEngine {
 		}
 		for (CoverType cover_type : CoverType.values()) {
 			try {
-				cover_type.texture = TextureLoader.getTexture("PNG",
-						RenderingEngine.class.getResourceAsStream(cover_type.texture_location));
-				System.out.println("Texture Loaded: " + cover_type.texture_location);
+				registerTexture(cover_type.texture_location, TextureLoader.getTexture("PNG",
+						RenderingEngine.class.getResourceAsStream(cover_type.texture_location)));
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -172,9 +173,8 @@ public class RenderingEngine {
 		}
 		for (ForeGroundType fore_type : ForeGroundType.values()) {
 			try {
-				fore_type.texture = TextureLoader.getTexture("PNG",
-						RenderingEngine.class.getResourceAsStream(fore_type.texture_location));
-				System.out.println("Texture Loaded: " + fore_type.texture_location);
+				registerTexture(fore_type.texture_location, TextureLoader.getTexture("PNG",
+						RenderingEngine.class.getResourceAsStream(fore_type.texture_location)));
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -186,9 +186,8 @@ public class RenderingEngine {
 		
 		for (LightSource light_source : LightSource.values()) {
 			try {
-				light_source.texture = TextureLoader.getTexture("PNG",
-						RenderingEngine.class.getResourceAsStream(light_source.texture_location));
-				System.out.println("Texture Loaded: " + light_source.texture_location);
+				registerTexture(light_source.texture_location, TextureLoader.getTexture("PNG",
+						RenderingEngine.class.getResourceAsStream(light_source.texture_location)));
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -200,9 +199,8 @@ public class RenderingEngine {
 		
 		for (ItemType item_type : ItemType.values()) {
 			try {
-				item_type.texture = TextureLoader.getTexture("PNG",
-						RenderingEngine.class.getResourceAsStream(item_type.texture_location));
-				System.out.println("Texture Loaded: " + item_type.texture_location);
+				registerTexture(item_type.texture_location, TextureLoader.getTexture("PNG",
+						RenderingEngine.class.getResourceAsStream(item_type.texture_location)));
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -242,7 +240,7 @@ public class RenderingEngine {
 	    glBlendEquation(GL_MIN);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_DST_ALPHA);
 
-	    LightSource.SHADOW.texture.bind();
+	    RenderingEngine.getTexture(LightSource.SHADOW.texture_location).bind();
 		//Cull unneeded blocks and set light parameters
 		int extra_lights = 10;
 	    int left_edge = camera.leftVisibleBlockIndex() - extra_lights;
@@ -491,5 +489,16 @@ public class RenderingEngine {
 	
 	public static void updateDisplay() {
         Display.update();
+	}
+	
+	public static Texture getTexture(String key) {
+		return textures.get(key);
+	}
+	
+	public static void registerTexture(String key, Texture texture) {
+		if (!textures.containsKey(key)) {
+			textures.put(key, texture);
+			System.out.println("Texture Registered: " + key);
+		}
 	}
 }
